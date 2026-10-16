@@ -21,7 +21,7 @@ its delivery workflow. No fixed session durations apply.
 ## Thread continuity review
 
 - Thread label: W05 resume — new thread confirmed 2026-10-16.
-- Initialized at **0**; counted checkpoints: **15** (staged baseline inspected; whitespace fixes prepared; commit pending).
+- Initialized at **0**; counted checkpoints: **18** (docs commit verified; local integration assigned).
 - Last scheduled review: checkpoint **15**.
 - Next scheduled review: checkpoint **20**, then 25, 30, and so on.
 - Assessment: history now spans dbt debugging, delivery-plan revision and Git bootstrap. Finish the bounded baseline checkpoint here; assess a handoff before the substantial runtime/reproducibility phase. This is qualitative, not a capacity estimate.
@@ -40,19 +40,19 @@ since loading. This is consistent with the configured five-minute warning and
 ten-minute error thresholds; it does not invalidate the earlier reported PASS.
 Freshness status changes as data ages; task status records learning/delivery progress.
 
-Next: learner reviews working-tree fixes with git diff, stages new .gitattributes, refreshes staged versions
-with git add --renormalize ., runs git diff --cached --check and --stat, then commits the reviewed
-baseline and supplies git status --short --branch plus git log -1 --oneline.
-Commit message: chore: establish training pipeline baseline. No commit yet.
+Next: learner reviews and commits the four checkpoint-doc updates on
+docs/command-format, switches to main, merges docs/command-format with --no-ff,
+and deletes the merged branch with git branch -d. Supply git status --short --branch
+and git log -3 --oneline --graph. These operations are supplied, not confirmed.
+Checkpoint docs are updated before each response, so explicitly commit this
+review record before switching; do not silently carry uncommitted changes.
 
-Checkpoint 15: inspected 41 staged files / 3189 insertions before cleanup, on main
-without HEAD. Candidate scope excludes known local configuration/data/artifacts;
-bounded credential-pattern scan found no matches (not a security guarantee).
-Fixed trailing spaces/blank EOF in source YAML and two SQL files; preserved
-Markdown hard breaks using backslashes in two training docs. These working-tree
-fixes and updated checkpoint docs need restaging. No agent staging/commit.
-W05 reasoning, W06/W07 failure/blocking/recovery and runtime reproducibility remain
-pending; the baseline is a prototype snapshot, not a production release.
+Checkpoint 18: verified docs commit dfd276c on docs/command-format, baseline
+8590240 on main, clean worktree before checkpoint edits. Branch diff contains six
+docs files; git diff main...HEAD --check passes. This is local tutor review and
+merge practice, not hosted PR/CI or independent peer approval. No agent Git
+mutations. After integration, reassess handoff before runtime/reproducibility.
+W05 reasoning and W06/W07 failure/blocking/recovery remain pending.
 
 Checkpoint 11: learner build output and inspected run_results.json agree: 3 models
 succeeded, 5 tests passed with zero failures, dbt 2.0.8, generated
@@ -170,7 +170,7 @@ them silently for the learner.
 | W05 — Freshness and source inspection | In Progress | Add table-level freshness config in `sources.yml` → run stale/reload/check and raw preview → explain thresholds, timestamps, selectors, exit status and `sources.json` | Config inspected: warn >5 min, error >10 min. Core stale failure supplied; recovery PASS learner-reported; latest artifact warn verified. Learner aggregate output confirms 3 rows / 3 distinct IDs and latest_load 2026-10-15T21:26:19.750278-07:00. Learner raw preview matches all fixture rows and shows identical loaded_at values. Freshness-versus-completeness comprehension pending; exit code not supplied. |
 | W06 — Input readiness and batch completeness | In Progress | Define expected batch/input contract and reconciliation → implement checks → demonstrate missing/partial loads block downstream work | Fixture-only exact count=3 test now named assert_orders_fixture_count.sql; PASS/zero failures artifact verified at checkpoint 9 (dbt 2.0.8). Temporary expectation=4 failure and restoration=3 recovery assigned, pending. Intended Core runtime selection remains unverified. Batch identity, independent expected counts, missing/partial failure and downstream gating remain pending. Do not generalize fixture count to production. |
 | W07 — Source-backed build/test and failure recovery | In Progress | Maintain `models/orders.yml` with SQL → build/test, inject bounded invalid input, inspect failure and restore → verify current full source-backed build and recovery | Prior checkpoint verifies four first_orders tests and deliberate duplicate failure before the current source-backed acceptance. Checkpoint 11: learner output and artifact verify selected source-backed build: 3 models success / 5 tests pass, dbt 2.0.8. Source-count failure blocking and recovery remain pending. |
-| W08 — Maintainable Python loader and repository foundation | In Progress | Refactor prototype into reusable logic/configuration; establish Git and reproducible dependencies → validate inputs, errors/logging, safe writes and meaningful tests → demonstrate repeatability and recovery | Checkpoint 14: repo initialized on main, no HEAD/commits; ignore rules expanded for local editor/dbt identity, learner baseline staging/review next. Git foundation moved before further pipeline features; runtime reproducibility and loader refactor pending. Define batch/write semantics before expanding loader. |
+| W08 — Maintainable Python loader and repository foundation | In Progress | Refactor prototype into reusable logic/configuration; establish Git and reproducible dependencies → validate inputs, errors/logging, safe writes and meaningful tests → demonstrate repeatability and recovery | Checkpoint 16: baseline commit 8590240 verified, main clean before requested instruction edits. Learner docs branch next; runtime reproducibility and remaining repository acceptance pending. Git foundation moved before further pipeline features; runtime reproducibility and loader refactor pending. Define batch/write semantics before expanding loader. |
 | W09 — dbt professional delivery and CI/CD | TBD | Author isolated targets and CI configuration → exercise reviewed SQL/YAML change, failing checks, correction and promotion → verify artifact retention and cleanup | Local CI simulation, hosted CI, and deployed execution need distinct evidence. Teach manifest/state/deferral after basic build isolation. |
 | W10 — Local Airflow pipeline | TBD | Author DAG/config using reusable ingestion → ingest, readiness/freshness/completeness, dbt build/test, publication gating → prove success and blocked downstream tasks/recovery | Cover data intervals, retries, idempotency, backfills, concurrency, secrets and logs. No scheduler or DAG deployment verified. |
 | W11 — Cloud design and billing readiness | TBD | Choose compatible Azure/Databricks target and cloud Airflow hosting; estimate costs → verify billing, identity and budget alerts → approve bounded lab design and teardown | $200/month ceiling, target below $150. Billing upgrade and budget configuration unverified. Alerts are not a hard cap. Verify current official guidance before provisioning. |
@@ -230,3 +230,9 @@ them silently for the learner.
 | 2026-10-16 | New thread checkpoint 15: staged baseline review | 41 staged files inspected for scope; bounded credential scan no matches. Whitespace check found SQL/YAML whitespace and Markdown hard breaks; working-tree cleanup preserves behavior/formatting. Learner restage/check/commit next. Scheduled qualitative review: finish baseline here, reassess before runtime phase; next scheduled review 20. |
 
 Checkpoint 15 follow-up: Git warned of LF-to-CRLF conversion. Prepared repository .gitattributes (* text=auto eol=lf); stage it before renormalizing baseline. No global Git config change.
+
+| 2026-10-16 | New thread checkpoint 16: baseline commit and command format | Verified clean main and baseline commit 8590240 before docs edits. Owner requires one shell command per separate code block; persisted in root/linked AGENTS.md. Assigned docs/command-format branch and diff review for requested docs changes. No agent branch/commit operation. |
+
+| 2026-10-16 | New thread checkpoint 17: documentation branch verified | Confirmed docs/command-format, six modified docs files, instruction diff matches request; whitespace check passed. Assigned explicit staging, cached review/check and focused docs commit. No agent staging/commit; local integration next after commit verification. |
+
+| 2026-10-16 | New thread checkpoint 18: docs commit verified | Verified dfd276c, clean docs/command-format before checkpoint updates; main at 8590240; branch diff whitespace check passed. Assigned checkpoint-record commit then explicit local no-ff merge and safe merged-branch deletion. No integration execution confirmed. |

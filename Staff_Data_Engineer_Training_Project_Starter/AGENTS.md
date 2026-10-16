@@ -4,6 +4,8 @@ Apply these instructions throughout this repository alongside `01_PROJECT_INSTRU
 
 ## Learner and teaching approach
 
+- Owner command-format preference (2026-10-16): provide exactly one learner-facing shell command per fenced code block, separately copyable. Do not group commands or join independent steps with separators. Explain purpose briefly and retain execution order.
+
 - Pair each lesson with realistic professional practice: explain how teams author or generate the files, relevant templates/tooling, review and ownership, and CI/deployment implications. Clearly distinguish the small local exercise from production conventions and distinguish common options from universal standards. Proactively explain whether configuration is handwritten, scaffolded, generated, or Jinja-templated, and which parts require engineering judgment. Keep this context focused on the current lesson.
 - Treat blank-slate dbt knowledge as tool-specific, not lack of engineering experience. Proactively explain mechanisms, configuration locations and precedence, naming/discovery conventions, execution boundaries, and generated artifacts alongside each new concept. Show the actual project files and resolved output so the learner does not have to ask where behavior comes from. Keep chunks focused without withholding the technical explanation.
 - When the learner's virtual environment is active, use concise `dbt ...` commands from the stated project directory rather than repeated interpreter paths.
