@@ -21,7 +21,7 @@ its delivery workflow. No fixed session durations apply.
 ## Thread continuity review
 
 - Thread label: Git publication follow-through and runtime reproducibility — new thread confirmed 2026-10-16.
-- Initialized at **0**; counted checkpoints: **2** (documentation branch verified; staging and commit assigned).
+- Initialized at **0**; counted checkpoints: **3** (c0ed731 verified; hosted branch publication and PR assigned).
 - Last scheduled review: none in this thread.
 - Next scheduled review: checkpoint **5**, then 10, 15, and so on.
 - Assessment: fresh thread, bounded next step; qualitative assessment, not a capacity estimate.
@@ -40,9 +40,9 @@ since loading. This is consistent with the configured five-minute warning and
 ten-minute error thresholds; it does not invalidate the earlier reported PASS.
 Freshness status changes as data ages; task status records learning/delivery progress.
 
-Next: stage and commit the four reviewed checkpoint docs on the verified
-`docs/publish-checkpoint` branch, then integrate and push the docs revision. Then create a separate feature branch for reproducible runtime. Do not
-repeat init, repo creation or original push. Learner branch creation verified; commit pending.
+Next: commit the checkpoint-3 review record on `docs/publish-checkpoint`,
+push that branch and open a hosted PR against main. Review before integration. Then create a separate feature branch for reproducible runtime. Do not
+repeat init, repo creation or original push. Documentation commit c0ed731 verified; hosted PR and integration pending.
 
 Checkpoint 23: owner reports pushed. Inspected origin URL:
 https://github.com/Amoladhav/staff_de_training.git. Local main and cached origin/main
@@ -259,3 +259,5 @@ Checkpoint 15 follow-up: Git warned of LF-to-CRLF conversion. Prepared repositor
 | 2026-10-16 | Git/runtime thread checkpoint 1: resume verified | Owner confirmed new thread; initialized counter at zero, incremented for this exercise. Inspected main/cached origin/main at 4150ae0 and exactly four modified checkpoint docs; docs/publish-checkpoint does not yet exist. Assigned learner branch creation and diff review; no Git mutation or live remote query. Runtime work follows documentation integration on a separate branch. |
 
 | 2026-10-16 | Git/runtime thread checkpoint 2: documentation branch verified | Learner output and local inspection confirm docs/publish-checkpoint with exactly four modified checkpoint docs. Reviewed diff and whitespace check passed. Updated checkpoint before assigning explicit staging, cached review/check and commit; no agent Git mutation. Integration and runtime branch remain pending. |
+
+| 2026-10-16 | Git/runtime thread checkpoint 3: documentation commit verified | Inspected c0ed731 on docs/publish-checkpoint; clean worktree before this record, main/cached origin/main at 4150ae0. Four-file branch diff passes whitespace check. Assigned review-record commit, learner branch push and hosted PR; none executed by agent. Hosted CI and independent peer approval remain absent; review PR before integration. |

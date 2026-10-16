@@ -187,3 +187,7 @@ Append one record per training session.
 ### Git/runtime thread checkpoint 2: documentation branch verified — 2026-10-16
 - Learner status and local inspection confirm docs/publish-checkpoint and four modified checkpoint documents. Diff reviewed; whitespace check passed.
 - Checkpoint updated before explicit staging, cached diff/check and commit assignment. No agent staging or commit; integration and separate runtime branch remain pending. Next continuity review 5.
+
+### Git/runtime thread checkpoint 3: documentation commit verified — 2026-10-16
+- Verified c0ed731 on docs/publish-checkpoint, clean worktree before record; main/cached origin/main at 4150ae0. Four-file branch diff whitespace check passed.
+- Assigned review-record commit, learner branch push and hosted PR against main. No agent Git mutation; PR/CI/integration not claimed complete. Review PR before integration; runtime remains a subsequent separate branch.

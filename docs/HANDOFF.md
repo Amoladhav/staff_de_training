@@ -78,9 +78,9 @@ Fixture file inspected: three orders, IDs 1–3. No automated completeness gate 
 Owner reaffirmed proactive thread-length monitoring and saved summaries/resume
 prompts; root AGENTS.md now spells out the checkpoint procedure.
 
-Exact next action: learner stages, reviews the staged diff and commits the four
-modified checkpoint docs on verified branch `docs/publish-checkpoint`. Integrate and push that documentation revision following the
-established learner-led workflow; then create a distinct runtime feature branch.
+Exact next action: learner commits the checkpoint-3 review record on
+`docs/publish-checkpoint`, pushes the branch and opens a hosted PR against main.
+Review the PR before integration; then create a distinct runtime feature branch.
 Do not repeat repository init/creation or the original push. Each shell command
 must be separately copyable in its own fenced block.
 
@@ -139,15 +139,15 @@ OneDrive source snapshot location:
 ## Thread continuity state
 
 Owner confirmed a new Git/runtime thread on 2026-10-16. Initialized counter at
-zero; current checkpoint is 2, next scheduled review 5. Previous thread ended at
+zero; current checkpoint is 3, next scheduled review 5. Previous thread ended at
 23 with a scheduled review at 20 and early qualitative handoff recommendation at
 23. Fresh thread: continue; no capacity estimate or guaranteed compaction warning.
 
-Resume verification: main and cached origin/main remain 4150ae0; exactly the four
-checkpoint docs are modified. docs/publish-checkpoint is now verified as the
-current branch. Diff reviewed and whitespace check passed; learner staging and
-commit assigned, not executed by agent. No live remote
-query. Runtime reproducibility remains pending on a separate subsequent branch.
+Checkpoint 3 verification: docs/publish-checkpoint at c0ed731; main and cached
+origin/main at 4150ae0. Worktree clean before checkpoint-3 documentation updates.
+Four-file branch diff passes whitespace check. Commit this review record before
+pushing the branch and opening the PR. Commands assigned, no agent Git mutation
+or live remote query. Hosted CI and independent peer approval remain pending.
 
 ## Continuation prompt
 
