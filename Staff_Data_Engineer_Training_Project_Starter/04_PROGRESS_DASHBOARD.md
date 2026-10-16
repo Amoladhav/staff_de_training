@@ -29,10 +29,10 @@ Last updated: 2026-10-16
 - BLUE: Staff-level confident
 
 ## Current Work
-- New confirmed thread 2026-10-16: checkpoint 18; continuity review at 15 (finish baseline, reassess before next phase), next scheduled review at 20. Learner aggregate shows 3 rows / 3 distinct IDs, matching fixture count; raw preview matches fixture IDs, statuses and amounts; completeness reasoning remains pending.
+- New Git/runtime thread confirmed 2026-10-16: checkpoint 2; previous thread ended at 23; next scheduled review 5. Git state rechecked; documentation branch verified; staging and commit next. Learner aggregate shows 3 rows / 3 distinct IDs, matching fixture count; raw preview matches fixture IDs, statuses and amounts; completeness reasoning remains pending.
 - Active checkpoint: W08 repository foundation — In Progress, moved ahead of further pipeline changes; W05–W07 remaining acceptance preserved.
 - Current work-item statuses, diagrams, developer workflows and evidence: [Dataflow tracker](../docs/DATAFLOW_TRACKER.md). This supersedes older setup-next-step notes below.
-- Next action: commit checkpoint review record, then locally merge docs/command-format into main and delete merged branch. Docs commit dfd276c verified; integration pending.
+- Next action: learner stages and commits four reviewed checkpoint files on docs/publish-checkpoint, then separate runtime feature branch. Push reported, private metadata supplied; local main and cached origin/main both 4150ae0. Hosted PR/CI still pending.
 - Then: bounded failure/recovery, batch completeness contract and source-backed build/test acceptance.
 - Azure billing/budget readiness and PowerShell saved variable remain unverified.
 
