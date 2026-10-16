@@ -32,3 +32,10 @@ invent context percentages or treat a handoff suggestion as cancellation.
 - Keep the existing early-warning rule: do not wait for the fifth checkpoint if a handoff is already useful. Save the handoff, tracker and relevant logs first, then provide the summary/link/copyable resume prompt. No guarantee of warning before compaction.
 - Initialize a new confirmed thread at zero and preserve the previous review summary. Compaction or a new date does not mean a new thread. If prior counts cannot be reconstructed reliably, state that and start an explicitly labeled baseline without inventing a historical total. Retain counts when continuing this thread.
 - If the owner continues after a recommendation, continue work and assess on schedule without repeating the same switch prompt unless the situation materially changes.
+
+## Copyable command formatting
+
+- Owner preference, 2026-10-16: put each learner-facing shell command in its own
+  fenced code block so it can be copied and run separately. Do not combine
+  multiple commands in one block or join independent steps with shell separators.
+- Explain each command's purpose briefly and preserve execution order.

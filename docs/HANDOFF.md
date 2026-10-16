@@ -78,17 +78,15 @@ Fixture file inspected: three orders, IDs 1–3. No automated completeness gate 
 Owner reaffirmed proactive thread-length monitoring and saved summaries/resume
 prompts; root AGENTS.md now spells out the checkpoint procedure.
 
-Exact next action: learner reviews git diff, stages new .gitattributes, runs git add --renormalize . to refresh staged
-versions, then git diff --cached --check and --stat. If review is satisfactory and
-check clean, commit with message "chore: establish training pipeline baseline".
-Supply git status --short --branch and git log -1 --oneline. Commit is pending.
-Checkpoint 15: 41 baseline files staged on main, HEAD absent. Bounded credential
-pattern scan found no matches, not a guarantee. Agent fixed SQL/YAML whitespace
-and preserved Markdown hard breaks via backslashes; working-tree fixes plus
-checkpoint docs need restaging. No agent staging/commit. Local runtime/artifacts
-excluded. Baseline documents prototype limitations, including pending W05 reasoning,
-W06/W07 negative-case gating/recovery and runtime reproducibility. After baseline,
-create a feature branch for runtime/reproducibility before implementation.
+Exact next action: learner stages the six changed docs/instruction paths, reviews
+git diff --cached --check and git diff --cached, then commits with message
+"docs: require separately copyable shell commands" and supplies status.
+Each command must be in its own copyable fenced block. Checkpoint 17 verifies
+branch docs/command-format, instruction diff matches request, whitespace check
+passed before checkpoint update. No code changes or dbt execution needed.
+Baseline commit 8590240 verified; docs commit not yet confirmed. Next teach local
+reviewed integration/cleanup, explicitly not hosted PR/CI, then reassess handoff
+before runtime phase. W05 reasoning and W06/W07 negative-case acceptance pending.
 
 
 Owner requires professional implementation as features grow: reusable structure,
@@ -118,16 +116,16 @@ notifications were activated by the curriculum updates.
 
 ## Git and worktree
 
-Git verified at checkpoint 14: repository initialized on main, no HEAD/commits.
-41 baseline files staged at checkpoint 15; whitespace fixes and checkpoint updates
-remain unstaged until learner refreshes index. No commits or pushes made.
+Git verified at checkpoint 17: docs/command-format, baseline commit 8590240.
+Six documentation/instruction files modified, unstaged before learner staging.
+No agent branch/stage/commit operations; no remote push or hosted PR evidence.
 Existing 17 :Zone.Identifier metadata files were left unchanged.
 OneDrive source snapshot location:
 `/mnt/c/Users/amola/OneDrive/Documents/Staff_Data_Engineer/Staff_Data_Engineer_Training_Project_Starter`.
 
 ## Thread continuity state
 
-Owner confirmed a new thread on 2026-10-16. Counter is now 15.
+Owner confirmed a new thread on 2026-10-16. Counter is now 17.
 Scheduled qualitative review at 15: accumulated dbt debugging, curriculum and Git
 bootstrap; finish baseline here, reassess handoff before runtime/reproducibility
 phase. Next scheduled review 20, earlier phase-boundary reassessment allowed.
@@ -137,11 +135,7 @@ No capacity estimate or automatic-compaction warning guarantee is claimed.
 
 Resume training in /home/amola/projects/staff_de_training. Read AGENTS.md and its
 linked instructions, docs/HANDOFF.md and docs/DATAFLOW_TRACKER.md. Verify Git
-status and latest commit: baseline is staged with working-tree cleanup/checkpoint
-updates pending restaging and commit as of checkpoint 15. Continue the learner-led
-Git lifecycle, then feature-branch runtime reproducibility. Preserve pending dbt
-failure/blocking/recovery and required local/cloud/Airflow scope. Do not repeat setup.
-
-Git emitted LF-to-CRLF warnings during review. Prepared .gitattributes with
-* text=auto eol=lf for canonical WSL text files; learner stages it and renormalizes
-the baseline. No global Git configuration changed.
+state: baseline commit 8590240 was confirmed; requested command-format instruction
+and checkpoint updates await learner docs branch/review/commit. Give each shell
+command in a separate copyable block. Continue Git lifecycle before runtime
+reproducibility; preserve pending dbt failure/recovery and local/cloud/Airflow scope.

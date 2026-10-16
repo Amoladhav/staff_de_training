@@ -148,3 +148,11 @@ Append one record per training session.
 - Fixed whitespace in source YAML/two SQL files and preserved Markdown hard breaks via backslashes in two notes. Changes and checkpoint docs require restaging; no agent staging/commit.
 - Assigned review, git add --renormalize ., cached check/stat, baseline commit, status/log evidence. Prototype/runtime/failure-evidence limitations preserved.
 - Scheduled qualitative continuity review: finish baseline checkpoint here; reassess handoff before runtime/reproducibility phase. Next scheduled review 20.
+
+### Baseline verified and command formatting, checkpoint 16 — 2026-10-16
+- Verified clean main and baseline commit 8590240 before edits. Owner requires separate copyable blocks for every shell command; persisted in root/linked AGENTS.md.
+- Requested docs updates are uncommitted; learner creates docs/command-format, reviews diff, then commits focused docs change. No agent Git mutation. Reassess handoff before substantial runtime phase; next scheduled review 20.
+
+### Documentation branch review, checkpoint 17 — 2026-10-16
+- Verified docs/command-format with six modified docs files. Root/linked command-format instruction changes match owner request; git diff --check passed. No executable change, no dbt retest needed.
+- Assigned explicit staging, staged check/diff review, focused docs commit and status evidence. No agent Git mutations. Next: verified commit then local integration/cleanup; reassess handoff before runtime phase.
