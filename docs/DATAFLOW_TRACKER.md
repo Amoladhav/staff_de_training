@@ -21,7 +21,7 @@ its delivery workflow. No fixed session durations apply.
 ## Thread continuity review
 
 - Thread label: W05 resume — new thread confirmed 2026-10-16.
-- Initialized at **0**; counted checkpoints: **17** (docs branch verified; diff review passed; staging/commit assigned).
+- Initialized at **0**; counted checkpoints: **18** (docs commit verified; local integration assigned).
 - Last scheduled review: checkpoint **15**.
 - Next scheduled review: checkpoint **20**, then 25, 30, and so on.
 - Assessment: history now spans dbt debugging, delivery-plan revision and Git bootstrap. Finish the bounded baseline checkpoint here; assess a handoff before the substantial runtime/reproducibility phase. This is qualitative, not a capacity estimate.
@@ -40,18 +40,19 @@ since loading. This is consistent with the configured five-minute warning and
 ten-minute error thresholds; it does not invalidate the earlier reported PASS.
 Freshness status changes as data ages; task status records learning/delivery progress.
 
-Next: learner stages the six changed instruction/checkpoint files explicitly,
-runs git diff --cached --check and reviews git diff --cached, then commits with
-message "docs: require separately copyable shell commands". Supply git status
---short --branch. Staging and commit pending; no agent Git mutation.
+Next: learner reviews and commits the four checkpoint-doc updates on
+docs/command-format, switches to main, merges docs/command-format with --no-ff,
+and deletes the merged branch with git branch -d. Supply git status --short --branch
+and git log -3 --oneline --graph. These operations are supplied, not confirmed.
+Checkpoint docs are updated before each response, so explicitly commit this
+review record before switching; do not silently carry uncommitted changes.
 
-Checkpoint 17: verified branch docs/command-format. Six modified docs files,
-no staged changes before this update. Reviewed root/linked instruction diff;
-git diff --check passed. No executable code changed, so no dbt rerun required.
-Baseline 8590240 remains verified. After docs commit, teach local reviewed
-integration and branch cleanup (not hosted PR/CI); then reassess thread handoff
-before runtime/reproducibility. W05 reasoning and W06/W07 failure/blocking/recovery
-remain pending.
+Checkpoint 18: verified docs commit dfd276c on docs/command-format, baseline
+8590240 on main, clean worktree before checkpoint edits. Branch diff contains six
+docs files; git diff main...HEAD --check passes. This is local tutor review and
+merge practice, not hosted PR/CI or independent peer approval. No agent Git
+mutations. After integration, reassess handoff before runtime/reproducibility.
+W05 reasoning and W06/W07 failure/blocking/recovery remain pending.
 
 Checkpoint 11: learner build output and inspected run_results.json agree: 3 models
 succeeded, 5 tests passed with zero failures, dbt 2.0.8, generated
@@ -233,3 +234,5 @@ Checkpoint 15 follow-up: Git warned of LF-to-CRLF conversion. Prepared repositor
 | 2026-10-16 | New thread checkpoint 16: baseline commit and command format | Verified clean main and baseline commit 8590240 before docs edits. Owner requires one shell command per separate code block; persisted in root/linked AGENTS.md. Assigned docs/command-format branch and diff review for requested docs changes. No agent branch/commit operation. |
 
 | 2026-10-16 | New thread checkpoint 17: documentation branch verified | Confirmed docs/command-format, six modified docs files, instruction diff matches request; whitespace check passed. Assigned explicit staging, cached review/check and focused docs commit. No agent staging/commit; local integration next after commit verification. |
+
+| 2026-10-16 | New thread checkpoint 18: docs commit verified | Verified dfd276c, clean docs/command-format before checkpoint updates; main at 8590240; branch diff whitespace check passed. Assigned checkpoint-record commit then explicit local no-ff merge and safe merged-branch deletion. No integration execution confirmed. |

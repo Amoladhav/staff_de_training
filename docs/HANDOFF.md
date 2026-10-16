@@ -78,15 +78,14 @@ Fixture file inspected: three orders, IDs 1–3. No automated completeness gate 
 Owner reaffirmed proactive thread-length monitoring and saved summaries/resume
 prompts; root AGENTS.md now spells out the checkpoint procedure.
 
-Exact next action: learner stages the six changed docs/instruction paths, reviews
-git diff --cached --check and git diff --cached, then commits with message
-"docs: require separately copyable shell commands" and supplies status.
-Each command must be in its own copyable fenced block. Checkpoint 17 verifies
-branch docs/command-format, instruction diff matches request, whitespace check
-passed before checkpoint update. No code changes or dbt execution needed.
-Baseline commit 8590240 verified; docs commit not yet confirmed. Next teach local
-reviewed integration/cleanup, explicitly not hosted PR/CI, then reassess handoff
-before runtime phase. W05 reasoning and W06/W07 negative-case acceptance pending.
+Exact next action: learner reviews and commits the four checkpoint docs on
+docs/command-format, switches to main, merges with --no-ff and explicit message,
+then deletes the merged docs branch with -d and supplies status/graph log.
+Each command in its own copyable fenced block. Checkpoint 18 verifies dfd276c
+on docs/command-format and baseline 8590240 on main, clean before these checkpoint
+updates. Branch diff check passes. No merge/deletion yet; local tutor-reviewed
+integration exercise, not hosted PR/CI or independent approval. Reassess handoff
+before runtime phase after integration. W05/W06/W07 pending evidence preserved.
 
 
 Owner requires professional implementation as features grow: reusable structure,
@@ -116,16 +115,16 @@ notifications were activated by the curriculum updates.
 
 ## Git and worktree
 
-Git verified at checkpoint 17: docs/command-format, baseline commit 8590240.
-Six documentation/instruction files modified, unstaged before learner staging.
-No agent branch/stage/commit operations; no remote push or hosted PR evidence.
+Git verified at checkpoint 18: docs/command-format at dfd276c, main at 8590240.
+Worktree clean before four checkpoint-doc updates; those updates now need commit
+before integration. No agent Git mutations, remote push or hosted PR evidence.
 Existing 17 :Zone.Identifier metadata files were left unchanged.
 OneDrive source snapshot location:
 `/mnt/c/Users/amola/OneDrive/Documents/Staff_Data_Engineer/Staff_Data_Engineer_Training_Project_Starter`.
 
 ## Thread continuity state
 
-Owner confirmed a new thread on 2026-10-16. Counter is now 17.
+Owner confirmed a new thread on 2026-10-16. Counter is now 18.
 Scheduled qualitative review at 15: accumulated dbt debugging, curriculum and Git
 bootstrap; finish baseline here, reassess handoff before runtime/reproducibility
 phase. Next scheduled review 20, earlier phase-boundary reassessment allowed.

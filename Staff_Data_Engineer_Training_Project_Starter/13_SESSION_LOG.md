@@ -156,3 +156,7 @@ Append one record per training session.
 ### Documentation branch review, checkpoint 17 — 2026-10-16
 - Verified docs/command-format with six modified docs files. Root/linked command-format instruction changes match owner request; git diff --check passed. No executable change, no dbt retest needed.
 - Assigned explicit staging, staged check/diff review, focused docs commit and status evidence. No agent Git mutations. Next: verified commit then local integration/cleanup; reassess handoff before runtime phase.
+
+### Docs commit verified, checkpoint 18 — 2026-10-16
+- Verified dfd276c on docs/command-format, main at 8590240, clean worktree before this record. Branch diff check passed.
+- Assigned review-record commit, switch main, no-ff local merge, safe merged-branch deletion and status/graph evidence. Operations pending, no agent Git mutation. This is tutor-reviewed local practice, not hosted PR/CI.
