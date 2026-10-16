@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: commerce
+    description: "Order data loaded by our Python ingestion script."
+    database: dev
+    schema: raw
+    tables:
+      - name: orders
+        identifier: orders
+        config:
+          loaded_at_field: loaded_at
+          freshness:
+            warn_after: {count: 5, period: minute}
+            error_after: {count: 10, period: minute}

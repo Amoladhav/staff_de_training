@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: first_orders
+    description: "Practice order data: one row per order."
+    columns:
+      - name: order_id
+        description: "Unique identifier for an order."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: status
+        description: "Current processing status of the order."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['completed', 'pending']

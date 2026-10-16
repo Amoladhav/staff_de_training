@@ -1,0 +1,28 @@
+# Local Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local credentials/configuration; commit sanitized examples separately
+.env
+.env.*
+!.env.example
+profiles.yml
+.aws/
+
+# Generated dbt outputs and local databases
+target/
+logs/
+dbt_packages/
+dbt_internal_packages/
+*.duckdb
+*.duckdb.wal
+
+# Windows download metadata
+*:Zone.Identifier
+
+# Local editor configuration and dbt user identity
+.vscode/
+.user.yml

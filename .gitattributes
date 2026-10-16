@@ -1,0 +1,2 @@
+# Keep text files consistent in the canonical WSL workspace.
+* text=auto eol=lf
