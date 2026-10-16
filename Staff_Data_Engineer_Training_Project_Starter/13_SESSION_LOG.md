@@ -160,3 +160,34 @@ Append one record per training session.
 ### Docs commit verified, checkpoint 18 — 2026-10-16
 - Verified dfd276c on docs/command-format, main at 8590240, clean worktree before this record. Branch diff check passed.
 - Assigned review-record commit, switch main, no-ff local merge, safe merged-branch deletion and status/graph evidence. Operations pending, no agent Git mutation. This is tutor-reviewed local practice, not hosted PR/CI.
+
+### Merge verified and push requested, checkpoints 19–20 — 2026-10-16
+- Checkpoint 19 merge attempt failed on protected Git metadata; escalation declined. No agent merge completed.
+- Checkpoint 20: independently verified main 4150ae0, docs branch absent, clean tree before notes. Owner requests push; no remotes exist, destination URL required. No push attempted. Notes now uncommitted, excluded from existing revision.
+- Scheduled qualitative review: resolve publication checkpoint then reassess handoff before runtime phase; next review 25.
+
+### GitHub destination clarification, checkpoint 21 — 2026-10-16
+- Owner specified GitHub account AmolAdhav, not repository name/visibility. No remotes; gh available, authentication unverified. Proposed private staff_de_training or existing repository URL.
+- No repository creation or push attempted. Four checkpoint documentation changes remain uncommitted.
+
+### Private repository creation blocked, checkpoint 22 — 2026-10-16
+- Owner accepted new private AmolAdhav/staff_de_training. gh auth verified with network permission; initial sandbox result was misleading.
+- gh repo create with --private --source=. --remote=origin --push execution permission declined before execution. No repo creation/push confirmed; no alternate execution attempt. Supplied learner command. Local checkpoint docs remain uncommitted.
+
+### Publication checkpoint and handoff, checkpoint 23 — 2026-10-16
+- Owner reported pushed and supplied GitHub metadata: Amoladhav/staff_de_training, private=true, default main. Inspected origin and equal main/cached origin/main SHA 4150ae0. Agent live query permission declined, live remote SHA not fetched.
+- Four checkpoint docs remain uncommitted; next learner docs/publish-checkpoint branch, review/commit/integrate/push, then separate runtime branch. No agent Git mutation.
+- Early qualitative handoff recommended at completed publication boundary before substantial runtime phase. Saved exact state/next step. This is optional; next scheduled review 25 if continuing.
+
+### Git/runtime thread checkpoint 1: resume — 2026-10-16
+- Owner confirmed new thread; reset counter to zero, then incremented to one for this assignment. Previous review summary preserved; next scheduled review 5.
+- Verified main/cached origin/main at 4150ae0 and four modified checkpoint documents. No docs/publish-checkpoint branch yet; no agent Git mutation or live remote query.
+- Assigned learner branch creation and diff review. Documentation commit/integration precedes runtime reproducibility on a separate branch; existing dbt acceptance gaps retained.
+
+### Git/runtime thread checkpoint 2: documentation branch verified — 2026-10-16
+- Learner status and local inspection confirm docs/publish-checkpoint and four modified checkpoint documents. Diff reviewed; whitespace check passed.
+- Checkpoint updated before explicit staging, cached diff/check and commit assignment. No agent staging or commit; integration and separate runtime branch remain pending. Next continuity review 5.
+
+### Git/runtime thread checkpoint 3: documentation commit verified — 2026-10-16
+- Verified c0ed731 on docs/publish-checkpoint, clean worktree before record; main/cached origin/main at 4150ae0. Four-file branch diff whitespace check passed.
+- Assigned review-record commit, learner branch push and hosted PR against main. No agent Git mutation; PR/CI/integration not claimed complete. Review PR before integration; runtime remains a subsequent separate branch.
