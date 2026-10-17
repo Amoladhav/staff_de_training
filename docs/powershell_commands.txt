@@ -1,0 +1,413 @@
+# STAFF DE TRAINING - NATIVE WINDOWS POWERSHELL COMMAND CHEAT SHEET
+# Updated: 2026-10-16
+# Reference, not a script: copy one selected step at a time. Stop on unexpected errors.
+# All executable commands run on Windows. Native Windows acceptance is PENDING.
+# The canonical repository remains in WSL storage; its UNC path is only file access.
+# No repository clone/move is required. Ubuntu must be available for UNC access.
+# Verify the distribution/path below on your machine; change TrainingRoot if needed.
+# Windows Python, Git and gh must already be installed; inspect before installing anything.
+# Never reuse the Linux .venv. Windows environment/data live under LOCALAPPDATA.
+# Run Git operations from one OS at a time: both shells share this worktree and .git.
+# Linux success does not prove Windows wheel availability, UNC support, or pipeline acceptance.
+# Section IDs P01-P10 match Bash topics B01-B10. Step numbers can differ by platform.
+# Status: docs/DATAFLOW_TRACKER.md. Resume: docs/HANDOFF.md.
+# PowerShell cmdlets return objects; external tools generally print text.
+# External tool failure: inspect $LASTEXITCODE immediately; nonzero means stop unless documented.
+# Use Get-Help <cmdlet> -Examples; external tools use their own --help. See P10.
+
+# P00 - Session variables and initial Windows runtime (prerequisite for other sections)
+# P00 - Step 01: Select existing repository. Bash: cd /home/amola/projects/staff_de_training.
+$TrainingRoot = '\\wsl.localhost\Ubuntu\home\amola\projects\staff_de_training'
+
+# P00 - Step 02: Verify UNC access; expect True. Stop on False; do not create a duplicate checkout.
+# Bash: test -d PATH. Help: Get-Help Test-Path -Examples.
+Test-Path -LiteralPath $TrainingRoot -PathType Container
+
+# P00 - Step 03: Select Windows-only runtime/data directory. Bash counterpart: platform-specific path variable.
+$WindowsState = Join-Path $env:LOCALAPPDATA 'staff_de_training'
+
+# P00 - Step 04: Select Windows-only environment. Bash counterpart: .venv path, never shared across OSes.
+$WindowsVenv = Join-Path $WindowsState 'venv'
+
+# P00 - Step 05: Locate installed native tools before setup. Bash: type -a python git gh.
+Get-Command python.exe, git.exe, gh.exe -All
+
+# P00 - Step 06: Inspect Windows Python. Compare to Linux 3.14.4; different versions are separate evidence.
+# Bash: python -c SAME_CODE. If executable is an app-store alias or version is unsuitable, stop and review.
+python.exe -c "import sys; print(sys.executable); print(sys.version)"
+
+# P00 - Step 07: Check for an existing Windows environment; do not recreate it blindly.
+Test-Path -LiteralPath $WindowsVenv -PathType Container
+
+# P00 - Step 08: ONLY IF ABSENT: create native environment. Bash: python -m venv PATH.
+python.exe -m venv $WindowsVenv
+
+# P00 - Step 09: INITIAL SETUP ONLY: install direct pins; stop if Windows packages are unavailable.
+# Linux requirements_snapshot.txt is not asserted to work on Windows. Downloads may occur.
+# Bash: python -m pip install -r requirements.txt. & invokes an executable at a quoted path.
+& "$WindowsVenv\Scripts\python.exe" -m pip install -r "$TrainingRoot\requirements.txt"
+
+# P00 - Step 10: Confirm native dependency consistency; expected: No broken requirements found.
+& "$WindowsVenv\Scripts\python.exe" -m pip check
+
+# INDEX
+# P01 - Resume and inspect
+# P02 - Diagnose runtime selection
+# P03 - Generate separate Windows package snapshot
+# P04 - Reproduce native packages in a fresh Windows environment
+# P05 - Validate native connection (after P06)
+# P06 - Portable profile template and isolated Windows database
+# P07 - Manual pipeline: native Windows validation gate
+# P08 - Git feature lifecycle
+# P09 - Native Git credential diagnosis
+# P10 - Help and discovery
+# P11 - Current runtime branch review and commit
+
+# ============================================================================
+# P01 - Resume and inspect
+# Prerequisite: P00 variables; existing native environment. Bash topic: B01.
+# ============================================================================
+
+# P01 - Step 01: Enter canonical files using native PowerShell. Bash: cd. Help: Get-Help Set-Location -Examples.
+Set-Location -LiteralPath $TrainingRoot
+
+# P01 - Step 02: Activate Windows venv. Bash: source .venv/bin/activate. If policy blocks this, use explicit paths
+# from P02; do not change machine policy merely to activate.
+& "$WindowsVenv\Scripts\Activate.ps1"
+
+# P01 - Step 03: Inspect branch/worktree. Same Git arguments in Bash; help: git.exe status --help.
+git.exe status --short --branch
+
+# P01 - Step 04: Verify runtime after activation; expected Core 1.12.0 / adapter 1.11.0. Bash: dbt --version.
+dbt.exe --version
+
+# ============================================================================
+# P02 - Diagnose runtime selection
+# Prerequisite: P00 variables. Explicit paths do not require activation. Bash topic: B02.
+# ============================================================================
+
+# P02 - Step 01: Find all native candidates. Bash: type -a dbt python. Help: Get-Help Get-Command -Examples.
+Get-Command dbt, python -All
+
+# P02 - Step 02: Show selected Python interpreter. Bash: python -c SAME_CODE.
+& "$WindowsVenv\Scripts\python.exe" -c "import sys; print(sys.executable)"
+
+# P02 - Step 03: Inspect PATH entries. Bash: print PATH components. No Bash hash cache to clear in PowerShell.
+$env:Path -split ";"
+
+# P02 - Step 04: Compare explicit executable; expected Core 1.12.0 / adapter 1.11.0.
+& "$WindowsVenv\Scripts\dbt.exe" --version
+
+# P02 - Step 05: Inspect native packages. Bash: python -m pip show dbt-core dbt-duckdb duckdb.
+& "$WindowsVenv\Scripts\python.exe" -m pip show dbt-core dbt-duckdb duckdb
+
+# P02 - Step 06: Validate native package consistency; does not read requirements.txt.
+& "$WindowsVenv\Scripts\python.exe" -m pip check
+
+# ============================================================================
+# P03 - Generate separate Windows package snapshot
+# Prerequisite: P00 installation passed. Bash topic: B03. Windows snapshot remains local pending review.
+# Do not overwrite the Linux snapshot; Windows dependency resolution can differ.
+# ============================================================================
+
+# P03 - Step 01: Enter repository. Bash: cd.
+Set-Location -LiteralPath $TrainingRoot
+
+# P03 - Step 02: Review direct pins. Bash: cat requirements.txt. Help: Get-Help Get-Content -Examples.
+Get-Content -LiteralPath requirements.txt
+
+# P03 - Step 03: Capture installed native versions, including pip. Replaces only Windows snapshot.
+# Bash: pip freeze --all > file. ASCII avoids Windows PowerShell UTF-16 redirection defaults.
+& "$WindowsVenv\Scripts\python.exe" -m pip freeze --all | Set-Content -Encoding ascii -LiteralPath "$WindowsState\requirements_windows_snapshot.txt"
+
+# P03 - Step 04: Review snapshot; this is installed-state capture, not a solver lockfile.
+Get-Content -LiteralPath "$WindowsState\requirements_windows_snapshot.txt"
+
+# ============================================================================
+# P04 - Reproduce native packages in a fresh Windows environment
+# Prerequisite: P03 snapshot exists and is reviewed. Bash topic: B04. Native reproduction unverified.
+# Reuse an existing target only for inspection; fresh proof requires a new unused path.
+# ============================================================================
+
+# P04 - Step 01: Select Windows temporary environment. Bash: select /tmp path.
+$WindowsRepro = Join-Path $env:TEMP "staff_de_training_repro"
+
+# P04 - Step 02: Check existence. False = absent; True = choose a new target for clean proof. Bash: test -d.
+Test-Path -LiteralPath $WindowsRepro -PathType Container
+
+# P04 - Step 03: ONLY IF ABSENT: create using the same native Python base.
+& "$WindowsVenv\Scripts\python.exe" -m venv $WindowsRepro
+
+# P04 - Step 04: Install Windows snapshot; stop on failure. Bash: python -m pip install -r file.
+& "$WindowsRepro\Scripts\python.exe" -m pip install -r "$WindowsState\requirements_windows_snapshot.txt"
+
+# P04 - Step 05: Expect no broken requirements.
+& "$WindowsRepro\Scripts\python.exe" -m pip check
+
+# P04 - Step 06: Expect Core 1.12.0 / adapter 1.11.0.
+& "$WindowsRepro\Scripts\dbt.exe" --version
+
+# P04 - Step 07: Capture recreated native versions.
+& "$WindowsRepro\Scripts\python.exe" -m pip freeze --all | Set-Content -Encoding ascii -LiteralPath "$WindowsState\requirements_windows_repro.txt"
+
+# P04 - Step 08: Compare; no output means matching lines. Compare-Object does not use diff exit codes.
+# Bash: diff -u files. Help: Get-Help Compare-Object -Examples.
+Compare-Object (Get-Content "$WindowsState\requirements_windows_snapshot.txt") (Get-Content "$WindowsState\requirements_windows_repro.txt")
+
+# ============================================================================
+# P05 - Validate native connection
+# Prerequisite: P06 completed in this session, including DBT_DUCKDB_PATH and profile directory.
+# Bash topic: B05, but do not use the ignored Linux profiles.yml: its path is Linux-specific.
+# Debug tests configuration/connection only, not source data or models. Native acceptance pending.
+# ============================================================================
+
+# P05 - Step 01: Enter canonical project files. Bash: cd.
+Set-Location -LiteralPath $TrainingRoot
+
+# P05 - Step 02: Validate native profile with Windows runtime and isolated database.
+# Bash: dbt debug --project-dir ... --profiles-dir ...; help: dbt.exe debug --help.
+& "$WindowsVenv\Scripts\dbt.exe" debug --project-dir "$TrainingRoot\training_analytics" --profiles-dir "$WindowsState\profiles" --log-path "$WindowsState\logs"
+
+# ============================================================================
+# P06 - Portable profile template and isolated Windows database
+# Prerequisite: P00. Bash topic: B06; extra Windows path steps change step numbering.
+# Learner authors training_analytics/profiles.example.yml with this YAML (remove # prefixes):
+# training_analytics:
+#   target: dev
+#   outputs:
+#     dev:
+#       type: duckdb
+#       path: "{{ env_var('DBT_DUCKDB_PATH') }}"
+#       schema: main
+#       threads: 1
+# Template saved and inspected; native Windows validation pending. dbt loads profiles.yml, not profiles.example.yml.
+# Keep the local Linux profiles.yml unchanged. Windows profile/database are local to Windows.
+# ============================================================================
+
+# P06 - Step 01: Enter repository. Bash: cd.
+Set-Location -LiteralPath $TrainingRoot
+
+# P06 - Step 02: Check authored template; expect True, otherwise stop and author it. Bash: test -f.
+Test-Path -LiteralPath "training_analytics\profiles.example.yml" -PathType Leaf
+
+# P06 - Step 03: Create Windows-only profile directory. Bash: mkdir -p. Help: Get-Help New-Item -Examples.
+New-Item -ItemType Directory -Force -Path "$WindowsState\profiles"
+
+# P06 - Step 04: Copy template to Windows profiles.yml, replacing that copy. Bash: cp. Help: Get-Help Copy-Item -Examples.
+Copy-Item -LiteralPath "training_analytics\profiles.example.yml" -Destination "$WindowsState\profiles\profiles.yml"
+
+# P06 - Step 05: Set path for this PowerShell session and child processes. Bash: export DBT_DUCKDB_PATH=...
+# Windows-local DB is separate from Linux dev.duckdb; connection may create an empty DB.
+$env:DBT_DUCKDB_PATH = Join-Path $WindowsState "dev.duckdb"
+
+# P06 - Step 06: Validate Windows profile. Expect All checks passed; does not establish pipeline acceptance.
+& "$WindowsVenv\Scripts\dbt.exe" debug --project-dir "$TrainingRoot\training_analytics" --profiles-dir "$WindowsState\profiles" --log-path "$WindowsState\logs"
+
+# ============================================================================
+# P07 - Manual pipeline: native Windows validation gate
+# Bash topic: B07. STOP: native full-pipeline execution is not yet accepted.
+# load_orders.py currently derives dev.duckdb beside the script, ignoring DBT_DUCKDB_PATH.
+# Running it on UNC files would target the shared Linux database, not the isolated Windows DB.
+# First adapt/review loader path configuration in a separate lesson and prove both stages target
+# WindowsState\dev.duckdb. Do not run the loader against shared storage as a workaround.
+# Steps 04-06 become executable only after native loader input/output and runtime acceptance.
+# Freshness is recency, not completeness; build writes/rebuilds models. Stop on each failure.
+# ============================================================================
+
+# P07 - Step 01: Inspect loader path handling. Bash: cat training_analytics/load_orders.py.
+Get-Content -LiteralPath "$TrainingRoot\training_analytics\load_orders.py"
+
+# P07 - Step 02: Inspect intended native DB target. Bash: print DBT_DUCKDB_PATH.
+$env:DBT_DUCKDB_PATH
+
+# P07 - Step 03: GATED: loader execution requires configurable database path; no runnable recipe yet.
+# Pending loader adaptation and native acceptance; do not run existing loader.
+
+# P07 - Step 04: AFTER GATE: freshness in Windows DB. Bash counterpart: B07 step 04.
+# & "$WindowsVenv\Scripts\dbt.exe" source freshness --project-dir "$TrainingRoot\training_analytics" --profiles-dir "$WindowsState\profiles" --target-path "$WindowsState\target" --log-path "$WindowsState\logs"
+
+# P07 - Step 05: AFTER GATE: build descendants/tests in Windows DB. Bash counterpart: B07 step 05.
+# & "$WindowsVenv\Scripts\dbt.exe" build --select "source:commerce.orders+" --project-dir "$TrainingRoot\training_analytics" --profiles-dir "$WindowsState\profiles" --target-path "$WindowsState\target" --log-path "$WindowsState\logs"
+
+# P07 - Step 06: AFTER GATE: preview consumer model. Bash counterpart: B07 step 06.
+# & "$WindowsVenv\Scripts\dbt.exe" show --select completed_orders --limit 10 --project-dir "$TrainingRoot\training_analytics" --profiles-dir "$WindowsState\profiles" --target-path "$WindowsState\target" --log-path "$WindowsState\logs"
+
+# ============================================================================
+# P08 - Git feature lifecycle
+# Prerequisite: P00 path variables, native Git/gh and P09 credential review.
+# Do not run concurrent Git writes from Linux and Windows; same worktree.
+# Current branch: fix/runtime-reproducibility. Do NOT create it again.
+# Steps 02-04 are for a FUTURE feature starting from a clean worktree; current work starts at step 05.
+# Replace commented placeholders before use. Push/PR/merge remain learner-run.
+# This sequence does not establish hosted CI or independent peer approval.
+# ============================================================================
+
+# P08 - Step 01: Enter root and inspect first.
+# Bash counterpart: B08 - Step 01. Native tool help: P10.
+Set-Location -LiteralPath $TrainingRoot
+
+# P08 - Step 02: FUTURE FEATURE ONLY: verify clean status before switching main.
+# Bash counterpart: B08 - Step 02. Native tool help: P10.
+git.exe status --short --branch
+
+# P08 - Step 03: FUTURE FEATURE ONLY: switch to main after prior work is integrated.
+# Bash counterpart: B08 - Step 03. Native tool help: P10.
+git.exe switch main
+
+# P08 - Step 04: FUTURE FEATURE ONLY: update main; then create a uniquely named branch.
+# Bash counterpart: B08 - Step 04. Native tool help: P10.
+git.exe pull --ff-only
+# git.exe switch -c feature/replace_with_task_name
+
+# P08 - Step 05: Review current feature changes before staging.
+# Bash counterpart: B08 - Step 05. Native tool help: P10.
+git.exe diff
+
+# P08 - Step 06: Check whitespace; also run feature-specific acceptance checks.
+# Bash counterpart: B08 - Step 06. Native tool help: P10.
+git.exe diff --check
+
+# P08 - Step 07: Stage reviewed files explicitly; replace paths in the commented example.
+# Bash counterpart: B08 - Step 07. Native tool help: P10.
+# git.exe add path/to/reviewed_file
+
+# P08 - Step 08: Review exact staged patch.
+# Bash counterpart: B08 - Step 08. Native tool help: P10.
+git.exe diff --cached
+
+# P08 - Step 09: Check staged whitespace.
+# Bash counterpart: B08 - Step 09. Native tool help: P10.
+git.exe diff --cached --check
+
+# P08 - Step 10: Commit reviewed changes; replace description.
+# Bash counterpart: B08 - Step 10. Native tool help: P10.
+# git.exe commit -m "Describe the completed change"
+
+# P08 - Step 11: Publish CURRENT feature branch and set upstream; never use on main.
+# Bash counterpart: B08 - Step 11. Native tool help: P10.
+git.exe push -u origin HEAD
+
+# P08 - Step 12: Open hosted PR interactively; explain behavior, validation and remaining limits.
+# Bash counterpart: B08 - Step 12. Native tool help: P10.
+gh.exe pr create --base main
+
+# P08 - Step 13: Review PR and any checks before merge. No checks does not mean CI passed.
+# Bash counterpart: B08 - Step 13. Native tool help: P10.
+gh.exe pr view
+
+# P08 - Step 14: Inspect hosted checks; address failures before integration.
+# Bash counterpart: B08 - Step 14. Native tool help: P10.
+gh.exe pr checks
+
+# P08 - Step 15: After review: merge using GitHub UI, then return here. Verify clean worktree.
+# Bash counterpart: B08 - Step 15. Native tool help: P10.
+git.exe status --short --branch
+
+# P08 - Step 16: After merge and clean status: switch main.
+# Bash counterpart: B08 - Step 16. Native tool help: P10.
+git.exe switch main
+
+# P08 - Step 17: Fetch/integrate merged revision.
+# Bash counterpart: B08 - Step 17. Native tool help: P10.
+git.exe pull --ff-only
+
+# P08 - Step 18: Inspect integrated history.
+# Bash counterpart: B08 - Step 18. Native tool help: P10.
+git.exe log -5 --oneline
+
+# P08 - Step 19: Delete local branch only after integration verification; edit example. Squash merges may make -d refuse; stop and review rather than force.
+# Bash counterpart: B08 - Step 19. Native tool help: P10.
+# git.exe branch -d feature/replace_with_task_name
+
+
+# ============================================================================
+# P09 - Native Git credential diagnosis
+# Bash topic: B09; repair differs by platform. Never copy the Linux helper repair to Windows.
+# Shared .git/config may contain !/usr/bin/gh auth git-credential, which Windows cannot execute.
+# Inspect first. Do not delete shared settings or disable safety checks to bypass a failure.
+# Native gh authentication is separate from Linux gh. Never display/copy tokens or credential stores.
+# If Git rejects UNC ownership, stop and review the exact error before scoped configuration changes.
+# ============================================================================
+
+# P09 - Step 01: Enter shared repository. Bash: cd.
+Set-Location -LiteralPath $TrainingRoot
+
+# P09 - Step 02: Inspect generic helper names/config origins. Bash counterpart: same Git arguments.
+git.exe config --show-origin --show-scope --get-all credential.helper
+
+# P09 - Step 03: Inspect GitHub-specific helpers including shared repo overrides. No entries = exit 1.
+git.exe config --show-origin --show-scope --get-all credential.https://github.com.helper
+
+# P09 - Step 04: Check native gh login status without exposing tokens. Bash counterpart: gh auth status.
+gh.exe auth status --hostname github.com
+
+# P09 - Step 05: OPTIONAL repair only after reviewing helper precedence: configure native gh helper.
+# This writes Windows user-level Git configuration for GitHub; shared repo overrides can still win.
+# If a Linux-only local override is present, stop for a scoped cross-platform repair first.
+# gh.exe auth setup-git --hostname github.com
+
+# P09 - Step 06: Verify read-only remote access after helper review; no branch integration. Bash: git ls-remote.
+git.exe ls-remote --heads origin main
+
+# ============================================================================
+# P10 - Help and discovery
+# Bash topic: B10. Get-Help covers cmdlets; external tools provide their own help.
+# ============================================================================
+
+# P10 - Step 01: Discover cmdlet parameters/examples. Bash counterpart: shell help/man.
+Get-Help Get-Command -Examples
+
+# P10 - Step 02: Discover file/path cmdlets; repeat with Test-Path, Join-Path, Get-Content, Set-Content,
+# New-Item, Copy-Item and Compare-Object as needed. Bash counterpart: help cd.
+Get-Help Set-Location -Examples
+
+# P10 - Step 03: Git executable help. Bash: git --help.
+git.exe --help
+
+# P10 - Step 04: dbt executable help using native environment. Bash: dbt --help.
+& "$WindowsVenv\Scripts\dbt.exe" --help
+
+# P10 - Step 05: pip help for native interpreter. Bash: python -m pip --help.
+& "$WindowsVenv\Scripts\python.exe" -m pip --help
+
+# P10 - Step 06: GitHub CLI help. Bash: gh --help.
+gh.exe --help
+
+# OFFICIAL REFERENCES (reviewed for this recipe; Windows commands not executed here)
+# https://docs.python.org/3/library/venv.html
+# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/set-location
+# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/get-help
+# https://pip.pypa.io/en/stable/cli/pip_freeze/
+# https://cli.github.com/manual/gh_auth_setup-git
+# https://git-scm.com/docs/gitcredentials
+
+# ============================================================================
+# P11 - Current runtime branch review and commit
+# Branch: fix/runtime-reproducibility. Run after the recorded Core build passes.
+# Package match, template debug, 3 models/5 tests verified in WSL; native Windows
+# runtime and hosted CI remain pending. Review all staged changes before commit.
+# Prerequisite: P00 variables/native Git acceptance; Bash counterpart B11.
+
+# P11 - Step 01: Enter repository root.
+Set-Location -LiteralPath $TrainingRoot
+
+# P11 - Step 02: Confirm expected branch; stop if not fix/runtime-reproducibility.
+git.exe status --short --branch
+
+# P11 - Step 03: Stage the explicit runtime/documentation scope.
+git.exe add requirements.txt requirements_snapshot.txt training_analytics/profiles.example.yml training_analytics/README.md docs/bash_commands.txt docs/powershell_commands.txt docs/DATAFLOW_TRACKER.md docs/HANDOFF.md Staff_Data_Engineer_Training_Project_Starter/AGENTS.md Staff_Data_Engineer_Training_Project_Starter/04_PROGRESS_DASHBOARD.md Staff_Data_Engineer_Training_Project_Starter/13_SESSION_LOG.md Staff_Data_Engineer_Training_Project_Starter/14_DECISIONS_LOG.md
+
+# P11 - Step 04: Review exact staged patch, including new files.
+git.exe diff --cached
+
+# P11 - Step 05: Check staged whitespace; no output means pass.
+git.exe diff --cached --check
+
+# P11 - Step 06: After review/check pass, commit the runtime checkpoint.
+git.exe commit -m "build: document and verify reproducible dbt runtime"
+
+# P11 - Step 07: Inspect worktree after commit.
+git.exe status --short --branch
+
+# P11 - Step 08: Show commit for tutor verification; hosted PR/integration follows.
+git.exe log -1 --oneline

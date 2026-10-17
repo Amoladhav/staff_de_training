@@ -65,3 +65,21 @@ handoff and tracker, then provide a concise summary and copyable resume prompt.
 Do not invent remaining-context percentages or require the learner to remind you.
 
 Apply the root five-checkpoint review cadence: persist the counter in the tracker, report a review every five checkpoints, and save a resume summary before recommending a new thread. Earlier warnings remain allowed.
+
+## Maintained command references
+
+Owner request, 2026-10-16: maintain `../docs/bash_commands.txt` and
+`../docs/powershell_commands.txt` as plain-text developer cheat sheets. Use `#`
+comments, stable numbered section headers and sequential step IDs. Keep matching
+section counterparts across shells; platform-specific step numbering may differ. Update relevant recipes when teaching
+new commands or changing the accepted workflow, and point learners to exact
+sections/steps instead of repeatedly expanding the same instructions.
+Keep one command per step where practical, label prerequisites, conditional or
+one-time actions and database writes, and distinguish verified from pending.
+Owner clarification, 2026-10-16: PowerShell recipes must use native Windows
+commands only, with Windows Python/Git/gh and a separate Windows venv; no WSL
+command wrappers. Existing workspace may be accessed through a configurable UNC
+path without duplicating the repository. Native Windows runtime acceptance is
+separate and remains pending until demonstrated. Include purpose, Bash counterpart and tool-help
+references. The text files are references to copy from, not scripts to execute
+wholesale. Chat commands still use one fenced block per command.

@@ -1,0 +1,347 @@
+# STAFF DE TRAINING - BASH COMMAND CHEAT SHEET
+# Updated: 2026-10-16
+# Canonical workspace: /home/amola/projects/staff_de_training
+# Reference, not a script: run one selected command at a time; do not execute/source the entire file.
+# Section IDs are stable. Step IDs are section-local. Follow prerequisites and stop on unexpected failure.
+# Documentation and future commands are not evidence of execution.
+# Python 3.14.4; dbt-core 1.12.0; dbt-duckdb 1.11.0; duckdb 1.5.6.
+# Matching section IDs identify the platform counterpart; step numbers may differ.
+# Status source: docs/DATAFLOW_TRACKER.md; resume source: docs/HANDOFF.md.
+
+# WSL BASH: commands run in Ubuntu. Venv activation persists only in this shell.
+# Exit status: $? immediately after a command (0 usually means success).
+# A test/diff command can return 1 as its documented condition; see each step.
+
+# INDEX
+# B01 - Resume and inspect
+# B02 - Diagnose runtime selection
+# B03 - Review dependency declarations and generate snapshot
+# B04 - Reproduce packages in a clean temporary environment
+# B05 - Validate project connection using existing local profile
+# B06 - Portable profile template - next exercise
+# B07 - Manual local pipeline - explicit data writes
+# B08 - Git feature lifecycle
+# B09 - Git credential-helper diagnosis and bounded repair
+# B10 - Help and discovery
+# B11 - Current runtime branch review and commit
+
+# ============================================================================
+# B01 - Resume and inspect
+# Repeatable. Start here each session; no install or database write.
+# ============================================================================
+
+# B01 - Step 01: Enter canonical workspace.
+cd /home/amola/projects/staff_de_training
+
+# B01 - Step 02: Activate existing Linux venv. Native PowerShell uses its own Windows venv.
+source .venv/bin/activate
+
+# B01 - Step 03: Inspect branch and worktree before any branch switch.
+git status --short --branch
+
+# B01 - Step 04: Verify intended runtime: Core 1.12.0 / adapter 1.11.0.
+dbt --version
+
+# ============================================================================
+# B02 - Diagnose runtime selection
+# Use when bare dbt differs from the intended runtime. Do not upgrade to fix PATH.
+# ============================================================================
+
+# B02 - Step 01: Enter repository root.
+cd /home/amola/projects/staff_de_training
+
+# B02 - Step 02: Inspect current interactive Bash resolution. A new WSL process cannot inspect another terminal.
+type -a dbt
+
+# B02 - Step 03: Clear Bash cached executable locations; this does not edit PATH.
+hash -r
+
+# B02 - Step 04: Compare explicit project executable.
+./.venv/bin/dbt --version
+
+# B02 - Step 05: Inspect packages belonging to the project Python.
+./.venv/bin/python -m pip show dbt-core dbt-duckdb duckdb
+
+# B02 - Step 06: Check installed dependency consistency; does not read requirements.txt.
+./.venv/bin/python -m pip check
+
+# ============================================================================
+# B03 - Review dependency declarations and generate snapshot
+# Run snapshot generation only after an intentional, reviewed environment change. It replaces the snapshot.
+# ============================================================================
+
+# B03 - Step 01: Enter repository root.
+cd /home/amola/projects/staff_de_training
+
+# B03 - Step 02: Review handwritten direct dependency pins.
+cat requirements.txt
+
+# B03 - Step 03: Generate full installed-package snapshot including pip. This is not a solver lockfile.
+./.venv/bin/python -m pip freeze --all > requirements_snapshot.txt
+
+# B03 - Step 04: Review generated snapshot before installation or commit.
+cat requirements_snapshot.txt
+
+# ============================================================================
+# B04 - Reproduce packages in a clean temporary environment
+# Initial reproduction passed: 60/60 package versions match, Python 3.14.4. /tmp may be cleared on reboot.
+# Creation step is ONLY for a missing target. If it exists, reuse for checks; choose a new unused path for a fresh proof.
+# ============================================================================
+
+# B04 - Step 01: Enter repository root.
+cd /home/amola/projects/staff_de_training
+
+# B04 - Step 02: Check whether the temporary environment exists. Exit 0 = exists; 1 = absent.
+test -d /tmp/staff_de_training_repro
+
+# B04 - Step 03: ONLY IF ABSENT: create fresh venv with the same base Python.
+./.venv/bin/python -m venv /tmp/staff_de_training_repro
+
+# B04 - Step 04: Install snapshot into temporary environment; network/package downloads possible. Stop on failure.
+/tmp/staff_de_training_repro/bin/python -m pip install -r requirements_snapshot.txt
+
+# B04 - Step 05: Expect: No broken requirements found.
+/tmp/staff_de_training_repro/bin/python -m pip check
+
+# B04 - Step 06: Expect Core 1.12.0 / DuckDB adapter 1.11.0.
+/tmp/staff_de_training_repro/bin/dbt --version
+
+# B04 - Step 07: Export recreated package versions for comparison.
+/tmp/staff_de_training_repro/bin/python -m pip freeze --all > /tmp/staff_de_training_repro_snapshot.txt
+
+# B04 - Step 08: Compare snapshots: no output and exit 0 means equal; exit 1 means differences.
+diff -u requirements_snapshot.txt /tmp/staff_de_training_repro_snapshot.txt
+
+# ============================================================================
+# B05 - Validate project connection using existing local profile
+# Connection success learner-reported in recreated environment. No model build in this section.
+# profiles.yml is ignored; existing profile points to the workspace dev.duckdb.
+# ============================================================================
+
+# B05 - Step 01: Enter repository root.
+cd /home/amola/projects/staff_de_training
+
+# B05 - Step 02: Check project/profile validity and connection with recreated runtime.
+/tmp/staff_de_training_repro/bin/dbt debug --project-dir training_analytics --profiles-dir training_analytics
+
+# ============================================================================
+# B06 - Portable profile template - next exercise
+# Template saved; temporary-profile debug passed (log verified). Skip creation when file exists.
+# Author training_analytics/profiles.example.yml with this YAML (remove comment prefixes):
+# training_analytics:
+#   target: dev
+#   outputs:
+#     dev:
+#       type: duckdb
+#       path: "{{ env_var('DBT_DUCKDB_PATH') }}"
+#       schema: main
+#       threads: 1
+# dbt loads profiles.yml, not profiles.example.yml. Test using a separate temporary profile directory.
+# ============================================================================
+
+# B06 - Step 00: Create the portable template (new file only; review before replacing an existing file).
+# This heredoc is one Bash command. YAML between the markers is written literally.
+cat > /home/amola/projects/staff_de_training/training_analytics/profiles.example.yml <<'YAML'
+training_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "{{ env_var('DBT_DUCKDB_PATH') }}"
+      schema: main
+      threads: 1
+YAML
+
+# B06 - Step 01: Enter repository root.
+cd /home/amola/projects/staff_de_training
+
+# B06 - Step 02: Confirm the authored template exists; stop if this fails.
+test -f training_analytics/profiles.example.yml
+
+# B06 - Step 03: Create temporary profile directory.
+mkdir -p /tmp/staff_de_training_profiles
+
+# B06 - Step 04: Copy template as profiles.yml, replacing only the temporary copy.
+cp training_analytics/profiles.example.yml /tmp/staff_de_training_profiles/profiles.yml
+
+# B06 - Step 05: Supply path to existing local database for this one process; shell/global settings unchanged.
+DBT_DUCKDB_PATH=/home/amola/projects/staff_de_training/training_analytics/dev.duckdb /tmp/staff_de_training_repro/bin/dbt debug --project-dir training_analytics --profiles-dir /tmp/staff_de_training_profiles
+
+# B06 - Step 06: Build/test using the recreated runtime and validated template.
+# Run from repository root. Writes selected model relations in the existing local dev.duckdb.
+# Uses existing raw.orders; does not reload the fixture or run freshness. Expected 3 models / 5 tests.
+# Inspect results before proceeding; prior dbt 2.0.8 results do not prove this Core run.
+DBT_DUCKDB_PATH=/home/amola/projects/staff_de_training/training_analytics/dev.duckdb /tmp/staff_de_training_repro/bin/dbt build --project-dir training_analytics --profiles-dir /tmp/staff_de_training_profiles --select 'source:commerce.orders+'
+
+# ============================================================================
+# B07 - Manual local pipeline - explicit data writes
+# Run only when intentionally exercising the pipeline; not a daily startup routine.
+# Loader replaces raw.orders and refreshes loaded_at. Existing data in that table is replaced.
+# Freshness proves recency of loaded_at, not batch completeness. Check each result before continuing.
+# Intended Core build/failure-recovery acceptance remains pending; no automated orchestration implied.
+# ============================================================================
+
+# B07 - Step 01: Enter dbt project directory.
+cd /home/amola/projects/staff_de_training/training_analytics
+
+# B07 - Step 02: Activate project runtime.
+source ../.venv/bin/activate
+
+# B07 - Step 03: Load fictional fixture into local raw.orders (full replacement).
+python load_orders.py
+
+# B07 - Step 04: Check freshness before build. Stop on error; inspect warnings.
+dbt source freshness --profiles-dir .
+
+# B07 - Step 05: Build source descendants and associated tests. Writes/rebuilds models.
+dbt build --select "source:commerce.orders+" --profiles-dir .
+
+# B07 - Step 06: Preview consumer model after successful build.
+dbt show --select completed_orders --limit 10 --profiles-dir .
+
+# ============================================================================
+# B08 - Git feature lifecycle
+# Current branch: fix/runtime-reproducibility. Do NOT create it again.
+# Steps 02-04 are for a FUTURE feature starting from a clean worktree; current work starts at step 05.
+# Replace commented placeholders before use. Push/PR/merge remain learner-run.
+# This sequence does not establish hosted CI or independent peer approval.
+# ============================================================================
+
+# B08 - Step 01: Enter root and inspect first.
+cd /home/amola/projects/staff_de_training
+
+# B08 - Step 02: FUTURE FEATURE ONLY: verify clean status before switching main.
+git status --short --branch
+
+# B08 - Step 03: FUTURE FEATURE ONLY: switch to main after prior work is integrated.
+git switch main
+
+# B08 - Step 04: FUTURE FEATURE ONLY: update main; then create a uniquely named branch.
+git pull --ff-only
+# git switch -c feature/replace_with_task_name
+
+# B08 - Step 05: Review current feature changes before staging.
+git diff
+
+# B08 - Step 06: Check whitespace; also run feature-specific acceptance checks.
+git diff --check
+
+# B08 - Step 07: Stage reviewed files explicitly; replace paths in the commented example.
+# git add path/to/reviewed_file
+
+# B08 - Step 08: Review exact staged patch.
+git diff --cached
+
+# B08 - Step 09: Check staged whitespace.
+git diff --cached --check
+
+# B08 - Step 10: Commit reviewed changes; replace description.
+# git commit -m "Describe the completed change"
+
+# B08 - Step 11: Publish CURRENT feature branch and set upstream; never use on main.
+git push -u origin HEAD
+
+# B08 - Step 12: Open hosted PR interactively; explain behavior, validation and remaining limits.
+gh pr create --base main
+
+# B08 - Step 13: Review PR and any checks before merge. No checks does not mean CI passed.
+gh pr view
+
+# B08 - Step 14: Inspect hosted checks; address failures before integration.
+gh pr checks
+
+# B08 - Step 15: After review: merge using GitHub UI, then return here. Verify clean worktree.
+git status --short --branch
+
+# B08 - Step 16: After merge and clean status: switch main.
+git switch main
+
+# B08 - Step 17: Fetch/integrate merged revision.
+git pull --ff-only
+
+# B08 - Step 18: Inspect integrated history.
+git log -5 --oneline
+
+# B08 - Step 19: Delete local branch only after integration verification; edit example. Squash merges may make -d refuse; stop and review rather than force.
+# git branch -d feature/replace_with_task_name
+
+# ============================================================================
+# B09 - Git credential-helper diagnosis and bounded repair
+# Use only for the observed missing credential-manager error. Recovery not yet confirmed.
+# WSL Git inherited manager from included Windows .gitconfig. Do not edit Windows global settings.
+# Requires Linux gh already authenticated. Never paste tokens or credential-store contents.
+# ============================================================================
+
+# B09 - Step 01: Enter root.
+cd /home/amola/projects/staff_de_training
+
+# B09 - Step 02: Inspect configured helper names and source files; not stored credentials.
+git config --show-origin --show-scope --get-all credential.helper
+
+# B09 - Step 03: Reset inherited GitHub helper list for this repository only. Empty value is intentional.
+git config --local --replace-all credential.https://github.com.helper ''
+
+# B09 - Step 04: Add Linux gh helper. Run after reset; repeating reset+add is safe.
+git config --local --add credential.https://github.com.helper '!/usr/bin/gh auth git-credential'
+
+# B09 - Step 05: Check local helper entries; expect empty value followed by gh helper.
+git config --local --get-all credential.https://github.com.helper
+
+# B09 - Step 06: Verify remote operation while on main; stop if authentication still fails.
+git pull --ff-only
+
+# ============================================================================
+# B10 - Help and discovery
+# Use executable --help for Linux tools. PowerShell Get-Help applies to cmdlets.
+# ============================================================================
+
+# B10 - Step 01: Discover command syntax.
+git --help
+
+# B10 - Step 02: Inspect available dbt commands using project runtime.
+/home/amola/projects/staff_de_training/.venv/bin/dbt --help
+
+# B10 - Step 03: Inspect pip commands using project runtime.
+/home/amola/projects/staff_de_training/.venv/bin/python -m pip --help
+
+# B10 - Step 04: Inspect GitHub CLI commands.
+gh --help
+
+# OFFICIAL REFERENCES
+# https://docs.python.org/3/library/venv.html
+# https://pip.pypa.io/en/stable/cli/pip_freeze/
+# https://docs.getdbt.com/reference/commands/debug
+# https://git-scm.com/docs/gitcredentials
+# https://learn.microsoft.com/en-us/windows/wsl/basic-commands
+# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/get-help
+
+# ============================================================================
+# B11 - Current runtime branch review and commit
+# Branch: fix/runtime-reproducibility. Run after the recorded Core build passes.
+# Package match, template debug, 3 models/5 tests verified in WSL; native Windows
+# runtime and hosted CI remain pending. Review all staged changes before commit.
+# PowerShell counterpart: P11; native command execution separately verified.
+
+# B11 - Step 01: Enter repository root.
+cd /home/amola/projects/staff_de_training
+
+# B11 - Step 02: Confirm expected branch; stop if not fix/runtime-reproducibility.
+git status --short --branch
+
+# B11 - Step 03: Stage the explicit runtime/documentation scope.
+git add requirements.txt requirements_snapshot.txt training_analytics/profiles.example.yml training_analytics/README.md docs/bash_commands.txt docs/powershell_commands.txt docs/DATAFLOW_TRACKER.md docs/HANDOFF.md Staff_Data_Engineer_Training_Project_Starter/AGENTS.md Staff_Data_Engineer_Training_Project_Starter/04_PROGRESS_DASHBOARD.md Staff_Data_Engineer_Training_Project_Starter/13_SESSION_LOG.md Staff_Data_Engineer_Training_Project_Starter/14_DECISIONS_LOG.md
+
+# B11 - Step 04: Review exact staged patch, including new files.
+git diff --cached
+
+# B11 - Step 05: Check staged whitespace; no output means pass.
+git diff --cached --check
+
+# B11 - Step 06: After review/check pass, commit the runtime checkpoint.
+git commit -m "build: document and verify reproducible dbt runtime"
+
+# B11 - Step 07: Inspect worktree after commit.
+git status --short --branch
+
+# B11 - Step 08: Show commit for tutor verification; hosted PR/integration follows.
+git log -1 --oneline

@@ -78,11 +78,10 @@ Fixture file inspected: three orders, IDs 1–3. No automated completeness gate 
 Owner reaffirmed proactive thread-length monitoring and saved summaries/resume
 prompts; root AGENTS.md now spells out the checkpoint procedure.
 
-Exact next action: learner commits the checkpoint-3 review record on
-`docs/publish-checkpoint`, pushes the branch and opens a hosted PR against main.
-Review the PR before integration; then create a distinct runtime feature branch.
-Do not repeat repository init/creation or the original push. Each shell command
-must be separately copyable in its own fenced block.
+Exact next action: Follow Bash B11 steps 01-08 to stage the explicit runtime/docs scope, review the staged diff, check whitespace and commit. Core build verified: three models successful, five tests passed with zero failures using the temporary profile. README replaced with verified workflow and limitations; hosted PR/integration follows commit.
+run_results.json: Core 1.12.0, generated 2026-10-17T00:12:52.832704Z, selected
+source descendants, temporary profile, all 8 results successful/pass. No new
+agent dbt execution. Do not repeat package setup or template creation.
 
 Checkpoint 23 publication evidence:
 - Owner reported push, then supplied GitHub JSON confirming private=true,
@@ -94,8 +93,8 @@ Checkpoint 23 publication evidence:
   not queried. Do not relabel cached refs as independently verified remote state.
 - Four modified checkpoint docs are uncommitted and excluded from that revision.
 
-Pending acceptance: dbt runtime selection/reproducibility (successful artifact
-uses 2.0.8, prior intended Core 1.12.0), W05 completeness reasoning, W06/W07
+Pending acceptance: runtime branch commit/PR/integration, W05 completeness
+reasoning, W06/W07
 negative-case source test blocking and recovery, hosted PR/CI/branch protection.
 Publication is not production readiness. W08 remains In Progress.
 
@@ -139,24 +138,55 @@ OneDrive source snapshot location:
 ## Thread continuity state
 
 Owner confirmed a new Git/runtime thread on 2026-10-16. Initialized counter at
-zero; current checkpoint is 3, next scheduled review 5. Previous thread ended at
+zero; current checkpoint is 23, next scheduled review 25. Review at 20: continue through
+bounded runtime build/runbook acceptance; reassess before the next feature. Previous thread ended at
 23 with a scheduled review at 20 and early qualitative handoff recommendation at
 23. Fresh thread: continue; no capacity estimate or guaranteed compaction warning.
 
-Checkpoint 3 verification: docs/publish-checkpoint at c0ed731; main and cached
-origin/main at 4150ae0. Worktree clean before checkpoint-3 documentation updates.
-Four-file branch diff passes whitespace check. Commit this review record before
-pushing the branch and opening the PR. Commands assigned, no agent Git mutation
-or live remote query. Hosted CI and independent peer approval remain pending.
+Checkpoint 4 verification: cached origin/main contains PR #1 merge 191dd10;
+owner reports merged/deleted branch, and local docs branch is absent. Agent
+fast-forwarded clean local main to 191dd10 with approved escalation. Checkpoint
+docs now modified for the runtime branch. No live remote query or CI acceptance.
 
 ## Continuation prompt
 
-Resume training in /home/amola/projects/staff_de_training. Read AGENTS.md and linked
-instructions, docs/HANDOFF.md and docs/DATAFLOW_TRACKER.md. This is a new thread;
-initialize its counter and review every five checkpoints. Verify Git state, then
-continue the learner-led docs/publish-checkpoint branch for four uncommitted
-checkpoint files, followed by runtime reproducibility on a separate feature branch.
-Do not repeat setup or repo creation. Private GitHub repo is
-Amoladhav/staff_de_training; last inspected main/cached origin/main were 4150ae0.
-Provide each shell command in a separate block. Preserve pending dbt failure/
-recovery and required local/cloud/Airflow scope.
+Resume training in /home/amola/projects/staff_de_training. Read AGENTS.md and
+linked instructions, docs/HANDOFF.md and docs/DATAFLOW_TRACKER.md. Verify current
+Git state, then continue fix/runtime-reproducibility and existing-venv executable
+and version diagnostics. PR #1 merge 191dd10 was integrated locally; do not repeat
+publication. Preserve learner-led operations, separate command blocks, pending
+dbt failure/recovery and local/cloud/Airflow scope.
+
+Checkpoint 5: Linux /usr/bin/git inherits credential.helper=manager from
+/mnt/c/Users/amola/.gitconfig via /home/amola/.gitconfig include. Owner pull
+reported missing helper. Assigned repo-local GitHub helper reset and gh auth
+git-credential, then pull --ff-only. No agent config mutation or credential read;
+recovery pending. Main/cached origin/main remain 191dd10.
+
+Checkpoint 15 worktree: fix/runtime-reproducibility; checkpoint docs plus linked
+AGENTS.md and decision log modified; requirements.txt, requirements_snapshot.txt
+and two command references untracked. No agent stage/commit/push. Profile template
+not yet authored. Preserve these changes for feature review.
+
+Checkpoint 16: template still absent on inspection. Learner directed to command
+reference B06/P06: author template, then steps 01-05; debug result pending.
+
+Checkpoint 17: owner authorized parallel work; native Windows PowerShell reference
+rewrite delegated while continuing Bash profile exercise. Native Windows commands
+remain unverified. Template absent on inspection; B06 step 00 now supplies creation
+command. Future checkpoints maintain both references with platform distinctions.
+
+Native PowerShell reference rewrite completed and reviewed at checkpoint 17.
+Windows-only tools, separate environment/profile/database, canonical UNC file
+access; no native execution verified. Bash B06 steps 00-05 remain active exercise.
+
+Checkpoint 18: branch verified; profiles.example.yml still absent. B06 step 00
+creation remains exact next action; existing successful connection log does not
+prove the new template. Reissued creation command directly for learner execution.
+
+Checkpoint 21: owner supplied debug output, confirming recreated runtime and
+template connection. Selected build remains pending; B06 step 06 is next.
+
+Checkpoint 23: HEAD still 191dd10 on fix/runtime-reproducibility; index empty.
+Seven tracked changes and five untracked files await B11 steps 03-08. No feature
+commit yet; PR publication must follow commit.
