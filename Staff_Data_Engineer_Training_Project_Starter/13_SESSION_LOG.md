@@ -287,3 +287,14 @@ No rerun needed; staging/review/commit is next.
 
 ### Git/runtime thread checkpoint 26: staging still pending — 2026-10-16
 - HEAD/index/worktree unchanged: 6a464f2, no staged files, eight docs changes. Simplified CHANGED CODE staging for fully reviewed tracked scope; supplied direct commands. No Git mutation/publication by agent; next review 30.
+
+### Git/runtime thread checkpoint 27: documentation commit verified — 2026-10-16
+- Verified 99d7858; clean worktree before checkpoint updates, branch matches cached upstream. Assigned hosted PR metadata inspection; no live query or agent Git mutation. Updated notes need inclusion in final branch update; next review 30.
+
+### Git/runtime thread checkpoint 28: PR open — 2026-10-16
+- Owner supplies PR #2 OPEN. Local main-to-feature diff has 12 expected files, whitespace checks pass, no repository workflow files found. Assigned hosted diff/check review; hosted CI acceptance not inferred.
+- Four checkpoint notes remain uncommitted; include before final integration. No remote query or Git mutation by agent; next review 30.
+
+### Git/runtime thread checkpoint 29: hosted checks absent — 2026-10-16
+- Owner reports no checks for feature branch. Local acceptance remains valid; no hosted CI or independent approval claimed. Four docs pending, whitespace check passes.
+- Assigned final checkpoint commit/push, final PR diff review, squash merge/delete and local main synchronization. No agent Git mutation. Integration evidence next; next review 30.

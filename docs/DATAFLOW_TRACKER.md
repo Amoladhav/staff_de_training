@@ -21,7 +21,7 @@ its delivery workflow. No fixed session durations apply.
 ## Thread continuity review
 
 - Thread label: Git publication follow-through and runtime reproducibility — new thread confirmed 2026-10-16.
-- Initialized at **0**; counted checkpoints: **26** (unchanged Git state; direct tracked-file staging assigned).
+- Initialized at **0**; counted checkpoints: **29** (hosted checks absent; final update and integration assigned).
 - Last scheduled review: checkpoint **25**.
 - Next scheduled review: checkpoint **30**, then 35, 40, and so on.
 - Assessment: substantial runtime and documentation history; continue to the current documentation commit and publication checkpoint, then reassess before another feature. Qualitative assessment, not a capacity estimate.
@@ -40,9 +40,9 @@ since loading. This is consistent with the configured five-minute warning and
 ten-minute error thresholds; it does not invalidate the earlier reported PASS.
 Freshness status changes as data ages; task status records learning/delivery progress.
 
-Next: Commit remaining eight reviewed documentation files using B11 CHANGED CODE. Set PROJECT_ROOT to workspace, BR_NAME=fix/runtime-reproducibility and a documentation COMMIT_MSG. Commit 6a464f2 contains only README; command references/instructions/checkpoint records remain modified. Local feature HEAD matches cached origin feature ref; live remote/PR not queried. Publish follow-up commit afterward.
-Runtime package/template/build acceptance remains verified; native Windows,
-negative-case recovery and hosted CI remain pending. Documentation checks pass.
+Next: Finalize PR #2: commit the four checkpoint notes through B11 CHANGED CODE, push feature branch, review final PR diff, then squash-merge/delete branch if review is satisfactory. Switch main, pull --ff-only and inspect status/log. Hosted checks reported absent by owner; this is local/tutor-reviewed integration, not CI or independent peer approval. All operations assigned, not executed by agent.
+Core 1.12.0 package/template/build acceptance is verified locally. Native Windows,
+negative-case recovery, hosted CI and cloud/Airflow acceptance remain pending.
 Owner reports PR merged and branch deleted; cached origin/main contains PR #1
 merge 191dd10. Agent fast-forwarded local main to that fetched revision with
 permission. Local docs branch absent. No live remote query or CI verification.
@@ -322,3 +322,9 @@ Build acceptance complete for this selection; B11 steps 03-08 remain next.
 | 2026-10-16 | Git/runtime thread checkpoint 25: partial documentation commit | Verified 6a464f2 contains README only; eight tracked documentation files remain modified, index empty. Runtime commit 503461e retained; cached upstream matches local feature branch. Added interactive staging guidance, assigned B11 review/commit for remaining docs. Scheduled qualitative review: finish bounded Git checkpoint, reassess before new feature; next review 30. |
 
 | 2026-10-16 | Git/runtime thread checkpoint 26: staging still pending | Rechecked HEAD 6a464f2, empty index and same eight tracked docs changes. Simplified generic CHANGED CODE step 04 to git add -u for wholly reviewed tracked scope, with partial/untracked guidance. Supplied direct stage/review/check/commit commands; no agent Git mutation or publication. |
+
+| 2026-10-16 | Git/runtime thread checkpoint 27: docs commit verified | Inspected 99d7858, clean worktree before notes, local branch aligned with cached upstream. Assigned owner hosted PR metadata inspection to determine create/review/integration next. No live remote query or agent Git mutation. Checkpoint notes now require inclusion before final integration. |
+
+| 2026-10-16 | Git/runtime thread checkpoint 28: PR open | Owner supplied PR number 2, state OPEN. Local branch diff: 12 expected files, whitespace check passes; no repository workflow files found. Assigned hosted diff/check review. Four checkpoint notes uncommitted; no agent remote query or Git mutation. |
+
+| 2026-10-16 | Git/runtime thread checkpoint 29: no hosted checks | Owner reports gh pr checks: no checks reported on feature branch. Recorded absence, not CI pass. Four checkpoint docs remain modified; whitespace passes. Assigned final notes commit/push, final PR diff review, squash merge and local synchronization. No merge/push performed by agent. |
