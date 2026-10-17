@@ -287,3 +287,9 @@ No rerun needed; staging/review/commit is next.
 
 ### Git/runtime thread checkpoint 26: staging still pending — 2026-10-16
 - HEAD/index/worktree unchanged: 6a464f2, no staged files, eight docs changes. Simplified CHANGED CODE staging for fully reviewed tracked scope; supplied direct commands. No Git mutation/publication by agent; next review 30.
+
+### Checkpoints 27–29 reconciliation and checkpoint 30 — 2026-10-16
+- Merged files retained checkpoint 26; conversation confirms 27–29 PR metadata/checks/integration assignments. Current main/cached origin/main c31160a verifies PR #2 integration, clean before docs rewrite.
+- Owner requests experienced-developer Markdown runbooks. Replaced two .txt references with .md files; ordered branch/build/tests/portability/integration/commit/PR/merge/deploy, concise commands, native Windows and pending deployment distinctions. Updated README/instructions.
+- Bash syntax, one-command fences, local links and whitespace checked; no native Windows/runtime/cloud execution. Changes prepared on main for learner docs/developer-runbooks branch.
+- Review 30: optional saved handoff recommended after long phase; next review 35 if continuing.

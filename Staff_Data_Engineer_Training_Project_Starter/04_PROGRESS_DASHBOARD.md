@@ -29,10 +29,10 @@ Last updated: 2026-10-16
 - BLUE: Staff-level confident
 
 ## Current Work
-- New Git/runtime thread confirmed 2026-10-16: checkpoint 26; previous thread ended at 23; review: finish current Git checkpoint, reassess before new feature; next scheduled review 30. Git state rechecked; PR #1 merge 191dd10 integrated locally; runtime diagnostics next. Learner aggregate shows 3 rows / 3 distinct IDs, matching fixture count; raw preview matches fixture IDs, statuses and amounts; completeness reasoning remains pending.
+- Ongoing Git/runtime thread checkpoint 30; PR #2 integration verified at c31160a. Scheduled qualitative review recommends optional saved handoff before another implementation phase; next review 35 if continuing.
 - Active checkpoint: W08 repository foundation — In Progress, moved ahead of further pipeline changes; W05–W07 remaining acceptance preserved.
 - Current work-item statuses, diagrams, developer workflows and evidence: [Dataflow tracker](../docs/DATAFLOW_TRACKER.md). This supersedes older setup-next-step notes below.
-- Next action: Commit remaining eight reviewed documentation files using B11 CHANGED CODE. Set PROJECT_ROOT to workspace, BR_NAME=fix/runtime-reproducibility and a documentation COMMIT_MSG. Commit 6a464f2 contains only README; command references/instructions/checkpoint records remain modified. Local feature HEAD matches cached origin feature ref; live remote/PR not queried. Publish follow-up commit afterward.
+- Next action: Review the Markdown command-runbook migration, then create docs/developer-runbooks from current main before staging/committing. PR #2 integration is locally verified at c31160a; do not repeat runtime setup or merge. After docs integration, resume W06/W07 negative-case source test blocking and recovery on a separate feature branch.
 - Then: bounded failure/recovery, batch completeness contract and source-backed build/test acceptance.
 - Azure billing/budget readiness and PowerShell saved variable remain unverified.
 

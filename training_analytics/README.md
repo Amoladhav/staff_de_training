@@ -35,22 +35,21 @@ checking the resolved catalog and source mapping.
 
 ## Repeat the verified WSL workflow
 
-Use [Bash command reference](../docs/bash_commands.txt):
+Use [Bash command reference](../docs/bash_commands.md):
 
-1. **B00 VARIABLES**: set project, branch, runtime, profile and artifact paths once
-   per shell. Use the actual existing branch for ongoing work.
-2. **B01 RESUME / B02 DIAGNOSE**: inspect the checkout and selected runtime.
-3. **B03 SNAPSHOT**: review dependencies and capture only intentional environment changes.
-4. **B04 REPRODUCE**: install into an unused environment path and compare packages.
-   The verified `/tmp/staff_de_training_repro` already exists; reuse for checks,
-   or select a new unused path for a new clean-install proof.
-5. **B06 PROFILE**: copy the tracked template into the chosen profile directory.
-6. **B05 VALIDATE**: run connection checks, then selected model/test build against
-   the existing raw table. Generic recipes now explicitly route target/log output
-   to the configured artifact directories.
+1. **Section 1 — Configure this session**: select project/branch and the existing runtime.
+2. **Section 3 — dbt development loop**: debug, inspect selection, compile, build/test and preview.
+3. **Section 4 — Clean-environment check**: install the snapshot in a fresh Python
+   environment, compare versions, then run selected models/tests against existing data.
+4. **Section 5 — Integration check**: deliberately replace the fictional raw fixture,
+   check freshness, build/test and preview. This is a local write-path exercise.
 
-The temporary profile is `/tmp/staff_de_training_profiles/profiles.yml`. Explicit
-`--project-dir` and `--profiles-dir` remove reliance on ambient profile discovery.
+The runbooks describe reusable commands, not a claim that every optional command
+or platform has been validated. Follow the tracker for actual acceptance.
+
+The verified exercise used `/tmp/staff_de_training_profiles/profiles.yml`. The
+runbook uses a template copy under the venv and sets `DBT_ENGINE_PROFILES_DIR`
+explicitly for concise Core commands.
 The `.example.yml` file is not loaded automatically. An unset `DBT_DUCKDB_PATH`
 causes template configuration to fail; set it in the invoking process.
 
@@ -60,7 +59,7 @@ causes template configuration to fail; set it in the invoking process.
 fully replaces `raw.orders` and stamps `loaded_at`. `first_orders` and
 `base_commerce_orders` read that source; `completed_orders` reads `first_orders`.
 
-**B07** is the deliberate manual load/freshness/build/preview recipe. The loader
+**Bash section 5** is the deliberate manual load/freshness/build/preview recipe. The loader
 is a teaching prototype: its database path is fixed beside the script, and it
 does not consume `DBT_DUCKDB_PATH`. Do not point dbt at another database and assume
 the loader follows. Reloading unchanged data refreshes `loaded_at`; it does not
@@ -75,22 +74,18 @@ remain future work.
 
 ## Native Windows reference
 
-[PowerShell command reference](../docs/powershell_commands.txt) uses native
-Windows tools and a separate Windows environment/profile/database. **P00 VARIABLES**
-selects canonical files through a configurable UNC path; **P14 ENV SETUP**
-checks native Python and prepares a separate environment.
-Native Windows execution remains unverified. The current loader's fixed database
-path must be addressed before the Windows pipeline recipe in **P07** is enabled.
-Do not reuse a Linux virtual environment or assume the Linux package snapshot is
-a tested Windows resolution.
+[PowerShell command reference](../docs/powershell_commands.md) uses native
+Windows tools and a separate Windows environment/profile/database. Section 1
+configures canonical file access through a UNC path. Native execution remains
+unverified. Section 5 explains the loader path limitation that must be resolved
+before Windows integration acceptance.
 
 ## Review and continuation
 
-Use **B12/P12 NEW CODE** to start a new branch, **B11/P11 CHANGED CODE** to
-review/stage/commit each logical change, and **B08/P08 PUBLISH** for hosted PR
-and integration. These recipes use task variables rather than fixed branch or
-commit names. **B13/P13 AZ ACCOUNT** provides optional account-context checks. No hosted CI or protected
-branch acceptance is implied by local checks.
+Use runbook **section 2** to start/resume a branch, **section 6** to review and
+commit, **section 7** to publish a PR, and **section 8** to merge/synchronize.
+**Section 9** records the future deployment sequence and Azure account commands;
+no hosted CI or deployment implementation is implied.
 
 [Dataflow tracker](../docs/DATAFLOW_TRACKER.md) records acceptance and pending
 work. [Handoff](../docs/HANDOFF.md) records the exact next action. Remaining work
