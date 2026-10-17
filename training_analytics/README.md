@@ -37,17 +37,17 @@ checking the resolved catalog and source mapping.
 
 Use [Bash command reference](../docs/bash_commands.txt):
 
-1. **B01**: enter the workspace, activate the existing environment and check Git/runtime.
-2. **B02**: diagnose executable selection if `dbt --version` differs from the intended runtime.
-3. **B03**: review direct dependencies; regenerate the snapshot only after intentional reviewed changes.
-4. **B04**: reproduce packages in a new environment and compare installed versions.
-   `/tmp/staff_de_training_repro` already exists from the verified exercise;
-   inspect/reuse it, or choose a new unused path for a new clean-install proof.
-5. **B06 steps 01–05**: copy the existing template into a temporary profile
-   directory and validate the connection. Skip template creation step 00 when
-   the file exists. The recipe supplies `DBT_DUCKDB_PATH` for that process only.
-6. **B06 step 06**: build source descendants and their tests with the recreated
-   runtime and template. This writes model relations using the existing raw table.
+1. **B00 VARIABLES**: set project, branch, runtime, profile and artifact paths once
+   per shell. Use the actual existing branch for ongoing work.
+2. **B01 RESUME / B02 DIAGNOSE**: inspect the checkout and selected runtime.
+3. **B03 SNAPSHOT**: review dependencies and capture only intentional environment changes.
+4. **B04 REPRODUCE**: install into an unused environment path and compare packages.
+   The verified `/tmp/staff_de_training_repro` already exists; reuse for checks,
+   or select a new unused path for a new clean-install proof.
+5. **B06 PROFILE**: copy the tracked template into the chosen profile directory.
+6. **B05 VALIDATE**: run connection checks, then selected model/test build against
+   the existing raw table. Generic recipes now explicitly route target/log output
+   to the configured artifact directories.
 
 The temporary profile is `/tmp/staff_de_training_profiles/profiles.yml`. Explicit
 `--project-dir` and `--profiles-dir` remove reliance on ambient profile discovery.
@@ -76,8 +76,9 @@ remain future work.
 ## Native Windows reference
 
 [PowerShell command reference](../docs/powershell_commands.txt) uses native
-Windows tools and a separate Windows environment/profile/database. **P00**
-verifies tools and access to canonical files through a configurable UNC path.
+Windows tools and a separate Windows environment/profile/database. **P00 VARIABLES**
+selects canonical files through a configurable UNC path; **P14 ENV SETUP**
+checks native Python and prepares a separate environment.
 Native Windows execution remains unverified. The current loader's fixed database
 path must be addressed before the Windows pipeline recipe in **P07** is enabled.
 Do not reuse a Linux virtual environment or assume the Linux package snapshot is
@@ -85,8 +86,10 @@ a tested Windows resolution.
 
 ## Review and continuation
 
-Use **B11/P11** for the current runtime branch review/commit; **B08/P08** covers
-the subsequent hosted PR and integration workflow. No hosted CI or protected
+Use **B12/P12 NEW CODE** to start a new branch, **B11/P11 CHANGED CODE** to
+review/stage/commit each logical change, and **B08/P08 PUBLISH** for hosted PR
+and integration. These recipes use task variables rather than fixed branch or
+commit names. **B13/P13 AZ ACCOUNT** provides optional account-context checks. No hosted CI or protected
 branch acceptance is implied by local checks.
 
 [Dataflow tracker](../docs/DATAFLOW_TRACKER.md) records acceptance and pending
