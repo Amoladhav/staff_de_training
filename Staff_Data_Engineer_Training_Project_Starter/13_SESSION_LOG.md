@@ -191,3 +191,99 @@ Append one record per training session.
 ### Git/runtime thread checkpoint 3: documentation commit verified — 2026-10-16
 - Verified c0ed731 on docs/publish-checkpoint, clean worktree before record; main/cached origin/main at 4150ae0. Four-file branch diff whitespace check passed.
 - Assigned review-record commit, learner branch push and hosted PR against main. No agent Git mutation; PR/CI/integration not claimed complete. Review PR before integration; runtime remains a subsequent separate branch.
+
+### Git/runtime thread checkpoint 4: PR integrated — 2026-10-16
+- Owner reported PR merged/branch deleted. Cached origin/main contains PR #1 merge 191dd10; local docs branch absent. Agent fast-forwarded clean main from 4150ae0 with approved escalation, then updated checkpoint docs. No live remote query or CI verification.
+- Assigned learner runtime branch and existing-venv executable/version diagnostics; no runtime change or reinstall. Next review 5.
+
+### Git/runtime thread checkpoint 5: credential-helper diagnosis — 2026-10-16
+- Owner pull reports missing credential-manager. Linux Git inherits manager from Windows global config included by WSL config. Linux gh available; no credentials inspected.
+- Assigned repo-local GitHub helper reset/use gh and pull --ff-only; no config changes by agent, recovery pending. Main/cached origin/main at 191dd10.
+- Scheduled qualitative review: bounded detour, continue here; next review 10. Runtime branch/diagnostics remain pending.
+
+### Git/runtime thread checkpoint 6: runtime mismatch narrowed — 2026-10-16
+- Owner reports dbt 2.0.8; explicit venv Python metadata confirms Core 1.12.0 / DuckDB adapter 1.11.0. Branch fix/runtime-reproducibility verified.
+- Assigned type -a dbt and explicit venv CLI comparison. No package changes or dbt data operations. Git credential-helper recovery not inferred; next review 10.
+
+### Git/runtime thread checkpoint 7: explicit venv CLI verified — 2026-10-16
+- Learner explicit .venv/bin/dbt output confirms Core 1.12.0 / DuckDB 1.11.0. Requested type -a dbt to diagnose bare-command 2.0.8 selection before changes.
+- No upgrade assigned based on update notice. Reproducibility and Git authentication recovery remain pending; next review 10.
+
+### Git/runtime thread checkpoint 8: shell lookup evidence — 2026-10-16
+- Learner type -a lists project venv dbt first, then four ~/.local/bin/dbt occurrences; no alias/function. Current lookup order correct; repeated PATH entries do not override the first match.
+- Assigned hash -r and bare dbt --version recheck. Prior 2.0.8 cause remains unproven; no package/PATH changes. Next review 10.
+
+### Git/runtime thread checkpoint 9: direct dependencies — 2026-10-16
+- Runtime recheck success acknowledged by owner without output. Inspected Python 3.14.4 / Core 1.12.0 / adapter 1.11.0 / DuckDB 1.5.6; loader directly imports duckdb. No dependency declaration found.
+- Learner authors root requirements.txt with dbt-core==1.12.0, dbt-duckdb==1.11.0 and duckdb==1.5.6, then runs python -m pip check in the active venv. Direct pins are not a complete dependency lock; clean-environment reproduction remains pending. No agent file implementation/install. Next continuity review 10.
+
+### Git/runtime thread checkpoint 10: installed dependency check passed — 2026-10-16
+- Learner pip check reports no broken requirements. Root requirements.txt absent; scoped filename search found no requirements file. Explained installed-package check does not validate/create declaration.
+- Assigned save of root three-pin requirements.txt; no agent implementation. Scheduled qualitative review: continue, next review 15. Clean reproduction remains pending.
+
+### Git/runtime thread checkpoint 11: requirements verified — 2026-10-16
+- Inspected root requirements.txt: Core 1.12.0, adapter 1.11.0, DuckDB 1.5.6 pins correct.
+- Generate requirements_snapshot.txt from explicit .venv Python using pip freeze --all, then review the generated file. Root requirements.txt now verified with all three intended pins. Snapshot is installed-environment evidence, not a solver-generated lock; clean WSL/Python 3.14 reproduction and dependency-scope review remain pending. No agent dependency installation or snapshot generation. Next review 15.
+
+### Git/runtime thread checkpoint 12: clean reproduction assigned — 2026-10-16
+- Snapshot inspected: 60 exact package pins, no URL/local-path requirements. Python 3.14.4 venv excludes system packages. Temporary target absent.
+- Learner creates /tmp/staff_de_training_repro using .venv/bin/python -m venv, installs requirements_snapshot.txt with that new interpreter, then checks pip dependencies and dbt version. Temporary path verified absent before assignment. No activation or existing-venv changes required. Stop on installation failure; clean installation and application-level acceptance remain pending. No agent environment creation/install. Next review 15.
+
+### Git/runtime thread checkpoint 13: package reproduction verified — 2026-10-16
+- Learner recreated pip check PASS, Core 1.12.0 / adapter 1.11.0. Agent inspected Python 3.14.4 and compared installed metadata: 60 packages exactly match snapshot, no extras/missing/version differences.
+- Learner runs recreated dbt debug with explicit --project-dir training_analytics --profiles-dir training_analytics from repository root. Existing local DuckDB profile targets dev.duckdb, schema main, target dev. This checks configuration/connection; sanitized portable profile template, build/test acceptance and runbook remain pending. No agent database operations. Next review 15.
+
+### Git/runtime thread checkpoint 14: portable profile assigned — 2026-10-16
+- Owner acknowledged recreated dbt debug success without output; recorded learner-reported. Existing local profile confirmed Git-ignored; no template found.
+- Learner authors training_analytics/profiles.example.yml: profile training_analytics, target dev, DuckDB output dev, schema main, threads 1, path from required DBT_DUCKDB_PATH environment variable via Jinja. Keep existing ignored profiles.yml unchanged. Template validation in a separate profile directory and reproducible runbook remain pending. No agent template implementation or database operation. Next review 15.
+
+### Git/runtime thread checkpoint 15: maintained command references — 2026-10-16
+- Created Bash/PowerShell plain-text references with # comments, stable section IDs and sequential steps, matching shell counterparts, prerequisites and execution evidence. PowerShell targets WSL canonical workspace; native execution unverified.
+- Persisted maintenance requirement; future lessons point to section/step. Bash syntax check and documentation whitespace check; no workflow commands executed.
+- Use docs/bash_commands.txt section B06 or docs/powershell_commands.txt section P06 for the pending portable-profile exercise. Author the commented YAML template, then follow steps 01-05 to validate in a separate profile directory. Existing profile remains unchanged; template file still absent at inspection. Scheduled qualitative review: continue, next review 20.
+
+### Git/runtime thread checkpoint 16: profile exercise resumed — 2026-10-16
+- Inspected runtime branch; profiles.example.yml still absent. Directed learner to B06/P06 template authoring then steps 01-05. No agent template creation or validation. Next review 20.
+
+### Git/runtime thread checkpoint 17: parallel documentation and dev — 2026-10-16
+- Owner clarified pure native Windows PowerShell commands and explicitly requested multitasking. Delegated native reference rewrite; continued Bash profile exercise.
+- Template still absent. Added B06 step 00 executable heredoc creation, followed by steps 01-05 validation. Learner execution pending; no template/database mutation by agent. Native runtime remains unverified.
+
+Checkpoint 17 completion: native PowerShell reference delivered/reviewed; native
+execution unavailable. Bash syntax and section/step numbering checks passed.
+Windows loader path adaptation explicitly pending; active dev remains Bash B06.
+
+### Git/runtime thread checkpoint 18: next branch action — 2026-10-16
+- Verified runtime branch; template absent. Existing debug log confirms a successful connection but not template validation. Reissued B06 step 00 directly; template validation, runbook and branch acceptance remain pending. No agent implementation. Next review 20.
+
+### Git/runtime thread checkpoint 19: template verified — 2026-10-16
+- Template saved; content matches intended portable DuckDB profile. Existing log only proves original profile connection. Assigned B06 steps 01-05, skip creation. Command references updated; no agent database operation. Next review 20.
+
+### Git/runtime thread checkpoint 20: template connection verified — 2026-10-16
+- Inspected temporary profile content and debug log: correct profile path and All checks passed. Assigned B06 step 06 selected build using recreated runtime and existing raw data; no agent database operation.
+- Scheduled qualitative review: accumulated runtime/shell-reference history remains navigable via tracker; finish bounded runtime acceptance, reassess before next feature. Next review 25.
+
+### Git/runtime thread checkpoint 21: debug output confirmed — 2026-10-16
+- Owner output confirms recreated Python/Core/adapter and temporary profile connection success. Supplied command is debug; selected build not yet evidenced. Reissued B06 step 06 explicitly. Next review 25.
+
+### Git/runtime thread checkpoint 22: Core build verified — 2026-10-16
+- Inspected run_results.json generated 2026-10-17T00:12:52.832704Z: Core 1.12.0, build, temporary profile, 3 models successful and 5 tests pass/zero failures.
+- Replaced scaffold README with verified workflow/limits and added B11/P11 scoped review/commit recipe. No Git mutation or extra dbt run by agent. Negative-case recovery, Windows and hosted CI remain pending; next review 25.
+
+### Git/runtime thread checkpoint 23: commit pending — 2026-10-16
+- Verified HEAD still 191dd10 on runtime branch; index empty, seven tracked changes/five untracked files. Directed learner to B11 steps 03-08 before PR. No Git mutation. Next review 25.
+
+Checkpoint 23 additional evidence: owner supplied build output matching inspected
+artifact: Core 1.12.0, 3 models/5 tests, PASS=8 and zero warnings/errors/skips.
+No rerun needed; staging/review/commit is next.
+
+### Git/runtime thread checkpoint 24: generic command flows — 2026-10-16
+- Verified runtime commit 503461e, clean before docs edits. Rebuilt shell references into parameterized repeatable blocks with figlet banners, numbered steps and native Windows commands. Updated README/instructions and decision record.
+- No workflow execution beyond static documentation checks. Documentation review/commit then hosted PR next. Native Windows/Azure acceptance unchanged; next continuity review 25.
+
+### Git/runtime thread checkpoint 25: partial docs commit — 2026-10-16
+- Verified 6a464f2 includes only README; eight docs/instruction files remain unstaged. Local feature HEAD matches cached upstream; no live query. Added interactive staging guidance and assigned B11 remaining-docs commit.
+- Scheduled qualitative review: finish bounded Git checkpoint, reassess handoff before another feature; next review 30. No agent Git mutation or runtime retest.
+
+### Git/runtime thread checkpoint 26: staging still pending — 2026-10-16
+- HEAD/index/worktree unchanged: 6a464f2, no staged files, eight docs changes. Simplified CHANGED CODE staging for fully reviewed tracked scope; supplied direct commands. No Git mutation/publication by agent; next review 30.

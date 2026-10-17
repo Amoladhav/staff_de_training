@@ -107,3 +107,14 @@ Record decisions that materially change the plan.
 ### D-018 clarification — complete branching lifecycle
 - Use short-lived feature branches from main after initial baseline; teach all review, validation, staging, commit, PR/CI, conflict, merge/cleanup and release/recovery steps.
 - Hosted feature PRs default to squash merge; local reviewed merge is explicitly simulation. No independent peer approval claimed for solo/tutor review.
+
+## D-019 — Maintained shell command references (2026-10-16)
+- Owner requests two plain-text cheat sheets for an experienced developer: docs/bash_commands.txt and docs/powershell_commands.txt, # comments, numbered sections and sequential step IDs.
+- Maintain recipes as training advances; point to sections/steps. Keep conditional/setup/write operations explicit and verified/pending evidence separate. PowerShell invokes WSL tools for the canonical Linux workspace; native Windows verification remains separate.
+
+### D-019 clarification — native Windows PowerShell
+- Owner requires native Windows commands only in PowerShell reference; no WSL command wrappers. Separate Windows venv and native validation required. Keep canonical files; configurable UNC access does not constitute native runtime verification. Matching section IDs remain; platform-specific steps may differ.
+
+### D-019 clarification — generic parameterized flows
+- Owner requests repeatable development blocks with figlet headers (NEW CODE, CHANGED CODE, AZ ACCOUNT), # comments and sequential steps. Declare PROJECT_ROOT, BR_NAME and task variables once per terminal, then copy commands using those values.
+- Keep current branch/commit and validation evidence in tracker/handoff; preserve reusable flow IDs. Native Windows requirement remains. Azure section is account-context reference only, no provisioning claim.
