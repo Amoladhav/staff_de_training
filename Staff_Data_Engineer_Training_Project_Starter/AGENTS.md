@@ -68,28 +68,25 @@ Apply the root five-checkpoint review cadence: persist the counter in the tracke
 
 ## Maintained command references
 
-Owner request, 2026-10-16: maintain `../docs/bash_commands.txt` and
-`../docs/powershell_commands.txt` as plain-text developer cheat sheets. Use `#`
-comments, stable numbered section headers and sequential step IDs. Keep matching
-section counterparts across shells; platform-specific step numbering may differ. Update relevant recipes when teaching
-new commands or changing the accepted workflow, and point learners to exact
-sections/steps instead of repeatedly expanding the same instructions.
-Keep one command per step where practical, label prerequisites, conditional or
-one-time actions and database writes, and distinguish verified from pending.
-Owner clarification, 2026-10-16: PowerShell recipes must use native Windows
-commands only, with Windows Python/Git/gh and a separate Windows venv; no WSL
-command wrappers. Existing workspace may be accessed through a configurable UNC
-path without duplicating the repository. Native Windows runtime acceptance is
-separate and remains pending until demonstrated. Include purpose, Bash counterpart and tool-help
-references. The text files are references to copy from, not scripts to execute
-wholesale. Chat commands still use one fenced block per command.
+Owner preference, 2026-10-16 (latest clarification): maintain
+`../docs/bash_commands.md` and `../docs/powershell_commands.md` as concise Markdown
+runbooks for an experienced developer. This supersedes plain-text/#-comment and
+figlet formatting. Use readable headings, short purpose notes and one command per
+fenced block. Avoid tutorial repetition, oversized variable lists and checkpoint
+history in the runbooks.
 
-Owner clarification, 2026-10-16: command references are generic, repeatable
-flows, not per-checkpoint transcripts. Use pre-rendered `figlet` banners (each
-line prefixed with `#`) for titles such as NEW CODE, CHANGED CODE and AZ ACCOUNT.
-Provide a VARIABLES block with PROJECT_ROOT, BR_NAME and other task inputs;
-Bash uses export and native PowerShell uses $env:. Declare once per terminal and
-reuse in quoted commands. Keep task-specific evidence and current branch/commit
-in the tracker/handoff, not hard-coded recipes. Preserve stable flow IDs and
-explicit prerequisites, sequential steps and conditional writes. User does not
-need figlet installed to read/use the pre-rendered files.
+Organize around the delivery sequence: session configuration, branch creation or
+resume, dbt development/build/tests, clean-environment and platform checks,
+integration, review/commit, push/PR, merge/synchronization, deployment/verification.
+Include frequently used dbt commands and clear prerequisites. Keep unimplemented
+Windows integration, hosted CI and deployment visibly pending; never invent a
+working deploy command. Link to numbered sections when assigning exercises.
+
+Use PROJECT_ROOT and BR_NAME plus only the runtime variables needed for concise
+copyable commands. Keep task-specific branch/commit/status in tracker/handoff.
+Native Windows PowerShell only: separate Windows venv/profile/database, no WSL
+command wrappers. UNC access may reuse canonical files without a duplicate
+checkout. Native Windows validation remains separate. Include compact Bash
+counterparts and help discovery in a troubleshooting section. Update these
+references as the accepted workflow evolves. Keep legacy history in numbered logs,
+but current links must use the Markdown files.

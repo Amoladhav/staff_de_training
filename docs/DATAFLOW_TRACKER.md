@@ -21,11 +21,13 @@ its delivery workflow. No fixed session durations apply.
 ## Thread continuity review
 
 - Thread label: Git publication follow-through and runtime reproducibility — new thread confirmed 2026-10-16.
-- Initialized at **0**; counted checkpoints: **26** (unchanged Git state; direct tracked-file staging assigned).
-- Last scheduled review: checkpoint **25**.
-- Next scheduled review: checkpoint **30**, then 35, 40, and so on.
-- Assessment: substantial runtime and documentation history; continue to the current documentation commit and publication checkpoint, then reassess before another feature. Qualitative assessment, not a capacity estimate.
-- Recommendation: finish the current documentation Git checkpoint; avoid starting another implementation phase before reassessing handoff.
+- Initialized at **0**; counted checkpoints: **30** (PR #2 merge verified; Markdown runbooks prepared).
+- Last scheduled review: checkpoint **30**.
+- Next scheduled review: checkpoint **35**, then 40, 45, and so on.
+- Counter reconciliation: merged files retained checkpoint 26; conversation evidence establishes checkpoints 27–29 (PR open, absent checks, integration assignment). Restored the ongoing count; no new thread inferred.
+- Assessment: long runtime/Git/reference history and a completed integration boundary. A fresh thread is useful before further implementation. Qualitative assessment, not a capacity estimate.
+- Recommendation: optional new thread from saved handoff after this completed documentation rewrite; current uncommitted state is recorded. Continue here if preferred.
+
 - Previous thread review preserved: ended at checkpoint 23, scheduled review at 20 and early qualitative review at 23 recommended a handoff at the publication boundary before runtime reproducibility. Owner confirmed the new thread. Earlier baseline thread recommended handoff at checkpoint 1; lifetime count remains unknown.
 
 ## Where we are now
@@ -40,9 +42,11 @@ since loading. This is consistent with the configured five-minute warning and
 ten-minute error thresholds; it does not invalidate the earlier reported PASS.
 Freshness status changes as data ages; task status records learning/delivery progress.
 
-Next: Commit remaining eight reviewed documentation files using B11 CHANGED CODE. Set PROJECT_ROOT to workspace, BR_NAME=fix/runtime-reproducibility and a documentation COMMIT_MSG. Commit 6a464f2 contains only README; command references/instructions/checkpoint records remain modified. Local feature HEAD matches cached origin feature ref; live remote/PR not queried. Publish follow-up commit afterward.
-Runtime package/template/build acceptance remains verified; native Windows,
-negative-case recovery and hosted CI remain pending. Documentation checks pass.
+Next: Review the Markdown command-runbook migration, then create docs/developer-runbooks from current main before staging/committing. PR #2 integration is locally verified at c31160a; do not repeat runtime setup or merge. After docs integration, resume W06/W07 negative-case source test blocking and recovery on a separate feature branch.
+Current command references: [Bash](bash_commands.md) and
+[native Windows PowerShell](powershell_commands.md). Old .txt references are
+replaced. Bash syntax, one-command fences and local links checked; native Windows
+execution remains unverified. Deployment/CI are documented as pending.
 Owner reports PR merged and branch deleted; cached origin/main contains PR #1
 merge 191dd10. Agent fast-forwarded local main to that fetched revision with
 permission. Local docs branch absent. No live remote query or CI verification.
@@ -322,3 +326,7 @@ Build acceptance complete for this selection; B11 steps 03-08 remain next.
 | 2026-10-16 | Git/runtime thread checkpoint 25: partial documentation commit | Verified 6a464f2 contains README only; eight tracked documentation files remain modified, index empty. Runtime commit 503461e retained; cached upstream matches local feature branch. Added interactive staging guidance, assigned B11 review/commit for remaining docs. Scheduled qualitative review: finish bounded Git checkpoint, reassess before new feature; next review 30. |
 
 | 2026-10-16 | Git/runtime thread checkpoint 26: staging still pending | Rechecked HEAD 6a464f2, empty index and same eight tracked docs changes. Simplified generic CHANGED CODE step 04 to git add -u for wholly reviewed tracked scope, with partial/untracked guidance. Supplied direct stage/review/check/commit commands; no agent Git mutation or publication. |
+
+| 2026-10-16 | Checkpoints 27–29 reconciliation after merge | Conversation records docs commit 99d7858 verification, owner PR #2 OPEN, no hosted checks and final integration assignment. Merged tracker retained only checkpoint 26; restored count from conversation without inventing execution. |
+
+| 2026-10-16 | Git/runtime thread checkpoint 30: Markdown runbooks | Main/cached origin/main c31160a verifies PR #2 squash integration; clean before edits. Replaced command .txt files with concise Markdown lifecycle runbooks, updated README/instructions and recorded native/deployment limits. Documentation checks pass; no runtime/cloud commands or Git mutations by agent. Optional new-thread handoff recommended at completed phase boundary; pending docs branch/commit recorded. |

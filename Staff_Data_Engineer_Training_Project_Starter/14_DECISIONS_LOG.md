@@ -118,3 +118,7 @@ Record decisions that materially change the plan.
 ### D-019 clarification — generic parameterized flows
 - Owner requests repeatable development blocks with figlet headers (NEW CODE, CHANGED CODE, AZ ACCOUNT), # comments and sequential steps. Declare PROJECT_ROOT, BR_NAME and task variables once per terminal, then copy commands using those values.
 - Keep current branch/commit and validation evidence in tracker/handoff; preserve reusable flow IDs. Native Windows requirement remains. Azure section is account-context reference only, no provisioning claim.
+
+### D-019 superseding format — concise Markdown developer runbooks
+- Latest owner request replaces plain-text/figlet references with docs/bash_commands.md and docs/powershell_commands.md. Use concise headings, individually copyable command blocks, minimal variables, frequent commands in full development/delivery order.
+- Preserve native Windows commands and platform boundaries. Label pending integration/deployment rather than inventing implementation. Keep detailed teaching in lessons, historical evidence in tracker/logs.
