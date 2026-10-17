@@ -29,10 +29,11 @@ Last updated: 2026-10-16
 - BLUE: Staff-level confident
 
 ## Current Work
-- Ongoing Git/runtime thread checkpoint 30; PR #2 integration verified at c31160a. Scheduled qualitative review recommends optional saved handoff before another implementation phase; next review 35 if continuing.
-- Active checkpoint: W08 repository foundation — In Progress, moved ahead of further pipeline changes; W05–W07 remaining acceptance preserved.
-- Current work-item statuses, diagrams, developer workflows and evidence: [Dataflow tracker](../docs/DATAFLOW_TRACKER.md). This supersedes older setup-next-step notes below.
-- Next action: Review the Markdown command-runbook migration, then create docs/developer-runbooks from current main before staging/committing. PR #2 integration is locally verified at c31160a; do not repeat runtime setup or merge. After docs integration, resume W06/W07 negative-case source test blocking and recovery on a separate feature branch.
+- Failure/recovery thread checkpoint 12; review recommends continuing; next qualitative review at 15.
+- Migration reviewed and already integrated at a1b0fa8; no duplicate commit needed.
+- Active checkpoint: W06/W07 failure/recovery — In Progress; W08 loader refactoring remains In Progress.
+- Current evidence and status: [Dataflow tracker](../docs/DATAFLOW_TRACKER.md).
+- Next action: learner stages the explicit six-file scope, reviews cached diff/check, then commits SQL alias improvement and docs. Freshness versus exact-count reasoning demonstrated; minimum-count limitation explained. Source-test failure/skips and recovery verified.
 - Then: bounded failure/recovery, batch completeness contract and source-backed build/test acceptance.
 - Azure billing/budget readiness and PowerShell saved variable remain unverified.
 
@@ -64,3 +65,11 @@ Track concrete proof:
 - Installed in Linux `.venv`: dbt-core 1.12.0, dbt-duckdb 1.11.0.
 - Learner output confirms project/profile validation and local DuckDB connection passed.
 - first_orders execution and its unique/not_null data tests verified; completed_orders preview confirmed by learner.
+
+Bash CLI completion verified through installed dbt completion protocol; session activation supplied. Failure/recovery execution remains pending.
+
+Active side issue: learner reports completion failure; interactive shell/runtime/registration diagnostics pending. Isolated Bash check passes, not learner acceptance.
+
+Completion diagnosis: learner resolves user-bin dbt first and _complete_it registration. Session PATH/Click correction assigned; confirmation pending. Feature branch verified locally.
+
+Standalone dbt removal instructions supplied at owner request; execution unconfirmed. Project venv preserved.

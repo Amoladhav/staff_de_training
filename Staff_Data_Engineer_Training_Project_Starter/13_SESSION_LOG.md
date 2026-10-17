@@ -293,3 +293,50 @@ No rerun needed; staging/review/commit is next.
 - Owner requests experienced-developer Markdown runbooks. Replaced two .txt references with .md files; ordered branch/build/tests/portability/integration/commit/PR/merge/deploy, concise commands, native Windows and pending deployment distinctions. Updated README/instructions.
 - Bash syntax, one-command fences, local links and whitespace checked; no native Windows/runtime/cloud execution. Changes prepared on main for learner docs/developer-runbooks branch.
 - Review 30: optional saved handoff recommended after long phase; next review 35 if continuing.
+
+### Failure/recovery thread checkpoint 1 — 2026-10-16
+- Resume found clean main/cached origin/main a1b0fa8, migration already committed in PR #3 revision. Supersedes stale handoff; no duplicate migration commit.
+- Reviewed Markdown runbooks: Bash syntax, 71 Bash/67 PowerShell single-command blocks, local links and commit whitespace passed. Native Windows and hosted CI not verified.
+- Assigned learner feature/source-failure-recovery, expectation 4 failure and expectation 3 recovery with target/failure and target/recovery artifacts and exit codes. No agent SQL edits, dbt execution, branch creation or commit.
+- Updated four checkpoint docs; uncommitted on main for the learner feature branch. Counter initialized at zero then incremented to 1; next review 5. Continue bounded phase.
+
+### Failure/recovery thread checkpoint 2 — 2026-10-16
+- ANSWER NOW: dbt CLI autocomplete. Verified installed Click completion returns build and --select/--selector and emits Bash registration script. Added session activation to Bash runbook; no additional package or persistent shell edits. Learner activation unconfirmed. Failure exercise remains pending; review due 5.
+
+### Failure/recovery thread checkpoint 3 — 2026-10-16
+- Learner reports autocomplete not working. Isolated Bash with activated project venv registers completion and produces build for bu. Requested actual terminal shell/version, type -a dbt and complete -p dbt; no root cause claimed or startup changes. Pipeline exercise pending.
+
+### Failure/recovery thread checkpoint 4 — 2026-10-16
+- Learner output identifies Bash 5.3.9, ~/.local/bin/dbt preceding project venv and _complete_it registration. Intended Click function absent; no startup-file cause inferred. Assigned session PATH/hash/registration correction and verification.
+- feature/source-failure-recovery verified locally; five docs modified, SQL unchanged. Interactive completion and pipeline exercise remain pending; next review 5.
+
+### Failure/recovery thread checkpoint 5 — 2026-10-16
+- Identified user-level executable as standalone ELF dbt 2.0.8; project venv remains Python Core 1.12.0/duckdb 1.11.0. Standalone installer documentation uses ~/.local/bin/dbt, but actual installer origin/actor not established. No uninstall/startup edits.
+- Scheduled review 5: continue bounded diagnostic phase; next review 10. Session completion fix and failure/recovery remain pending.
+
+### Failure/recovery thread checkpoint 6 — 2026-10-16
+- Owner asks how to remove user-level dbt. Supplied scoped binary removal and shell/runtime/completion recovery commands. No agent deletion, no learner execution confirmation; pipeline exercise pending. Next review 10.
+
+### Failure/recovery thread checkpoint 7 — 2026-10-16
+- Explained persistent Bash completion belongs in ~/.bashrc, not dbt profiles.yml. Added generate-once venv-local completion and guarded startup-source recipe; project activation remains per session. No user startup files changed or removal confirmed. Pipeline exercise pending; next review 10.
+
+### Failure/recovery thread checkpoint 8 — 2026-10-16
+- Owner returns to pipeline exercise and reports successful selected build. Inspected target/failure artifact generated 2026-10-17T03:52:00.431151Z: Core 1.12.0, 3 successful models/5 passing tests. SQL expectation remains 3; target-path does not inject failure.
+- Explained source descendant selector, singular-test zero-row success and artifact path. Assigned learner both expected-count literals 3→4, diff review, build and immediate exit-code capture. Negative-case evidence pending; no agent SQL edit/build. Shell removal/completion acceptance not inferred. Next review 10.
+
+### Failure/recovery thread checkpoint 9 — 2026-10-17
+- Latest selected build artifact 2026-10-17T17:01:44.997589Z and log show PASS=8 ERROR=0 SKIP=0; fixture SQL still expects 3. No recovery artifact. Learner success report confirms baseline, not negative-case blocking.
+- Supplied full expectation-4 SQL to save, then build/exit capture. No agent SQL or database mutation. Counter retained across date change; next review 10.
+
+### Failure/recovery thread checkpoint 10 — 2026-10-17
+- Log verifies 10:04:26 source-count FAIL 1, ERROR=1/SKIP=7; logged SQL projected expected_rows=3 while comparing to 4. Recovery at 10:05:38 PASS=8, current JSON confirms 3 successful models/5 tests. Both used target/failure, overwriting failed JSON; log retained failure evidence. Exit codes not supplied.
+- Current SQL references expected_rows alias in HAVING and defines 3 once; local DuckDB success verified. No agent SQL changes/builds. Assigned freshness/partial-load and exact/minimum-count comprehension, then scoped Git review/commit. Production readiness remains pending.
+- Scheduled review 10: continue through bounded comprehension/Git checkpoint; next review 15.
+
+### Failure/recovery thread checkpoint 11 — 2026-10-17
+- Learner correctly distinguishes timestamp freshness from exact count (2<>3). Tutor explains minimum count allows excess rows and exact count still does not prove membership/uniqueness; minimum-count understanding not independently assessed.
+- Verified six-file modified scope on feature/source-failure-recovery, SQL expectation 3 with alias reuse, diff whitespace check passes. Assigned whole-diff review before staging/commit; no Git mutation or redundant build. Next continuity review 15.
+
+### Failure/recovery thread checkpoint 12 — 2026-10-17
+- Verified feature/source-failure-recovery at a1b0fa8, six modified files and empty index; no new commit. SQL expectation restored with alias reuse. Bash snippet syntax and diff whitespace checks pass.
+- Assigned explicit scoped staging, cached diff/check, local commit and status. No agent Git mutation/publication; learner execution unconfirmed. Next review 15.

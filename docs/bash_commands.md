@@ -353,6 +353,63 @@ az account show --output table
 
 Account selection does not provision or deploy anything.
 
+## Optional Bash tab completion
+
+With the project venv active, enable command/option completion for this terminal
+(no extra package required):
+
+```bash
+eval "$(_DBT_COMPLETE=bash_source dbt)"
+```
+
+Try `dbt bu` then Tab, or `dbt build --sel` then Tab twice. This registers a
+Bash function for the current shell; it does not persist across terminals.
+Project model-name completion is not established by this check.
+
+To persist completion, generate its script once using the project executable:
+
+```bash
+_DBT_COMPLETE=bash_source "$PROJECT_ROOT/.venv/bin/dbt" > "$PROJECT_ROOT/.venv/dbt_completion.bash"
+```
+
+Add the following configuration to `~/.bashrc` once (substitute the path if your
+canonical checkout differs). This registers completion without activating a
+project globally:
+
+```bash
+if [ -r /home/amola/projects/staff_de_training/.venv/dbt_completion.bash ]; then
+    source /home/amola/projects/staff_de_training/.venv/dbt_completion.bash
+fi
+```
+
+Open a new terminal, activate the project venv and verify `complete -p dbt`.
+Regenerate the script after recreating the venv or changing the CLI. The generated
+script is ignored with `.venv`; `profiles.yml` needs no completion settings.
+
+
+If `type -a dbt` lists another executable first, put the project venv first:
+
+```bash
+export PATH="$PROJECT_ROOT/.venv/bin:$PATH"
+```
+
+Clear cached command locations, then rerun the completion activation above:
+
+```bash
+hash -r
+```
+
+Verify registration; the expected function is `_dbt_completion`:
+
+```bash
+complete -p dbt
+```
+
+The venv prompt alone does not prove executable precedence. Another registered
+completion function means the intended Click registration is not currently active.
+
+[Click shell completion](https://click.palletsprojects.com/en/stable/shell-completion/).
+
 ## Troubleshooting
 
 Wrong runtime:

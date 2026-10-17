@@ -1,6 +1,6 @@
 # Dataflow and developer workflow tracker
 
-Updated: 2026-10-16 (America/Los_Angeles).
+Updated: 2026-10-17 (America/Los_Angeles).
 
 This is the current work-item status reference. The master training plan defines
 the wider curriculum; this file tracks the representative orders pipeline and
@@ -20,73 +20,42 @@ its delivery workflow. No fixed session durations apply.
 
 ## Thread continuity review
 
-- Thread label: Git publication follow-through and runtime reproducibility — new thread confirmed 2026-10-16.
-- Initialized at **0**; counted checkpoints: **30** (PR #2 merge verified; Markdown runbooks prepared).
-- Last scheduled review: checkpoint **30**.
-- Next scheduled review: checkpoint **35**, then 40, 45, and so on.
-- Counter reconciliation: merged files retained checkpoint 26; conversation evidence establishes checkpoints 27–29 (PR open, absent checks, integration assignment). Restored the ongoing count; no new thread inferred.
-- Assessment: long runtime/Git/reference history and a completed integration boundary. A fresh thread is useful before further implementation. Qualitative assessment, not a capacity estimate.
-- Recommendation: optional new thread from saved handoff after this completed documentation rewrite; current uncommitted state is recorded. Continue here if preferred.
-
-- Previous thread review preserved: ended at checkpoint 23, scheduled review at 20 and early qualitative review at 23 recommended a handoff at the publication boundary before runtime reproducibility. Owner confirmed the new thread. Earlier baseline thread recommended handoff at checkpoint 1; lifetime count remains unknown.
+- Thread label: Source failure/recovery — new resume thread, 2026-10-16.
+- Initialized at **0**; counted checkpoints: **12** (scoped staging and commit assigned).
+- Last scheduled review: **10**. Next scheduled review: **15**.
+- Assessment at review 10: failure/recovery evidence is now reconciled; continue through comprehension and focused Git review. Qualitative assessment only.
+- Previous thread review preserved: Git/runtime thread checkpoint 30 recommended an optional handoff after runtime/Git/runbook work; next review would have been 35 if continuing. Earlier publication thread ended at 23.
 
 ## Where we are now
 
-**Current: W08 repository foundation — In Progress, prioritized before further pipeline changes. W05–W07 pending acceptance remains recorded.**
+**Current: W06/W07 failure/recovery — In Progress. W08 loader refactoring remains In Progress.**
 
-The loader and source declaration exist. Learner output verified a stale failure
-with dbt Core 1.12.0 / DuckDB adapter 1.11.0, followed by learner-reported PASS
-after reloading. The latest inspected `target/sources.json` records **warn**, at
-2026-10-16 04:32:23 UTC (2026-10-15 21:32:23 Pacific): approximately six minutes
-since loading. This is consistent with the configured five-minute warning and
-ten-minute error thresholds; it does not invalidate the earlier reported PASS.
-Freshness status changes as data ages; task status records learning/delivery progress.
+Local main and cached origin/main both resolve to `a1b0fa8`, containing the Markdown
+migration (`Change txt to md (#3)`). Worktree was clean on resume. The handoff's
+uncommitted-migration instructions were stale; no duplicate migration commit is
+needed. Review verified 71 Bash and 67 PowerShell single-command fences, Bash
+syntax, local links and commit whitespace. Native Windows execution remains
+unverified. No live remote or hosted CI query was performed.
 
-Next: Review the Markdown command-runbook migration, then create docs/developer-runbooks from current main before staging/committing. PR #2 integration is locally verified at c31160a; do not repeat runtime setup or merge. After docs integration, resume W06/W07 negative-case source test blocking and recovery on a separate feature branch.
-Current command references: [Bash](bash_commands.md) and
-[native Windows PowerShell](powershell_commands.md). Old .txt references are
-replaced. Bash syntax, one-command fences and local links checked; native Windows
-execution remains unverified. Deployment/CI are documented as pending.
-Owner reports PR merged and branch deleted; cached origin/main contains PR #1
-merge 191dd10. Agent fast-forwarded local main to that fetched revision with
-permission. Local docs branch absent. No live remote query or CI verification.
+Next: learner explicitly stages the six-file scope, reviews the staged diff/check, then commits the SQL alias improvement plus scoped training/runbook documentation
+on feature/source-failure-recovery. No temporary expectation-4 predicate remains.
 
+## Latest failure/recovery evidence
 
-Checkpoint 23: owner reports pushed. Inspected origin URL:
-https://github.com/Amoladhav/staff_de_training.git. Local main and cached origin/main
-both equal 4150ae092d563ecd59020c075f741f1d61e6e717. Owner supplied GitHub metadata:
-private=true, default_branch=main, full_name=Amoladhav/staff_de_training. Agent live
-metadata query was declined before execution; no live remote SHA obtained. Keep
-local-ref verification and learner-supplied remote metadata distinct.
-Four checkpoint docs are modified locally and are not part of commit 4150ae0.
-Repository publication does not establish hosted PR/CI, branch protection or
-production release acceptance. Runtime 2.0.8 versus intended Core, W05 reasoning,
-and W06/W07 failed-build blocking/recovery remain unresolved.
-
-Checkpoint 20: main at merge commit 4150ae0, working tree clean before checkpoint
-updates; docs/command-format branch no longer present. Local integration verified.
-Checkpoint 19: agent attempted supplied merge, sandbox denied metadata writes and
-escalation was declined; no merge performed by agent. Subsequent file/Git evidence
-now confirms merge and branch cleanup occurred. Root/linked command-format rules
-are on main. Current checkpoint-doc edits are uncommitted and will not be part of
-a push of 4150ae0; do not claim otherwise. W05 reasoning, W06/W07 negative cases,
-runtime reproducibility and hosted PR/CI remain pending.
-
-Checkpoint 11: learner build output and inspected run_results.json agree: 3 models
-succeeded, 5 tests passed with zero failures, dbt 2.0.8, generated
-2026-10-16T22:54:22.373067537Z. Models are first_orders (table), completed_orders
-(view), and base_commerce_orders (view). File inspection confirms base_commerce_orders
-reads the source directly and retains loaded_at; first_orders also reads source
-directly, completed_orders reads first_orders. Base model authorship/generation is
-not established. This verifies selected local build success, not freshness,
-negative-case blocking, production batch completeness, or intended Core runtime.
-
-Prior learner evidence: raw preview matches fixture IDs 1–3, statuses and amounts;
-aggregate shows 3 rows / 3 distinct IDs; all rows share loaded_at
-2026-10-15T21:26:19.750278-07:00. Learner proposed min_count; exact-versus-minimum
-count and freshness/completeness reasoning remain to be demonstrated through the
-exercise. W05 is not promoted to Done. Source selectors use logical
-`source:commerce.orders`, not physical `dev.raw.orders`.
+- Core 1.12.0 log at 2026-10-17 10:04:26 Pacific: fixture-count test FAIL 1;
+  PASS=0, ERROR=1, SKIP=7. All three downstream models and four downstream tests
+  skipped. Logged SQL projected expected_rows=3 but compared count against 4;
+  predicate triggered failure, while the diagnostic expected value was misleading.
+- Recovery at 10:05:38 Pacific: PASS=8, ERROR=0, SKIP=0. JSON generated
+  2026-10-17T17:05:38.559028Z confirms 3 successful models and 5 passing tests.
+- Current SQL defines expected_rows=3 and compares count to that alias, eliminating
+  duplicated expectations. Successful DuckDB execution verifies this local syntax;
+  cross-adapter portability is not claimed.
+- Both runs used target/failure, so recovery replaced the failure JSON. Persistent
+  dbt.log retains failure evidence; target/recovery is absent. No rerun needed to
+  establish observed blocking/recovery. Shell exit codes were not captured here.
+- This is a fixture expectation test, not an actual partial-load/batch contract
+  or consumer publication gate. Existing relations survive skipped builds.
 
 ## Intended dataflow
 
@@ -185,9 +154,9 @@ them silently for the learner.
 | W02 — Fictional seed fixture | Done | Author `seeds/sample_orders.csv` → load/preview fixture → verify representative rows | Prior checkpoint: three-row seed preview and completed orders 1 and 3 reported. Fixture is now reused by Python ingestion. |
 | W03 — Minimal local ingestion prototype | Done | Author `load_orders.py` → create/replace `raw.orders`, add load timestamp → inspect loaded row count/timestamp | File inspected; earlier learner reported three rows and timestamp. Recovery reload reported this thread. Scope is demonstration only; professional loader is W08. |
 | W04 — Logical source and SQL model chain | Done | Maintain `models/sources.yml` and model SQL → resolve `source()`/`ref()`, inspect compiled SQL and preview → verify dependency chain | Prior checkpoint: compiled `FROM dev.raw.orders`, completed orders 1 and 3 preview. Files inspected again. Does not establish a full source-backed build/test acceptance; see W07. |
-| W05 — Freshness and source inspection | In Progress | Add table-level freshness config in `sources.yml` → run stale/reload/check and raw preview → explain thresholds, timestamps, selectors, exit status and `sources.json` | Config inspected: warn >5 min, error >10 min. Core stale failure supplied; recovery PASS learner-reported; latest artifact warn verified. Learner aggregate output confirms 3 rows / 3 distinct IDs and latest_load 2026-10-15T21:26:19.750278-07:00. Learner raw preview matches all fixture rows and shows identical loaded_at values. Freshness-versus-completeness comprehension pending; exit code not supplied. |
-| W06 — Input readiness and batch completeness | In Progress | Define expected batch/input contract and reconciliation → implement checks → demonstrate missing/partial loads block downstream work | Fixture-only exact count=3 test now named assert_orders_fixture_count.sql; PASS/zero failures artifact verified at checkpoint 9 (dbt 2.0.8). Temporary expectation=4 failure and restoration=3 recovery assigned, pending. Intended Core runtime selection remains unverified. Batch identity, independent expected counts, missing/partial failure and downstream gating remain pending. Do not generalize fixture count to production. |
-| W07 — Source-backed build/test and failure recovery | In Progress | Maintain `models/orders.yml` with SQL → build/test, inject bounded invalid input, inspect failure and restore → verify current full source-backed build and recovery | Prior checkpoint verifies four first_orders tests and deliberate duplicate failure before the current source-backed acceptance. Checkpoint 11: learner output and artifact verify selected source-backed build: 3 models success / 5 tests pass, dbt 2.0.8. Checkpoint 22 additionally verifies Core 1.12.0 selected build: 3 models / 5 tests pass using recreated environment/template. Source-count failure blocking and recovery remain pending. |
+| W05 — Freshness and source inspection | In Progress | Add table-level freshness config in `sources.yml` → run stale/reload/check and raw preview → explain thresholds, timestamps, selectors, exit status and `sources.json` | Config inspected: warn >5 min, error >10 min. Core stale failure supplied; recovery PASS learner-reported; latest artifact warn verified. Learner aggregate output confirms 3 rows / 3 distinct IDs and latest_load 2026-10-15T21:26:19.750278-07:00. Learner raw preview matches all fixture rows and shows identical loaded_at values. Checkpoint 11 learner correctly explains timestamp freshness versus exact count (2<>3). Minimum-count consequences explained by tutor, not independently demonstrated; exit code not supplied. |
+| W06 — Input readiness and batch completeness | In Progress | Define expected batch/input contract and reconciliation → implement checks → demonstrate missing/partial loads block downstream work | Fixture-only exact count=3 test now named assert_orders_fixture_count.sql; PASS/zero failures artifact verified at checkpoint 9 (dbt 2.0.8). Failure predicate count<>4 and restored count<>expected_rows=3 recovery verified from log/artifact at checkpoint 10. Core 1.12.0 successful selected build verified at prior checkpoint 22; negative-case evidence pending. Batch identity, independent expected counts, missing/partial failure and downstream gating remain pending. Do not generalize fixture count to production. |
+| W07 — Source-backed build/test and failure recovery | In Progress | Maintain `models/orders.yml` with SQL → build/test, inject bounded invalid input, inspect failure and restore → verify current full source-backed build and recovery | Prior checkpoint verifies four first_orders tests and deliberate duplicate failure before the current source-backed acceptance. Checkpoint 11: learner output and artifact verify selected source-backed build: 3 models success / 5 tests pass, dbt 2.0.8. Checkpoint 22 additionally verifies Core 1.12.0 selected build: 3 models / 5 tests pass using recreated environment/template. Checkpoint 8 in failure/recovery thread verifies target/failure/run_results.json is a successful baseline, Core 1.12.0, 3 models and 5 tests; SQL still expects 3. Source-count failure (1 test fail, 7 skips) and recovery (3 models, 5 tests pass) verified at checkpoint 10; learner interpretation and Git acceptance next. |
 | W08 — Maintainable Python loader and repository foundation | In Progress | Refactor prototype into reusable logic/configuration; establish Git and reproducible dependencies → validate inputs, errors/logging, safe writes and meaningful tests → demonstrate repeatability and recovery | Checkpoint 16: baseline commit 8590240 verified, main clean before requested instruction edits. Learner docs branch next; runtime reproducibility and remaining repository acceptance pending. Git foundation moved before further pipeline features; runtime reproducibility and loader refactor pending. Define batch/write semantics before expanding loader. |
 | W09 — dbt professional delivery and CI/CD | TBD | Author isolated targets and CI configuration → exercise reviewed SQL/YAML change, failing checks, correction and promotion → verify artifact retention and cleanup | Local CI simulation, hosted CI, and deployed execution need distinct evidence. Teach manifest/state/deferral after basic build isolation. |
 | W10 — Local Airflow pipeline | TBD | Author DAG/config using reusable ingestion → ingest, readiness/freshness/completeness, dbt build/test, publication gating → prove success and blocked downstream tasks/recovery | Cover data intervals, retries, idempotency, backfills, concurrency, secrets and logs. No scheduler or DAG deployment verified. |
@@ -330,3 +299,27 @@ Build acceptance complete for this selection; B11 steps 03-08 remain next.
 | 2026-10-16 | Checkpoints 27–29 reconciliation after merge | Conversation records docs commit 99d7858 verification, owner PR #2 OPEN, no hosted checks and final integration assignment. Merged tracker retained only checkpoint 26; restored count from conversation without inventing execution. |
 
 | 2026-10-16 | Git/runtime thread checkpoint 30: Markdown runbooks | Main/cached origin/main c31160a verifies PR #2 squash integration; clean before edits. Replaced command .txt files with concise Markdown lifecycle runbooks, updated README/instructions and recorded native/deployment limits. Documentation checks pass; no runtime/cloud commands or Git mutations by agent. Optional new-thread handoff recommended at completed phase boundary; pending docs branch/commit recorded. |
+
+| 2026-10-16 | Failure/recovery thread checkpoint 1 | Verified clean main/cached origin/main a1b0fa8: Markdown migration already committed. Static runbook review passed; no duplicate commit or remote operation. New thread counter initialized. Assigned learner feature branch and expectation 4 failure, then expectation 3 recovery with separate artifacts; no SQL/database changes or exercise runs by agent. |
+
+| 2026-10-16 | Failure/recovery thread checkpoint 2 | ANSWER NOW: installed dbt Click completion returns build for bu and --select/--selector for --sel; Bash source generation succeeds. Added session-only activation to Bash runbook. No shell startup edits or learner activation confirmed. Failure/recovery remains pending; next review 5. |
+
+| 2026-10-16 | Failure/recovery thread checkpoint 3 | Learner reports completion not working. Agent isolated Bash activation registers dbt and returns COMPREPLY=build for bu; this does not verify learner interactive shell. Requested shell/version, dbt resolution and completion registration output. No startup edits; pipeline failure/recovery still pending. |
+
+| 2026-10-16 | Failure/recovery thread checkpoint 4 | Learner Bash 5.3.9 output shows ~/.local/bin/dbt before project venv and complete -F _complete_it dbt. Intended Click registration absent; origin of conflicting function not established. Assigned session PATH correction, hash reset and Click re-registration, followed by executable/function verification. Locally verified feature/source-failure-recovery exists; five docs modified, SQL unchanged. Recovery and interactive completion acceptance pending. |
+
+| 2026-10-16 | Failure/recovery thread checkpoint 5 | Inspected ~/.local/bin/dbt: standalone ELF executable, --version reports 2.0.8. Project venv reports Core 1.12.0/duckdb 1.11.0. User-level binary matches documented standalone installer destination, but installer origin/actor unknown. No removal or startup edits. Review 5: continue bounded diagnosis; next review 10. Completion correction and pipeline exercise remain unconfirmed. |
+
+| 2026-10-16 | Failure/recovery thread checkpoint 6 | Owner asked how to remove standalone dbt. Supplied exact ~/.local/bin/dbt removal, Bash hash reset, project venv activation, executable/version verification and Click re-registration. Commands supplied only; no agent deletion or confirmed learner removal. Project venv retained; pipeline exercise pending. |
+
+| 2026-10-16 | Failure/recovery thread checkpoint 7 | Clarified ~/.bashrc shell completion versus dbt profiles.yml connection configuration. Added generated venv-local completion script and guarded Bash startup source recipe to runbook. No user startup-file edit or generation executed by agent; binary removal and persistence acceptance remain unconfirmed. Pipeline exercise pending. |
+
+| 2026-10-16 | Failure/recovery thread checkpoint 8 | Learner reports build success. Inspected target/failure/run_results.json generated 2026-10-17T03:52:00.431151Z: Core 1.12.0, 3 models successful and 5 tests pass; source test failures=0. SQL still expects 3, so this is baseline success, not negative-case acceptance. Explained target-path only routes artifacts. Assigned both literals 3→4, diff review, same build and immediate exit-code capture. No agent SQL/build operation. |
+
+| 2026-10-17 | Failure/recovery thread checkpoint 9 | Learner reports success. Latest failure-path artifact at 2026-10-17T17:01:44.997589Z still has 3 successful models/5 passing tests; log summary PASS=8 ERROR=0 SKIP=0. SQL still expects 3 and recovery artifact absent. Negative case not evidenced. Supplied exact expectation-4 SQL to save, then selected build/exit capture; no agent SQL edit or database operation. |
+
+| 2026-10-17 | Failure/recovery thread checkpoint 10 | Inspected log: 10:04:26 FAIL 1 source test, ERROR=1/SKIP=7; logged projection retained expected_rows=3 while HAVING used 4. Recovery 10:05:38 PASS=8, confirmed by current JSON. Learner SQL now uses expected_rows alias with value 3, avoiding duplicate literals. Failure JSON overwritten by recovery but log retains proof; no repeat build required. Assigned freshness/completeness reasoning then scoped Git review. Review 10: continue bounded phase, next review 15. |
+
+| 2026-10-17 | Failure/recovery thread checkpoint 11 | Learner correctly explains freshness checks timestamps while exact count rejects 2 versus 3. Explained minimum >=3 admits extra rows and count alone cannot prove membership/uniqueness. Six modified files verified on feature/source-failure-recovery; only SQL change is HAVING alias reuse, expectation remains 3. Diff whitespace check passes. Assigned learner whole-diff review before explicit staging/commit; no Git mutation by agent. |
+
+| 2026-10-17 | Failure/recovery thread checkpoint 12 | Verified feature/source-failure-recovery at a1b0fa8, six modified files, empty index and no new commit. SQL restores fixture expectation 3 and uses alias in HAVING. Bash runbook snippets pass bash -n; diff whitespace passes. Assigned explicit six-file staging, cached diff/check, local commit and status. No agent staging/commit/push; hosted PR and CI acceptance remain pending. |
