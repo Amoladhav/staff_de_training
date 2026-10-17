@@ -114,3 +114,7 @@ Record decisions that materially change the plan.
 
 ### D-019 clarification — native Windows PowerShell
 - Owner requires native Windows commands only in PowerShell reference; no WSL command wrappers. Separate Windows venv and native validation required. Keep canonical files; configurable UNC access does not constitute native runtime verification. Matching section IDs remain; platform-specific steps may differ.
+
+### D-019 clarification — generic parameterized flows
+- Owner requests repeatable development blocks with figlet headers (NEW CODE, CHANGED CODE, AZ ACCOUNT), # comments and sequential steps. Declare PROJECT_ROOT, BR_NAME and task variables once per terminal, then copy commands using those values.
+- Keep current branch/commit and validation evidence in tracker/handoff; preserve reusable flow IDs. Native Windows requirement remains. Azure section is account-context reference only, no provisioning claim.

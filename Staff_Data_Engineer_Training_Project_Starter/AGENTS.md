@@ -83,3 +83,13 @@ path without duplicating the repository. Native Windows runtime acceptance is
 separate and remains pending until demonstrated. Include purpose, Bash counterpart and tool-help
 references. The text files are references to copy from, not scripts to execute
 wholesale. Chat commands still use one fenced block per command.
+
+Owner clarification, 2026-10-16: command references are generic, repeatable
+flows, not per-checkpoint transcripts. Use pre-rendered `figlet` banners (each
+line prefixed with `#`) for titles such as NEW CODE, CHANGED CODE and AZ ACCOUNT.
+Provide a VARIABLES block with PROJECT_ROOT, BR_NAME and other task inputs;
+Bash uses export and native PowerShell uses $env:. Declare once per terminal and
+reuse in quoted commands. Keep task-specific evidence and current branch/commit
+in the tracker/handoff, not hard-coded recipes. Preserve stable flow IDs and
+explicit prerequisites, sequential steps and conditional writes. User does not
+need figlet installed to read/use the pre-rendered files.

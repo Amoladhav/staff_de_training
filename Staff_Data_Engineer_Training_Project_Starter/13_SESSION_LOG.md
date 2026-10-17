@@ -276,3 +276,14 @@ Windows loader path adaptation explicitly pending; active dev remains Bash B06.
 Checkpoint 23 additional evidence: owner supplied build output matching inspected
 artifact: Core 1.12.0, 3 models/5 tests, PASS=8 and zero warnings/errors/skips.
 No rerun needed; staging/review/commit is next.
+
+### Git/runtime thread checkpoint 24: generic command flows — 2026-10-16
+- Verified runtime commit 503461e, clean before docs edits. Rebuilt shell references into parameterized repeatable blocks with figlet banners, numbered steps and native Windows commands. Updated README/instructions and decision record.
+- No workflow execution beyond static documentation checks. Documentation review/commit then hosted PR next. Native Windows/Azure acceptance unchanged; next continuity review 25.
+
+### Git/runtime thread checkpoint 25: partial docs commit — 2026-10-16
+- Verified 6a464f2 includes only README; eight docs/instruction files remain unstaged. Local feature HEAD matches cached upstream; no live query. Added interactive staging guidance and assigned B11 remaining-docs commit.
+- Scheduled qualitative review: finish bounded Git checkpoint, reassess handoff before another feature; next review 30. No agent Git mutation or runtime retest.
+
+### Git/runtime thread checkpoint 26: staging still pending — 2026-10-16
+- HEAD/index/worktree unchanged: 6a464f2, no staged files, eight docs changes. Simplified CHANGED CODE staging for fully reviewed tracked scope; supplied direct commands. No Git mutation/publication by agent; next review 30.

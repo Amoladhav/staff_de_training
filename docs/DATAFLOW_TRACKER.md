@@ -21,11 +21,11 @@ its delivery workflow. No fixed session durations apply.
 ## Thread continuity review
 
 - Thread label: Git publication follow-through and runtime reproducibility — new thread confirmed 2026-10-16.
-- Initialized at **0**; counted checkpoints: **23** (commit state checked; staging and commit still pending).
-- Last scheduled review: checkpoint **20**.
-- Next scheduled review: checkpoint **25**, then 30, 35, and so on.
-- Assessment: history spans runtime diagnosis and shell-reference work, but exact next action is captured. Continue through bounded runtime build and runbook acceptance; reassess before the next feature. Qualitative assessment, not a capacity estimate.
-- Recommendation: continue runtime executable diagnosis on the feature branch.
+- Initialized at **0**; counted checkpoints: **26** (unchanged Git state; direct tracked-file staging assigned).
+- Last scheduled review: checkpoint **25**.
+- Next scheduled review: checkpoint **30**, then 35, 40, and so on.
+- Assessment: substantial runtime and documentation history; continue to the current documentation commit and publication checkpoint, then reassess before another feature. Qualitative assessment, not a capacity estimate.
+- Recommendation: finish the current documentation Git checkpoint; avoid starting another implementation phase before reassessing handoff.
 - Previous thread review preserved: ended at checkpoint 23, scheduled review at 20 and early qualitative review at 23 recommended a handoff at the publication boundary before runtime reproducibility. Owner confirmed the new thread. Earlier baseline thread recommended handoff at checkpoint 1; lifetime count remains unknown.
 
 ## Where we are now
@@ -40,11 +40,9 @@ since loading. This is consistent with the configured five-minute warning and
 ten-minute error thresholds; it does not invalidate the earlier reported PASS.
 Freshness status changes as data ages; task status records learning/delivery progress.
 
-Next: Follow Bash B11 steps 01-08 to stage the explicit runtime/docs scope, review the staged diff, check whitespace and commit. Core build verified: three models successful, five tests passed with zero failures using the temporary profile. README replaced with verified workflow and limitations; hosted PR/integration follows commit.
-Artifact: run_results.json generated 2026-10-17T00:12:52.832704Z (October 16
-Pacific), Core 1.12.0, build, source:commerce.orders+, temporary profiles directory.
-All eight results successful/pass. Package reproduction and template connection
-verified; negative-case recovery, native Windows and hosted CI remain pending.
+Next: Commit remaining eight reviewed documentation files using B11 CHANGED CODE. Set PROJECT_ROOT to workspace, BR_NAME=fix/runtime-reproducibility and a documentation COMMIT_MSG. Commit 6a464f2 contains only README; command references/instructions/checkpoint records remain modified. Local feature HEAD matches cached origin feature ref; live remote/PR not queried. Publish follow-up commit afterward.
+Runtime package/template/build acceptance remains verified; native Windows,
+negative-case recovery and hosted CI remain pending. Documentation checks pass.
 Owner reports PR merged and branch deleted; cached origin/main contains PR #1
 merge 191dd10. Agent fast-forwarded local main to that fetched revision with
 permission. Local docs branch absent. No live remote query or CI verification.
@@ -318,3 +316,9 @@ Checkpoint 23 additional evidence: owner supplied matching Core 1.12.0 build
 output, PASS=8/WARN=0/ERROR=0/SKIP=0. Three selected models and five tests passed;
 Found 5 models/9 tests describes total discovered resources, not selected results.
 Build acceptance complete for this selection; B11 steps 03-08 remain next.
+
+| 2026-10-16 | Git/runtime thread checkpoint 24: generic command flows | Verified runtime commit 503461e and clean worktree before docs revision. Owner requests reusable flows with figlet banners and environment-variable setup. Rebuilt both text references around VARIABLES, NEW CODE, CHANGED CODE, PUBLISH, runtime/profile/validation and AZ ACCOUNT; native Windows only in PowerShell. Updated README/instructions. No agent Git, package, database or Azure actions; native execution unverified. |
+
+| 2026-10-16 | Git/runtime thread checkpoint 25: partial documentation commit | Verified 6a464f2 contains README only; eight tracked documentation files remain modified, index empty. Runtime commit 503461e retained; cached upstream matches local feature branch. Added interactive staging guidance, assigned B11 review/commit for remaining docs. Scheduled qualitative review: finish bounded Git checkpoint, reassess before new feature; next review 30. |
+
+| 2026-10-16 | Git/runtime thread checkpoint 26: staging still pending | Rechecked HEAD 6a464f2, empty index and same eight tracked docs changes. Simplified generic CHANGED CODE step 04 to git add -u for wholly reviewed tracked scope, with partial/untracked guidance. Supplied direct stage/review/check/commit commands; no agent Git mutation or publication. |

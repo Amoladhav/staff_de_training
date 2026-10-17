@@ -78,10 +78,7 @@ Fixture file inspected: three orders, IDs 1–3. No automated completeness gate 
 Owner reaffirmed proactive thread-length monitoring and saved summaries/resume
 prompts; root AGENTS.md now spells out the checkpoint procedure.
 
-Exact next action: Follow Bash B11 steps 01-08 to stage the explicit runtime/docs scope, review the staged diff, check whitespace and commit. Core build verified: three models successful, five tests passed with zero failures using the temporary profile. README replaced with verified workflow and limitations; hosted PR/integration follows commit.
-run_results.json: Core 1.12.0, generated 2026-10-17T00:12:52.832704Z, selected
-source descendants, temporary profile, all 8 results successful/pass. No new
-agent dbt execution. Do not repeat package setup or template creation.
+Exact next action: Commit remaining eight reviewed documentation files using B11 CHANGED CODE. Set PROJECT_ROOT to workspace, BR_NAME=fix/runtime-reproducibility and a documentation COMMIT_MSG. Commit 6a464f2 contains only README; command references/instructions/checkpoint records remain modified. Local feature HEAD matches cached origin feature ref; live remote/PR not queried. Publish follow-up commit afterward.
 
 Checkpoint 23 publication evidence:
 - Owner reported push, then supplied GitHub JSON confirming private=true,
@@ -138,8 +135,9 @@ OneDrive source snapshot location:
 ## Thread continuity state
 
 Owner confirmed a new Git/runtime thread on 2026-10-16. Initialized counter at
-zero; current checkpoint is 23, next scheduled review 25. Review at 20: continue through
-bounded runtime build/runbook acceptance; reassess before the next feature. Previous thread ended at
+zero; current checkpoint is 26, next scheduled review 30. Review at 25: accumulated
+runtime/docs history warrants reassessment before another feature; finish current
+documentation commit/publication checkpoint here first. Previous thread ended at
 23 with a scheduled review at 20 and early qualitative handoff recommendation at
 23. Fresh thread: continue; no capacity estimate or guaranteed compaction warning.
 
@@ -190,3 +188,17 @@ template connection. Selected build remains pending; B06 step 06 is next.
 Checkpoint 23: HEAD still 191dd10 on fix/runtime-reproducibility; index empty.
 Seven tracked changes and five untracked files await B11 steps 03-08. No feature
 commit yet; PR publication must follow commit.
+
+Checkpoint 24: runtime commit 503461e verified on fix/runtime-reproducibility,
+clean before requested generic command-reference rewrite. Current changes are
+documentation/instruction updates for review and commit. PR publication remains
+pending; command examples are not execution evidence.
+
+Checkpoint 25: fix/runtime-reproducibility HEAD 6a464f2 matches cached origin
+feature ref. That commit changes README only. Eight docs/instruction files
+remain modified; no runtime changes or agent Git mutation. B11 stage/review/commit
+next, then push follow-up revision and verify PR before integration.
+
+Checkpoint 26: Git state unchanged at 6a464f2 with eight unstaged docs files.
+B11/P11 step 04 now uses git add -u for reviewed tracked scope, with guidance for
+partial and new files. Direct staging/review/check/commit commands supplied.

@@ -29,10 +29,10 @@ Last updated: 2026-10-16
 - BLUE: Staff-level confident
 
 ## Current Work
-- New Git/runtime thread confirmed 2026-10-16: checkpoint 23; previous thread ended at 23; review: continue through runtime acceptance; next scheduled review 25. Git state rechecked; PR #1 merge 191dd10 integrated locally; runtime diagnostics next. Learner aggregate shows 3 rows / 3 distinct IDs, matching fixture count; raw preview matches fixture IDs, statuses and amounts; completeness reasoning remains pending.
+- New Git/runtime thread confirmed 2026-10-16: checkpoint 26; previous thread ended at 23; review: finish current Git checkpoint, reassess before new feature; next scheduled review 30. Git state rechecked; PR #1 merge 191dd10 integrated locally; runtime diagnostics next. Learner aggregate shows 3 rows / 3 distinct IDs, matching fixture count; raw preview matches fixture IDs, statuses and amounts; completeness reasoning remains pending.
 - Active checkpoint: W08 repository foundation — In Progress, moved ahead of further pipeline changes; W05–W07 remaining acceptance preserved.
 - Current work-item statuses, diagrams, developer workflows and evidence: [Dataflow tracker](../docs/DATAFLOW_TRACKER.md). This supersedes older setup-next-step notes below.
-- Next action: Follow Bash B11 steps 01-08 to stage the explicit runtime/docs scope, review the staged diff, check whitespace and commit. Core build verified: three models successful, five tests passed with zero failures using the temporary profile. README replaced with verified workflow and limitations; hosted PR/integration follows commit.
+- Next action: Commit remaining eight reviewed documentation files using B11 CHANGED CODE. Set PROJECT_ROOT to workspace, BR_NAME=fix/runtime-reproducibility and a documentation COMMIT_MSG. Commit 6a464f2 contains only README; command references/instructions/checkpoint records remain modified. Local feature HEAD matches cached origin feature ref; live remote/PR not queried. Publish follow-up commit afterward.
 - Then: bounded failure/recovery, batch completeness contract and source-backed build/test acceptance.
 - Azure billing/budget readiness and PowerShell saved variable remain unverified.
 

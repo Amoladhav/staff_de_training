@@ -1,413 +1,590 @@
-# STAFF DE TRAINING - NATIVE WINDOWS POWERSHELL COMMAND CHEAT SHEET
-# Updated: 2026-10-16
-# Reference, not a script: copy one selected step at a time. Stop on unexpected errors.
-# All executable commands run on Windows. Native Windows acceptance is PENDING.
-# The canonical repository remains in WSL storage; its UNC path is only file access.
-# No repository clone/move is required. Ubuntu must be available for UNC access.
-# Verify the distribution/path below on your machine; change TrainingRoot if needed.
-# Windows Python, Git and gh must already be installed; inspect before installing anything.
-# Never reuse the Linux .venv. Windows environment/data live under LOCALAPPDATA.
-# Run Git operations from one OS at a time: both shells share this worktree and .git.
-# Linux success does not prove Windows wheel availability, UNC support, or pipeline acceptance.
-# Section IDs P01-P10 match Bash topics B01-B10. Step numbers can differ by platform.
-# Status: docs/DATAFLOW_TRACKER.md. Resume: docs/HANDOFF.md.
-# PowerShell cmdlets return objects; external tools generally print text.
-# External tool failure: inspect $LASTEXITCODE immediately; nonzero means stop unless documented.
-# Use Get-Help <cmdlet> -Examples; external tools use their own --help. See P10.
+#  ___  _____   __  ___ _    _____      _____
+# |   \| __\ \ / / | __| |  / _ \ \    / / __|
+# | |) | _| \ V /  | _|| |_| (_) \ \/\/ /\__ \
+# |___/|___| \_/   |_| |____\___/ \_/\_/ |___/
+# POWERSHELL | reusable development command reference
+# Set VARIABLES once per terminal, then run ONE selected flow, one numbered command at a time.
+# All narrative and banner lines use # comments. Do not execute/source the entire file.
+# Generic flow logic; project-specific paths and task names belong in VARIABLES.
+# Edit placeholder values before use. Stop on unexpected failures; inspect outputs before the next step.
+# No secrets in variables or committed files. Current acceptance/state: docs/DATAFLOW_TRACKER.md.
+# Commands are owner-run; this reference does not imply execution or hosted CI acceptance.
+# B/P section numbers remain stable; order follows typical workflow. Step numbers are local to each flow.
+# B06 creation moved out of generic recipes: the profile template is tracked project source.
+# B06 connection/build checks now live under B05/P05 VALIDATE.
+# Native Windows uses Windows Python/Git/gh and a separate venv; no Linux command wrappers.
+# Windows UNC accesses canonical files only. Native Windows execution remains unverified.
+# Run Git writes from only one operating system at a time against the shared checkout.
+# BASH: exported values persist in this shell. POWERSHELL: $env: values persist in this process and its children.
+# Banner text pre-rendered with figlet -f small; figlet is not needed to use these files.
 
-# P00 - Session variables and initial Windows runtime (prerequisite for other sections)
-# P00 - Step 01: Select existing repository. Bash: cd /home/amola/projects/staff_de_training.
-$TrainingRoot = '\\wsl.localhost\Ubuntu\home\amola\projects\staff_de_training'
+# FLOW INDEX
+# P00 - VARIABLES
+# P01 - RESUME
+# P12 - NEW CODE
+# P11 - CHANGED CODE
+# P08 - PUBLISH
+# P14 - ENV SETUP
+# P02 - DIAGNOSE
+# P03 - SNAPSHOT
+# P04 - REPRODUCE
+# P06 - PROFILE
+# P05 - VALIDATE
+# P07 - PIPELINE
+# P09 - GIT AUTH
+# P13 - AZ ACCOUNT
+# P10 - HELP
 
-# P00 - Step 02: Verify UNC access; expect True. Stop on False; do not create a duplicate checkout.
-# Bash: test -d PATH. Help: Get-Help Test-Path -Examples.
-Test-Path -LiteralPath $TrainingRoot -PathType Container
+# ==============================================================================
+# __   ___   ___ ___   _   ___ _    ___ ___
+# \ \ / /_\ | _ \_ _| /_\ | _ ) |  | __/ __|
+#  \ V / _ \|   /| | / _ \| _ \ |__| _|\__ \
+#   \_/_/ \_\_|_\___/_/ \_\___/____|___|___/
+# P00 - VARIABLES
+# Run once per terminal; edit values for the task. Each shell has its own environment.
+# BR_NAME is the intended feature branch: choose a NEW name for NEW CODE, or your EXISTING branch for CHANGED CODE.
+# PROJECT_ROOT points to the existing checkout. Native Windows uses UNC file access, not Linux execution.
+# ==============================================================================
 
-# P00 - Step 03: Select Windows-only runtime/data directory. Bash counterpart: platform-specific path variable.
-$WindowsState = Join-Path $env:LOCALAPPDATA 'staff_de_training'
+# P00 - Step 01: Set canonical checkout. PowerShell alternative: an already-established native Windows checkout.
+# Bash counterpart: B00, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:PROJECT_ROOT = '\\wsl.localhost\Ubuntu\home\amola\projects\staff_de_training'
 
-# P00 - Step 04: Select Windows-only environment. Bash counterpart: .venv path, never shared across OSes.
-$WindowsVenv = Join-Path $WindowsState 'venv'
+# P00 - Step 02: Choose feature branch; replace this example once.
+# Bash counterpart: B00, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:BR_NAME = 'feature/describe_change'
 
-# P00 - Step 05: Locate installed native tools before setup. Bash: type -a python git gh.
-Get-Command python.exe, git.exe, gh.exe -All
+# P00 - Step 03: Choose integration branch.
+# Bash counterpart: B00, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:BASE_BRANCH = 'main'
 
-# P00 - Step 06: Inspect Windows Python. Compare to Linux 3.14.4; different versions are separate evidence.
-# Bash: python -c SAME_CODE. If executable is an app-store alias or version is unsuitable, stop and review.
-python.exe -c "import sys; print(sys.executable); print(sys.version)"
+# P00 - Step 04: Choose commit message; update for each logical change.
+# Bash counterpart: B00, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:COMMIT_MSG = 'Describe the completed change'
 
-# P00 - Step 07: Check for an existing Windows environment; do not recreate it blindly.
-Test-Path -LiteralPath $WindowsVenv -PathType Container
+# P00 - Step 05: Select dbt project directory.
+# Bash counterpart: B00, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:DBT_PROJECT_DIR = Join-Path $env:PROJECT_ROOT "training_analytics"
 
-# P00 - Step 08: ONLY IF ABSENT: create native environment. Bash: python -m venv PATH.
-python.exe -m venv $WindowsVenv
+# P00 - Step 06: Select platform-local runtime/state root; Windows is separate from Linux.
+# Bash counterpart: B00, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:RUNTIME_ROOT = Join-Path $env:LOCALAPPDATA "staff_de_training"
 
-# P00 - Step 09: INITIAL SETUP ONLY: install direct pins; stop if Windows packages are unavailable.
-# Linux requirements_snapshot.txt is not asserted to work on Windows. Downloads may occur.
-# Bash: python -m pip install -r requirements.txt. & invokes an executable at a quoted path.
-& "$WindowsVenv\Scripts\python.exe" -m pip install -r "$TrainingRoot\requirements.txt"
+# P00 - Step 07: Select platform-specific venv. Never share a venv across operating systems.
+# Bash counterpart: B00, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:VENV_DIR = Join-Path $env:RUNTIME_ROOT "venv"
 
-# P00 - Step 10: Confirm native dependency consistency; expected: No broken requirements found.
-& "$WindowsVenv\Scripts\python.exe" -m pip check
+# P00 - Step 08: Select explicit project Python executable.
+# Bash counterpart: B00, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:PYTHON_EXE = Join-Path $env:VENV_DIR "Scripts\python.exe"
 
-# INDEX
-# P01 - Resume and inspect
-# P02 - Diagnose runtime selection
-# P03 - Generate separate Windows package snapshot
-# P04 - Reproduce native packages in a fresh Windows environment
-# P05 - Validate native connection (after P06)
-# P06 - Portable profile template and isolated Windows database
-# P07 - Manual pipeline: native Windows validation gate
-# P08 - Git feature lifecycle
-# P09 - Native Git credential diagnosis
-# P10 - Help and discovery
-# P11 - Current runtime branch review and commit
+# P00 - Step 09: Select explicit dbt executable.
+# Bash counterpart: B00, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:DBT_EXE = Join-Path $env:VENV_DIR "Scripts\dbt.exe"
 
-# ============================================================================
-# P01 - Resume and inspect
-# Prerequisite: P00 variables; existing native environment. Bash topic: B01.
-# ============================================================================
+# P00 - Step 10: Choose platform-specific snapshot. Windows snapshot requires separate review/acceptance.
+# Bash counterpart: B00, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:SNAPSHOT_FILE = Join-Path $env:RUNTIME_ROOT "requirements_windows_snapshot.txt"
 
-# P01 - Step 01: Enter canonical files using native PowerShell. Bash: cd. Help: Get-Help Set-Location -Examples.
-Set-Location -LiteralPath $TrainingRoot
+# P00 - Step 11: Choose disposable reproduction directory; use a NEW unused path for each fresh proof.
+# Bash counterpart: B00, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:REPRO_DIR = Join-Path $env:TEMP "staff_de_training_repro"
 
-# P01 - Step 02: Activate Windows venv. Bash: source .venv/bin/activate. If policy blocks this, use explicit paths
-# from P02; do not change machine policy merely to activate.
-& "$WindowsVenv\Scripts\Activate.ps1"
+# P00 - Step 12: Choose copied-profile directory.
+# Bash counterpart: B00, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:PROFILE_DIR = Join-Path $env:RUNTIME_ROOT "profiles"
 
-# P01 - Step 03: Inspect branch/worktree. Same Git arguments in Bash; help: git.exe status --help.
+# P00 - Step 13: Set database path. Preserve dev.duckdb filename: source catalog is currently dev.
+# Bash counterpart: B00, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:DBT_DUCKDB_PATH = Join-Path $env:RUNTIME_ROOT "dev.duckdb"
+
+# P00 - Step 14: Set artifact location, isolated from the normal project target.
+# Bash counterpart: B00, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:DBT_TARGET_PATH = Join-Path $env:REPRO_DIR "dbt_target"
+
+# P00 - Step 15: Set log location.
+# Bash counterpart: B00, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:DBT_LOG_PATH = Join-Path $env:REPRO_DIR "dbt_logs"
+
+
+# ==============================================================================
+#  ___ ___ ___ _   _ __  __ ___
+# | _ \ __/ __| | | |  \/  | __|
+# |   / _|\__ \ |_| | |\/| | _|
+# |_|_\___|___/\___/|_|  |_|___|
+# P01 - RESUME
+# Prerequisite: VARIABLES. Repeatable inspection. Keep current files and branch; no reinitialization.
+# ==============================================================================
+
+# P01 - Step 01: Enter checkout. PowerShell help: Get-Help Set-Location -Examples.
+# Bash counterpart: B01, same purpose; cmdlet help: Get-Help <name> -Examples.
+Set-Location -LiteralPath $env:PROJECT_ROOT
+
+# P01 - Step 02: Inspect branch and worktree before changes.
+# Bash counterpart: B01, same purpose; cmdlet help: Get-Help <name> -Examples.
 git.exe status --short --branch
 
-# P01 - Step 04: Verify runtime after activation; expected Core 1.12.0 / adapter 1.11.0. Bash: dbt --version.
-dbt.exe --version
+# P01 - Step 03: Inspect latest commit.
+# Bash counterpart: B01, same purpose; cmdlet help: Get-Help <name> -Examples.
+git.exe log -1 --oneline
 
-# ============================================================================
-# P02 - Diagnose runtime selection
-# Prerequisite: P00 variables. Explicit paths do not require activation. Bash topic: B02.
-# ============================================================================
+# P01 - Step 04: Check explicit runtime. Missing executable: use ENV SETUP; do not reinstall blindly.
+# Bash counterpart: B01, same purpose; cmdlet help: Get-Help <name> -Examples.
+& $env:DBT_EXE --version
 
-# P02 - Step 01: Find all native candidates. Bash: type -a dbt python. Help: Get-Help Get-Command -Examples.
-Get-Command dbt, python -All
 
-# P02 - Step 02: Show selected Python interpreter. Bash: python -c SAME_CODE.
-& "$WindowsVenv\Scripts\python.exe" -c "import sys; print(sys.executable)"
+# ==============================================================================
+#  _  _ _____      __   ___ ___  ___  ___
+# | \| | __\ \    / /  / __/ _ \|   \| __|
+# | .` | _| \ \/\/ /  | (_| (_) | |) | _|
+# |_|\_|___| \_/\_/    \___\___/|___/|___|
+# P12 - NEW CODE
+# Prerequisite: VARIABLES and a clean worktree. Use only for a NEW feature branch in an existing repository.
+# If work is already on a feature branch, go to CHANGED CODE instead.
+# ==============================================================================
 
-# P02 - Step 03: Inspect PATH entries. Bash: print PATH components. No Bash hash cache to clear in PowerShell.
-$env:Path -split ";"
+# P12 - Step 01: Enter checkout.
+# Bash counterpart: B12, same purpose; cmdlet help: Get-Help <name> -Examples.
+Set-Location -LiteralPath $env:PROJECT_ROOT
 
-# P02 - Step 04: Compare explicit executable; expected Core 1.12.0 / adapter 1.11.0.
-& "$WindowsVenv\Scripts\dbt.exe" --version
-
-# P02 - Step 05: Inspect native packages. Bash: python -m pip show dbt-core dbt-duckdb duckdb.
-& "$WindowsVenv\Scripts\python.exe" -m pip show dbt-core dbt-duckdb duckdb
-
-# P02 - Step 06: Validate native package consistency; does not read requirements.txt.
-& "$WindowsVenv\Scripts\python.exe" -m pip check
-
-# ============================================================================
-# P03 - Generate separate Windows package snapshot
-# Prerequisite: P00 installation passed. Bash topic: B03. Windows snapshot remains local pending review.
-# Do not overwrite the Linux snapshot; Windows dependency resolution can differ.
-# ============================================================================
-
-# P03 - Step 01: Enter repository. Bash: cd.
-Set-Location -LiteralPath $TrainingRoot
-
-# P03 - Step 02: Review direct pins. Bash: cat requirements.txt. Help: Get-Help Get-Content -Examples.
-Get-Content -LiteralPath requirements.txt
-
-# P03 - Step 03: Capture installed native versions, including pip. Replaces only Windows snapshot.
-# Bash: pip freeze --all > file. ASCII avoids Windows PowerShell UTF-16 redirection defaults.
-& "$WindowsVenv\Scripts\python.exe" -m pip freeze --all | Set-Content -Encoding ascii -LiteralPath "$WindowsState\requirements_windows_snapshot.txt"
-
-# P03 - Step 04: Review snapshot; this is installed-state capture, not a solver lockfile.
-Get-Content -LiteralPath "$WindowsState\requirements_windows_snapshot.txt"
-
-# ============================================================================
-# P04 - Reproduce native packages in a fresh Windows environment
-# Prerequisite: P03 snapshot exists and is reviewed. Bash topic: B04. Native reproduction unverified.
-# Reuse an existing target only for inspection; fresh proof requires a new unused path.
-# ============================================================================
-
-# P04 - Step 01: Select Windows temporary environment. Bash: select /tmp path.
-$WindowsRepro = Join-Path $env:TEMP "staff_de_training_repro"
-
-# P04 - Step 02: Check existence. False = absent; True = choose a new target for clean proof. Bash: test -d.
-Test-Path -LiteralPath $WindowsRepro -PathType Container
-
-# P04 - Step 03: ONLY IF ABSENT: create using the same native Python base.
-& "$WindowsVenv\Scripts\python.exe" -m venv $WindowsRepro
-
-# P04 - Step 04: Install Windows snapshot; stop on failure. Bash: python -m pip install -r file.
-& "$WindowsRepro\Scripts\python.exe" -m pip install -r "$WindowsState\requirements_windows_snapshot.txt"
-
-# P04 - Step 05: Expect no broken requirements.
-& "$WindowsRepro\Scripts\python.exe" -m pip check
-
-# P04 - Step 06: Expect Core 1.12.0 / adapter 1.11.0.
-& "$WindowsRepro\Scripts\dbt.exe" --version
-
-# P04 - Step 07: Capture recreated native versions.
-& "$WindowsRepro\Scripts\python.exe" -m pip freeze --all | Set-Content -Encoding ascii -LiteralPath "$WindowsState\requirements_windows_repro.txt"
-
-# P04 - Step 08: Compare; no output means matching lines. Compare-Object does not use diff exit codes.
-# Bash: diff -u files. Help: Get-Help Compare-Object -Examples.
-Compare-Object (Get-Content "$WindowsState\requirements_windows_snapshot.txt") (Get-Content "$WindowsState\requirements_windows_repro.txt")
-
-# ============================================================================
-# P05 - Validate native connection
-# Prerequisite: P06 completed in this session, including DBT_DUCKDB_PATH and profile directory.
-# Bash topic: B05, but do not use the ignored Linux profiles.yml: its path is Linux-specific.
-# Debug tests configuration/connection only, not source data or models. Native acceptance pending.
-# ============================================================================
-
-# P05 - Step 01: Enter canonical project files. Bash: cd.
-Set-Location -LiteralPath $TrainingRoot
-
-# P05 - Step 02: Validate native profile with Windows runtime and isolated database.
-# Bash: dbt debug --project-dir ... --profiles-dir ...; help: dbt.exe debug --help.
-& "$WindowsVenv\Scripts\dbt.exe" debug --project-dir "$TrainingRoot\training_analytics" --profiles-dir "$WindowsState\profiles" --log-path "$WindowsState\logs"
-
-# ============================================================================
-# P06 - Portable profile template and isolated Windows database
-# Prerequisite: P00. Bash topic: B06; extra Windows path steps change step numbering.
-# Learner authors training_analytics/profiles.example.yml with this YAML (remove # prefixes):
-# training_analytics:
-#   target: dev
-#   outputs:
-#     dev:
-#       type: duckdb
-#       path: "{{ env_var('DBT_DUCKDB_PATH') }}"
-#       schema: main
-#       threads: 1
-# Template saved and inspected; native Windows validation pending. dbt loads profiles.yml, not profiles.example.yml.
-# Keep the local Linux profiles.yml unchanged. Windows profile/database are local to Windows.
-# ============================================================================
-
-# P06 - Step 01: Enter repository. Bash: cd.
-Set-Location -LiteralPath $TrainingRoot
-
-# P06 - Step 02: Check authored template; expect True, otherwise stop and author it. Bash: test -f.
-Test-Path -LiteralPath "training_analytics\profiles.example.yml" -PathType Leaf
-
-# P06 - Step 03: Create Windows-only profile directory. Bash: mkdir -p. Help: Get-Help New-Item -Examples.
-New-Item -ItemType Directory -Force -Path "$WindowsState\profiles"
-
-# P06 - Step 04: Copy template to Windows profiles.yml, replacing that copy. Bash: cp. Help: Get-Help Copy-Item -Examples.
-Copy-Item -LiteralPath "training_analytics\profiles.example.yml" -Destination "$WindowsState\profiles\profiles.yml"
-
-# P06 - Step 05: Set path for this PowerShell session and child processes. Bash: export DBT_DUCKDB_PATH=...
-# Windows-local DB is separate from Linux dev.duckdb; connection may create an empty DB.
-$env:DBT_DUCKDB_PATH = Join-Path $WindowsState "dev.duckdb"
-
-# P06 - Step 06: Validate Windows profile. Expect All checks passed; does not establish pipeline acceptance.
-& "$WindowsVenv\Scripts\dbt.exe" debug --project-dir "$TrainingRoot\training_analytics" --profiles-dir "$WindowsState\profiles" --log-path "$WindowsState\logs"
-
-# ============================================================================
-# P07 - Manual pipeline: native Windows validation gate
-# Bash topic: B07. STOP: native full-pipeline execution is not yet accepted.
-# load_orders.py currently derives dev.duckdb beside the script, ignoring DBT_DUCKDB_PATH.
-# Running it on UNC files would target the shared Linux database, not the isolated Windows DB.
-# First adapt/review loader path configuration in a separate lesson and prove both stages target
-# WindowsState\dev.duckdb. Do not run the loader against shared storage as a workaround.
-# Steps 04-06 become executable only after native loader input/output and runtime acceptance.
-# Freshness is recency, not completeness; build writes/rebuilds models. Stop on each failure.
-# ============================================================================
-
-# P07 - Step 01: Inspect loader path handling. Bash: cat training_analytics/load_orders.py.
-Get-Content -LiteralPath "$TrainingRoot\training_analytics\load_orders.py"
-
-# P07 - Step 02: Inspect intended native DB target. Bash: print DBT_DUCKDB_PATH.
-$env:DBT_DUCKDB_PATH
-
-# P07 - Step 03: GATED: loader execution requires configurable database path; no runnable recipe yet.
-# Pending loader adaptation and native acceptance; do not run existing loader.
-
-# P07 - Step 04: AFTER GATE: freshness in Windows DB. Bash counterpart: B07 step 04.
-# & "$WindowsVenv\Scripts\dbt.exe" source freshness --project-dir "$TrainingRoot\training_analytics" --profiles-dir "$WindowsState\profiles" --target-path "$WindowsState\target" --log-path "$WindowsState\logs"
-
-# P07 - Step 05: AFTER GATE: build descendants/tests in Windows DB. Bash counterpart: B07 step 05.
-# & "$WindowsVenv\Scripts\dbt.exe" build --select "source:commerce.orders+" --project-dir "$TrainingRoot\training_analytics" --profiles-dir "$WindowsState\profiles" --target-path "$WindowsState\target" --log-path "$WindowsState\logs"
-
-# P07 - Step 06: AFTER GATE: preview consumer model. Bash counterpart: B07 step 06.
-# & "$WindowsVenv\Scripts\dbt.exe" show --select completed_orders --limit 10 --project-dir "$TrainingRoot\training_analytics" --profiles-dir "$WindowsState\profiles" --target-path "$WindowsState\target" --log-path "$WindowsState\logs"
-
-# ============================================================================
-# P08 - Git feature lifecycle
-# Prerequisite: P00 path variables, native Git/gh and P09 credential review.
-# Do not run concurrent Git writes from Linux and Windows; same worktree.
-# Current branch: fix/runtime-reproducibility. Do NOT create it again.
-# Steps 02-04 are for a FUTURE feature starting from a clean worktree; current work starts at step 05.
-# Replace commented placeholders before use. Push/PR/merge remain learner-run.
-# This sequence does not establish hosted CI or independent peer approval.
-# ============================================================================
-
-# P08 - Step 01: Enter root and inspect first.
-# Bash counterpart: B08 - Step 01. Native tool help: P10.
-Set-Location -LiteralPath $TrainingRoot
-
-# P08 - Step 02: FUTURE FEATURE ONLY: verify clean status before switching main.
-# Bash counterpart: B08 - Step 02. Native tool help: P10.
+# P12 - Step 02: Require clean status; stop and preserve existing work if dirty.
+# Bash counterpart: B12, same purpose; cmdlet help: Get-Help <name> -Examples.
 git.exe status --short --branch
 
-# P08 - Step 03: FUTURE FEATURE ONLY: switch to main after prior work is integrated.
-# Bash counterpart: B08 - Step 03. Native tool help: P10.
-git.exe switch main
+# P12 - Step 03: Switch integration branch.
+# Bash counterpart: B12, same purpose; cmdlet help: Get-Help <name> -Examples.
+git.exe switch $env:BASE_BRANCH
 
-# P08 - Step 04: FUTURE FEATURE ONLY: update main; then create a uniquely named branch.
-# Bash counterpart: B08 - Step 04. Native tool help: P10.
+# P12 - Step 04: Update integration branch without creating an accidental merge.
+# Bash counterpart: B12, same purpose; cmdlet help: Get-Help <name> -Examples.
 git.exe pull --ff-only
-# git.exe switch -c feature/replace_with_task_name
 
-# P08 - Step 05: Review current feature changes before staging.
-# Bash counterpart: B08 - Step 05. Native tool help: P10.
+# P12 - Step 05: Create chosen feature branch; fails safely if name already exists.
+# Bash counterpart: B12, same purpose; cmdlet help: Get-Help <name> -Examples.
+git.exe switch -c $env:BR_NAME
+
+# P12 - Step 06: Confirm branch, then implement focused changes and run relevant validation.
+# Bash counterpart: B12, same purpose; cmdlet help: Get-Help <name> -Examples.
+git.exe status --short --branch
+
+
+# ==============================================================================
+#   ___ _  _   _   _  _  ___ ___ ___     ___ ___  ___  ___
+#  / __| || | /_\ | \| |/ __| __|   \   / __/ _ \|   \| __|
+# | (__| __ |/ _ \| .` | (_ | _|| |) | | (_| (_) | |) | _|
+#  \___|_||_/_/ \_\_|\_|\___|___|___/   \___\___/|___/|___|
+# P11 - CHANGED CODE
+# Prerequisite: VARIABLES; work exists on your feature branch and relevant checks have passed.
+# This flow does not switch branches. Check BR_NAME against the actual branch first.
+# Run after each meaningful change; choose a fresh COMMIT_MSG. Then use PUBLISH.
+# ==============================================================================
+
+# P11 - Step 01: Enter checkout.
+# Bash counterpart: B11, same purpose; cmdlet help: Get-Help <name> -Examples.
+Set-Location -LiteralPath $env:PROJECT_ROOT
+
+# P11 - Step 02: Verify branch matches BR_NAME and inspect pending files.
+# Bash counterpart: B11, same purpose; cmdlet help: Get-Help <name> -Examples.
+git.exe status --short --branch
+
+# P11 - Step 03: Review tracked changes. New files are reviewed after staging as well.
+# Bash counterpart: B11, same purpose; cmdlet help: Get-Help <name> -Examples.
 git.exe diff
 
-# P08 - Step 06: Check whitespace; also run feature-specific acceptance checks.
-# Bash counterpart: B08 - Step 06. Native tool help: P10.
-git.exe diff --check
+# P11 - Step 04: Stage all reviewed tracked changes from repository root.
+# Use only when all tracked modifications belong to this commit. For partial scope, use git add --interactive.
+# New untracked files require explicit git add -- path/to/file separately.
+git.exe add -u
 
-# P08 - Step 07: Stage reviewed files explicitly; replace paths in the commented example.
-# Bash counterpart: B08 - Step 07. Native tool help: P10.
-# git.exe add path/to/reviewed_file
-
-# P08 - Step 08: Review exact staged patch.
-# Bash counterpart: B08 - Step 08. Native tool help: P10.
+# P11 - Step 05: Review the complete staged patch; correct unwanted staging before committing.
+# Bash counterpart: B11, same purpose; cmdlet help: Get-Help <name> -Examples.
 git.exe diff --cached
 
-# P08 - Step 09: Check staged whitespace.
-# Bash counterpart: B08 - Step 09. Native tool help: P10.
+# P11 - Step 06: Check staged whitespace. No output/exit 0 means pass.
+# Bash counterpart: B11, same purpose; cmdlet help: Get-Help <name> -Examples.
 git.exe diff --cached --check
 
-# P08 - Step 10: Commit reviewed changes; replace description.
-# Bash counterpart: B08 - Step 10. Native tool help: P10.
-# git.exe commit -m "Describe the completed change"
+# P11 - Step 07: Commit reviewed scope using the chosen message.
+# Bash counterpart: B11, same purpose; cmdlet help: Get-Help <name> -Examples.
+git.exe commit -m $env:COMMIT_MSG
 
-# P08 - Step 11: Publish CURRENT feature branch and set upstream; never use on main.
-# Bash counterpart: B08 - Step 11. Native tool help: P10.
-git.exe push -u origin HEAD
-
-# P08 - Step 12: Open hosted PR interactively; explain behavior, validation and remaining limits.
-# Bash counterpart: B08 - Step 12. Native tool help: P10.
-gh.exe pr create --base main
-
-# P08 - Step 13: Review PR and any checks before merge. No checks does not mean CI passed.
-# Bash counterpart: B08 - Step 13. Native tool help: P10.
-gh.exe pr view
-
-# P08 - Step 14: Inspect hosted checks; address failures before integration.
-# Bash counterpart: B08 - Step 14. Native tool help: P10.
-gh.exe pr checks
-
-# P08 - Step 15: After review: merge using GitHub UI, then return here. Verify clean worktree.
-# Bash counterpart: B08 - Step 15. Native tool help: P10.
+# P11 - Step 08: Confirm remaining work; intentionally unstaged changes may remain.
+# Bash counterpart: B11, same purpose; cmdlet help: Get-Help <name> -Examples.
 git.exe status --short --branch
 
-# P08 - Step 16: After merge and clean status: switch main.
-# Bash counterpart: B08 - Step 16. Native tool help: P10.
-git.exe switch main
+# P11 - Step 09: Capture commit evidence.
+# Bash counterpart: B11, same purpose; cmdlet help: Get-Help <name> -Examples.
+git.exe log -1 --oneline
 
-# P08 - Step 17: Fetch/integrate merged revision.
-# Bash counterpart: B08 - Step 17. Native tool help: P10.
+
+# ==============================================================================
+#  ___ _   _ ___ _    ___ ___ _  _
+# | _ \ | | | _ ) |  |_ _/ __| || |
+# |  _/ |_| | _ \ |__ | |\__ \ __ |
+# |_|  \___/|___/____|___|___/_||_|
+# P08 - PUBLISH
+# Prerequisite: reviewed feature commit; BR_NAME names the current branch. Owner-run remote actions.
+# Missing checks is not CI acceptance. Do not merge while required checks/review are unresolved.
+# ==============================================================================
+
+# P08 - Step 01: Enter checkout.
+# Bash counterpart: B08, same purpose; cmdlet help: Get-Help <name> -Examples.
+Set-Location -LiteralPath $env:PROJECT_ROOT
+
+# P08 - Step 02: Verify branch and publication scope.
+# Bash counterpart: B08, same purpose; cmdlet help: Get-Help <name> -Examples.
+git.exe status --short --branch
+
+# P08 - Step 03: Push selected feature branch and set upstream.
+# Bash counterpart: B08, same purpose; cmdlet help: Get-Help <name> -Examples.
+git.exe push -u origin $env:BR_NAME
+
+# P08 - Step 04: Open PR interactively; describe problem, behavior, checks and limitations. Skip if PR already exists.
+# Bash counterpart: B08, same purpose; cmdlet help: Get-Help <name> -Examples.
+gh.exe pr create --base $env:BASE_BRANCH --head $env:BR_NAME
+
+# P08 - Step 05: Inspect PR.
+# Bash counterpart: B08, same purpose; cmdlet help: Get-Help <name> -Examples.
+gh.exe pr view $env:BR_NAME
+
+# P08 - Step 06: Inspect hosted checks; address failures. Merge in GitHub after review, then continue.
+# Bash counterpart: B08, same purpose; cmdlet help: Get-Help <name> -Examples.
+gh.exe pr checks $env:BR_NAME
+
+# P08 - Step 07: After hosted merge, verify worktree clean before switching.
+# Bash counterpart: B08, same purpose; cmdlet help: Get-Help <name> -Examples.
+git.exe status --short --branch
+
+# P08 - Step 08: Return to integration branch.
+# Bash counterpart: B08, same purpose; cmdlet help: Get-Help <name> -Examples.
+git.exe switch $env:BASE_BRANCH
+
+# P08 - Step 09: Integrate remote merge.
+# Bash counterpart: B08, same purpose; cmdlet help: Get-Help <name> -Examples.
 git.exe pull --ff-only
 
-# P08 - Step 18: Inspect integrated history.
-# Bash counterpart: B08 - Step 18. Native tool help: P10.
+# P08 - Step 10: Verify integrated change in history.
+# Bash counterpart: B08, same purpose; cmdlet help: Get-Help <name> -Examples.
 git.exe log -5 --oneline
 
-# P08 - Step 19: Delete local branch only after integration verification; edit example. Squash merges may make -d refuse; stop and review rather than force.
-# Bash counterpart: B08 - Step 19. Native tool help: P10.
-# git.exe branch -d feature/replace_with_task_name
+# P08 - Step 11: Delete integrated local branch. If squash history makes -d refuse, inspect rather than force.
+# Bash counterpart: B08, same purpose; cmdlet help: Get-Help <name> -Examples.
+git.exe branch -d $env:BR_NAME
 
 
-# ============================================================================
-# P09 - Native Git credential diagnosis
-# Bash topic: B09; repair differs by platform. Never copy the Linux helper repair to Windows.
-# Shared .git/config may contain !/usr/bin/gh auth git-credential, which Windows cannot execute.
-# Inspect first. Do not delete shared settings or disable safety checks to bypass a failure.
-# Native gh authentication is separate from Linux gh. Never display/copy tokens or credential stores.
-# If Git rejects UNC ownership, stop and review the exact error before scoped configuration changes.
-# ============================================================================
+# ==============================================================================
+#  ___ _  ___   __  ___ ___ _____ _   _ ___
+# | __| \| \ \ / / / __| __|_   _| | | | _ \
+# | _|| .` |\ V /  \__ \ _|  | | | |_| |  _/
+# |___|_|\_| \_/   |___/___| |_|  \___/|_|
+# P14 - ENV SETUP
+# Prerequisite: VARIABLES. One-time per new environment; do not run over an existing venv.
+# Native Windows package availability and execution are separate acceptance gates.
+# Select an installed compatible Python before creating; current WSL evidence uses Python 3.14.4.
+# ==============================================================================
 
-# P09 - Step 01: Enter shared repository. Bash: cd.
-Set-Location -LiteralPath $TrainingRoot
+# P14 - Step 01: Discover base interpreter; Windows Store aliases may need resolving. PowerShell help: Get-Help Get-Command -Examples.
+# Bash counterpart: B14, same purpose; cmdlet help: Get-Help <name> -Examples.
+Get-Command python.exe -All
 
-# P09 - Step 02: Inspect generic helper names/config origins. Bash counterpart: same Git arguments.
+# P14 - Step 02: Inspect base version before selecting it.
+# Bash counterpart: B14, same purpose; cmdlet help: Get-Help <name> -Examples.
+python.exe --version
+
+# P14 - Step 03: Check target existence. Bash 0/PowerShell True = exists: skip creation. Bash 1/False = absent.
+# Bash counterpart: B14, same purpose; cmdlet help: Get-Help <name> -Examples.
+Test-Path -LiteralPath $env:VENV_DIR -PathType Container
+
+# P14 - Step 04: ONLY IF ABSENT: create platform-local environment.
+# Bash counterpart: B14, same purpose; cmdlet help: Get-Help <name> -Examples.
+python.exe -m venv $env:VENV_DIR
+
+# P14 - Step 05: Install direct project dependencies; downloads may occur. Stop on failure.
+# Bash counterpart: B14, same purpose; cmdlet help: Get-Help <name> -Examples.
+& $env:PYTHON_EXE -m pip install -r "$env:PROJECT_ROOT\requirements.txt"
+
+# P14 - Step 06: Check installed dependency declarations.
+# Bash counterpart: B14, same purpose; cmdlet help: Get-Help <name> -Examples.
+& $env:PYTHON_EXE -m pip check
+
+
+# ==============================================================================
+#  ___ ___   _   ___ _  _  ___  ___ ___
+# |   \_ _| /_\ / __| \| |/ _ \/ __| __|
+# | |) | | / _ \ (_ | .` | (_) \__ \ _|
+# |___/___/_/ \_\___|_|\_|\___/|___/___|
+# P02 - DIAGNOSE
+# Prerequisite: VARIABLES. Diagnose command selection before changing package versions.
+# ==============================================================================
+
+# P02 - Step 01: Inspect shell-selected executables. PowerShell help: Get-Help Get-Command -Examples.
+# Bash counterpart: B02, same purpose; cmdlet help: Get-Help <name> -Examples.
+Get-Command dbt, python -All
+
+# P02 - Step 02: Inspect PATH entries; repeated entries do not necessarily mean duplicate installations.
+# Bash counterpart: B02, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:Path -split ";"
+
+# P02 - Step 03: Compare explicit project runtime.
+# Bash counterpart: B02, same purpose; cmdlet help: Get-Help <name> -Examples.
+& $env:DBT_EXE --version
+
+# P02 - Step 04: Inspect installed direct packages.
+# Bash counterpart: B02, same purpose; cmdlet help: Get-Help <name> -Examples.
+& $env:PYTHON_EXE -m pip show dbt-core dbt-duckdb duckdb
+
+# P02 - Step 05: Check dependency consistency; does not validate requirements.txt.
+# Bash counterpart: B02, same purpose; cmdlet help: Get-Help <name> -Examples.
+& $env:PYTHON_EXE -m pip check
+
+
+# ==============================================================================
+#  ___ _  _   _   ___  ___ _  _  ___ _____
+# / __| \| | /_\ | _ \/ __| || |/ _ \_   _|
+# \__ \ .` |/ _ \|  _/\__ \ __ | (_) || |
+# |___/_|\_/_/ \_\_|  |___/_||_|\___/ |_|
+# P03 - SNAPSHOT
+# Prerequisite: VARIABLES and a reviewed, working environment. Intentionally replaces SNAPSHOT_FILE.
+# requirements.txt is handwritten direct intent; snapshot records installed packages, not a solver lock.
+# Use separate Windows/Linux snapshots. Review new output before accepting it.
+# ==============================================================================
+
+# P03 - Step 01: Review direct dependencies. PowerShell help: Get-Help Get-Content -Examples.
+# Bash counterpart: B03, same purpose; cmdlet help: Get-Help <name> -Examples.
+Get-Content -LiteralPath "$env:PROJECT_ROOT\requirements.txt"
+
+# P03 - Step 02: Capture all installed versions including pip. ASCII avoids Windows PowerShell UTF-16 defaults.
+# Bash counterpart: B03, same purpose; cmdlet help: Get-Help <name> -Examples.
+& $env:PYTHON_EXE -m pip freeze --all | Set-Content -Encoding ascii -LiteralPath $env:SNAPSHOT_FILE
+
+# P03 - Step 03: Review snapshot. Confirm prior external command succeeded before using generated file.
+# Bash counterpart: B03, same purpose; cmdlet help: Get-Help <name> -Examples.
+Get-Content -LiteralPath $env:SNAPSHOT_FILE
+
+
+# ==============================================================================
+#  ___ ___ ___ ___  ___  ___  _   _  ___ ___
+# | _ \ __| _ \ _ \/ _ \|   \| | | |/ __| __|
+# |   / _||  _/   / (_) | |) | |_| | (__| _|
+# |_|_\___|_| |_|_\\___/|___/ \___/ \___|___|
+# P04 - REPRODUCE
+# Prerequisite: VARIABLES, existing base venv and reviewed platform snapshot.
+# A fresh proof requires an absent REPRO_DIR; if it exists, choose a new value or reuse only for inspection.
+# ==============================================================================
+
+# P04 - Step 01: Check absence. Bash exit 1 / PowerShell False means absent.
+# Bash counterpart: B04, same purpose; cmdlet help: Get-Help <name> -Examples.
+Test-Path -LiteralPath $env:REPRO_DIR -PathType Container
+
+# P04 - Step 02: ONLY IF ABSENT: create fresh environment using the selected base Python.
+# Bash counterpart: B04, same purpose; cmdlet help: Get-Help <name> -Examples.
+& $env:PYTHON_EXE -m venv $env:REPRO_DIR
+
+# P04 - Step 03: Install exact snapshot; stop if installation fails.
+# Bash counterpart: B04, same purpose; cmdlet help: Get-Help <name> -Examples.
+& "$env:REPRO_DIR\Scripts\python.exe" -m pip install -r $env:SNAPSHOT_FILE
+
+# P04 - Step 04: Check installed dependencies.
+# Bash counterpart: B04, same purpose; cmdlet help: Get-Help <name> -Examples.
+& "$env:REPRO_DIR\Scripts\python.exe" -m pip check
+
+# P04 - Step 05: Check recreated dbt version.
+# Bash counterpart: B04, same purpose; cmdlet help: Get-Help <name> -Examples.
+& "$env:REPRO_DIR\Scripts\dbt.exe" --version
+
+# P04 - Step 06: Capture recreated versions for comparison.
+# Bash counterpart: B04, same purpose; cmdlet help: Get-Help <name> -Examples.
+& "$env:REPRO_DIR\Scripts\python.exe" -m pip freeze --all | Set-Content -Encoding ascii -LiteralPath "$env:REPRO_DIR\reproduced.txt"
+
+# P04 - Step 07: Compare: no output means same lines. Bash diff exit 1 means differences; Compare-Object has no such exit code.
+# Bash counterpart: B04, same purpose; cmdlet help: Get-Help <name> -Examples.
+Compare-Object (Get-Content -LiteralPath $env:SNAPSHOT_FILE) (Get-Content -LiteralPath "$env:REPRO_DIR\reproduced.txt")
+
+
+# ==============================================================================
+#  ___ ___  ___  ___ ___ _    ___
+# | _ \ _ \/ _ \| __|_ _| |  | __|
+# |  _/   / (_) | _| | || |__| _|
+# |_| |_|_\\___/|_| |___|____|___|
+# P06 - PROFILE
+# Prerequisite: VARIABLES and committed profiles.example.yml. Repeatable copy into platform-local PROFILE_DIR.
+# Existing local project profiles.yml is untouched. DBT_DUCKDB_PATH supplies required template value.
+# Windows database is isolated and may initially be empty. No loader invocation here.
+# ==============================================================================
+
+# P06 - Step 01: Check template exists; stop if missing. PowerShell help: Get-Help Test-Path -Examples.
+# Bash counterpart: B06, same purpose; cmdlet help: Get-Help <name> -Examples.
+Test-Path -LiteralPath "$env:DBT_PROJECT_DIR\profiles.example.yml" -PathType Leaf
+
+# P06 - Step 02: Create destination directory. PowerShell help: Get-Help New-Item -Examples.
+# Bash counterpart: B06, same purpose; cmdlet help: Get-Help <name> -Examples.
+New-Item -ItemType Directory -Force -Path $env:PROFILE_DIR
+
+# P06 - Step 03: Copy template; replaces destination copy. PowerShell help: Get-Help Copy-Item -Examples.
+# Bash counterpart: B06, same purpose; cmdlet help: Get-Help <name> -Examples.
+Copy-Item -LiteralPath "$env:DBT_PROJECT_DIR\profiles.example.yml" -Destination "$env:PROFILE_DIR\profiles.yml"
+
+# P06 - Step 04: Check database path for this shell before connection.
+# Bash counterpart: B06, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:DBT_DUCKDB_PATH
+
+
+# ==============================================================================
+# __   ___   _    ___ ___   _ _____ ___
+# \ \ / /_\ | |  |_ _|   \ /_\_   _| __|
+#  \ V / _ \| |__ | || |) / _ \| | | _|
+#   \_/_/ \_\____|___|___/_/ \_\_| |___|
+# P05 - VALIDATE
+# Prerequisite: VARIABLES, REPRODUCE and PROFILE completed for this platform.
+# Step 01 is connection/configuration only. Step 02 WRITES selected model relations.
+# Build requires existing raw.orders in the selected database; a new empty database is not ready.
+# Windows full build remains gated on native loader/path acceptance; see PIPELINE.
+# ==============================================================================
+
+# P05 - Step 01: Validate connection with recreated runtime and template; expect All checks passed.
+# Bash counterpart: B05, same purpose; cmdlet help: Get-Help <name> -Examples.
+& "$env:REPRO_DIR\Scripts\dbt.exe" debug --project-dir $env:DBT_PROJECT_DIR --profiles-dir $env:PROFILE_DIR --target-path $env:DBT_TARGET_PATH --log-path $env:DBT_LOG_PATH
+
+# P05 - Step 02: AFTER raw source readiness: build descendants and tests. Freshness is a separate command.
+# Bash counterpart: B05, same purpose; cmdlet help: Get-Help <name> -Examples.
+# Native Windows build pending loader/path acceptance; use P07 gate before adding a runnable build.
+
+
+# ==============================================================================
+#  ___ ___ ___ ___ _    ___ _  _ ___
+# | _ \_ _| _ \ __| |  |_ _| \| | __|
+# |  _/| ||  _/ _|| |__ | || .` | _|
+# |_| |___|_| |___|____|___|_|\_|___|
+# P07 - PIPELINE
+# Prerequisite: VARIABLES and PROFILE. Deliberate writes, not a startup block.
+# Current loader replaces raw.orders and stamps loaded_at. It ignores DBT_DUCKDB_PATH.
+# Bash: DBT_DUCKDB_PATH MUST equal DBT_PROJECT_DIR/dev.duckdb before loading.
+# Native Windows: STOP at inspection; loader currently targets the shared script-adjacent database.
+# Freshness is recency, not completeness. Stop on failed commands; no automatic gating is implied.
+# ==============================================================================
+
+# P07 - Step 01: Inspect loader path contract. PowerShell help: Get-Help Get-Content -Examples.
+# Bash counterpart: B07, same purpose; cmdlet help: Get-Help <name> -Examples.
+Get-Content -LiteralPath "$env:DBT_PROJECT_DIR\load_orders.py"
+
+# P07 - Step 02: Verify loader/dbt target agreement; Bash exit 1 means STOP.
+# Bash counterpart: B07, same purpose; cmdlet help: Get-Help <name> -Examples.
+# Native Windows execution waits for configurable loader path; do not run shared-DB loader.
+
+# P07 - Step 03: Replace raw data with fictional fixture.
+# Bash counterpart: B07, same purpose; cmdlet help: Get-Help <name> -Examples.
+# Pending native loader adaptation and validation.
+
+# P07 - Step 04: Check freshness; inspect warnings and stop on error.
+# Bash counterpart: B07, same purpose; cmdlet help: Get-Help <name> -Examples.
+# Pending native pipeline validation.
+
+# P07 - Step 05: Build selected models and tests.
+# Bash counterpart: B07, same purpose; cmdlet help: Get-Help <name> -Examples.
+# Pending native pipeline validation.
+
+
+# ==============================================================================
+#   ___ ___ _____     _  _   _ _____ _  _
+#  / __|_ _|_   _|   /_\| | | |_   _| || |
+# | (_ || |  | |    / _ \ |_| | | | | __ |
+#  \___|___| |_|   /_/ \_\___/  |_| |_||_|
+# P09 - GIT AUTH
+# Diagnostic flow. Linux and Windows authenticate independently. Do not copy platform-specific helper repairs.
+# Shared repo config may contain a Linux-only helper; inspect before changing settings. No credential contents.
+# ==============================================================================
+
+# P09 - Step 01: Enter checkout.
+# Bash counterpart: B09, same purpose; cmdlet help: Get-Help <name> -Examples.
+Set-Location -LiteralPath $env:PROJECT_ROOT
+
+# P09 - Step 02: Inspect generic helper configuration and origin.
+# Bash counterpart: B09, same purpose; cmdlet help: Get-Help <name> -Examples.
 git.exe config --show-origin --show-scope --get-all credential.helper
 
-# P09 - Step 03: Inspect GitHub-specific helpers including shared repo overrides. No entries = exit 1.
+# P09 - Step 03: Inspect GitHub overrides; no entries can return exit 1.
+# Bash counterpart: B09, same purpose; cmdlet help: Get-Help <name> -Examples.
 git.exe config --show-origin --show-scope --get-all credential.https://github.com.helper
 
-# P09 - Step 04: Check native gh login status without exposing tokens. Bash counterpart: gh auth status.
+# P09 - Step 04: Inspect current platform gh login status; never request token output.
+# Bash counterpart: B09, same purpose; cmdlet help: Get-Help <name> -Examples.
 gh.exe auth status --hostname github.com
 
-# P09 - Step 05: OPTIONAL repair only after reviewing helper precedence: configure native gh helper.
-# This writes Windows user-level Git configuration for GitHub; shared repo overrides can still win.
-# If a Linux-only local override is present, stop for a scoped cross-platform repair first.
-# gh.exe auth setup-git --hostname github.com
+# P09 - Step 05: Verify read-only remote access after resolving any helper mismatch.
+# Bash counterpart: B09, same purpose; cmdlet help: Get-Help <name> -Examples.
+git.exe ls-remote --heads origin $env:BASE_BRANCH
 
-# P09 - Step 06: Verify read-only remote access after helper review; no branch integration. Bash: git ls-remote.
-git.exe ls-remote --heads origin main
 
-# ============================================================================
-# P10 - Help and discovery
-# Bash topic: B10. Get-Help covers cmdlets; external tools provide their own help.
-# ============================================================================
+# ==============================================================================
+#    _    ____    _   ___ ___ ___  _   _ _  _ _____
+#   /_\  |_  /   /_\ / __/ __/ _ \| | | | \| |_   _|
+#  / _ \  / /   / _ \ (_| (_| (_) | |_| | .` | | |
+# /_/ \_\/___| /_/ \_\___\___\___/ \___/|_|\_| |_|
+# P13 - AZ ACCOUNT
+# Optional account-context flow; no resource provisioning. Requires an installed, authenticated Azure CLI.
+# If not authenticated, stop for the Azure setup lesson. No automatic login or resource creation.
+# Bash: if command resolves under /mnt/c, it is Windows CLI; stop rather than mixing credentials/runtimes.
+# Select subscription deliberately; account set changes CLI default context. Never paste tokens.
+# ==============================================================================
 
-# P10 - Step 01: Discover cmdlet parameters/examples. Bash counterpart: shell help/man.
+# P13 - Step 01: Locate CLI before use. PowerShell help: Get-Help Get-Command -Examples.
+# Bash counterpart: B13, same purpose; cmdlet help: Get-Help <name> -Examples.
+Get-Command az -All
+
+# P13 - Step 02: Inspect installed version.
+# Bash counterpart: B13, same purpose; cmdlet help: Get-Help <name> -Examples.
+az version
+
+# P13 - Step 03: List subscriptions available to current login.
+# Bash counterpart: B13, same purpose; cmdlet help: Get-Help <name> -Examples.
+az account list --output table
+
+# P13 - Step 04: Set chosen subscription identifier once; replace placeholder.
+# Bash counterpart: B13, same purpose; cmdlet help: Get-Help <name> -Examples.
+$env:AZ_SUBSCRIPTION = 'replace_with_subscription_id'
+
+# P13 - Step 05: Select the intended subscription.
+# Bash counterpart: B13, same purpose; cmdlet help: Get-Help <name> -Examples.
+az account set --subscription $env:AZ_SUBSCRIPTION
+
+# P13 - Step 06: Verify selected account context.
+# Bash counterpart: B13, same purpose; cmdlet help: Get-Help <name> -Examples.
+az account show --output table
+
+
+# ==============================================================================
+#  _  _ ___ _    ___
+# | || | __| |  | _ \
+# | __ | _|| |__|  _/
+# |_||_|___|____|_|
+# P10 - HELP
+# PowerShell: cmdlet help via Get-Help; external executables use their own help.
+# Shell counterparts share section numbers; steps may differ. Bash $? / PowerShell $LASTEXITCODE reports external exit status.
+# ==============================================================================
+
+# P10 - Step 01: Shell discovery. PowerShell Get-Command corresponds to Bash type/command -v.
+# Bash counterpart: B10, same purpose; cmdlet help: Get-Help <name> -Examples.
 Get-Help Get-Command -Examples
 
-# P10 - Step 02: Discover file/path cmdlets; repeat with Test-Path, Join-Path, Get-Content, Set-Content,
-# New-Item, Copy-Item and Compare-Object as needed. Bash counterpart: help cd.
-Get-Help Set-Location -Examples
-
-# P10 - Step 03: Git executable help. Bash: git --help.
+# P10 - Step 02: Git help.
+# Bash counterpart: B10, same purpose; cmdlet help: Get-Help <name> -Examples.
 git.exe --help
 
-# P10 - Step 04: dbt executable help using native environment. Bash: dbt --help.
-& "$WindowsVenv\Scripts\dbt.exe" --help
+# P10 - Step 03: dbt help.
+# Bash counterpart: B10, same purpose; cmdlet help: Get-Help <name> -Examples.
+& $env:DBT_EXE --help
 
-# P10 - Step 05: pip help for native interpreter. Bash: python -m pip --help.
-& "$WindowsVenv\Scripts\python.exe" -m pip --help
+# P10 - Step 04: pip help.
+# Bash counterpart: B10, same purpose; cmdlet help: Get-Help <name> -Examples.
+& $env:PYTHON_EXE -m pip --help
 
-# P10 - Step 06: GitHub CLI help. Bash: gh --help.
-gh.exe --help
+# P10 - Step 05: Azure account help.
+# Bash counterpart: B10, same purpose; cmdlet help: Get-Help <name> -Examples.
+az account --help
 
-# OFFICIAL REFERENCES (reviewed for this recipe; Windows commands not executed here)
-# https://docs.python.org/3/library/venv.html
-# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/set-location
-# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/get-help
+# REFERENCES
+# https://docs.python.org/3.14/library/venv.html
 # https://pip.pypa.io/en/stable/cli/pip_freeze/
-# https://cli.github.com/manual/gh_auth_setup-git
-# https://git-scm.com/docs/gitcredentials
-
-# ============================================================================
-# P11 - Current runtime branch review and commit
-# Branch: fix/runtime-reproducibility. Run after the recorded Core build passes.
-# Package match, template debug, 3 models/5 tests verified in WSL; native Windows
-# runtime and hosted CI remain pending. Review all staged changes before commit.
-# Prerequisite: P00 variables/native Git acceptance; Bash counterpart B11.
-
-# P11 - Step 01: Enter repository root.
-Set-Location -LiteralPath $TrainingRoot
-
-# P11 - Step 02: Confirm expected branch; stop if not fix/runtime-reproducibility.
-git.exe status --short --branch
-
-# P11 - Step 03: Stage the explicit runtime/documentation scope.
-git.exe add requirements.txt requirements_snapshot.txt training_analytics/profiles.example.yml training_analytics/README.md docs/bash_commands.txt docs/powershell_commands.txt docs/DATAFLOW_TRACKER.md docs/HANDOFF.md Staff_Data_Engineer_Training_Project_Starter/AGENTS.md Staff_Data_Engineer_Training_Project_Starter/04_PROGRESS_DASHBOARD.md Staff_Data_Engineer_Training_Project_Starter/13_SESSION_LOG.md Staff_Data_Engineer_Training_Project_Starter/14_DECISIONS_LOG.md
-
-# P11 - Step 04: Review exact staged patch, including new files.
-git.exe diff --cached
-
-# P11 - Step 05: Check staged whitespace; no output means pass.
-git.exe diff --cached --check
-
-# P11 - Step 06: After review/check pass, commit the runtime checkpoint.
-git.exe commit -m "build: document and verify reproducible dbt runtime"
-
-# P11 - Step 07: Inspect worktree after commit.
-git.exe status --short --branch
-
-# P11 - Step 08: Show commit for tutor verification; hosted PR/integration follows.
-git.exe log -1 --oneline
+# https://docs.getdbt.com/reference/commands/debug
+# https://learn.microsoft.com/en-us/cli/azure/account
+# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/get-help
