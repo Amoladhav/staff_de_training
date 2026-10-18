@@ -20,25 +20,54 @@ its delivery workflow. No fixed session durations apply.
 
 ## Thread continuity review
 
-- Thread label: Source failure/recovery — new resume thread, 2026-10-16.
-- Initialized at **0**; counted checkpoints: **12** (scoped staging and commit assigned).
-- Last scheduled review: **10**. Next scheduled review: **15**.
-- Assessment at review 10: failure/recovery evidence is now reconciled; continue through comprehension and focused Git review. Qualitative assessment only.
-- Previous thread review preserved: Git/runtime thread checkpoint 30 recommended an optional handoff after runtime/Git/runbook work; next review would have been 35 if continuing. Earlier publication thread ended at 23.
+- Thread label: dbt v2 Git review — resumed 2026-10-17 21:40 Pacific.
+- Initialized at **0**; counted checkpoints: **1** (local review and publication commands supplied).
+- Last scheduled review: none in this thread. Next scheduled review: **5**.
+- Assessment: bounded Git checkpoint; continue. Qualitative assessment only.
+- Previous thread review preserved: failure/recovery checkpoint 16 recommended optional handoff after local migration acceptance; scheduled review 15, next would have been 20.
 
 ## Where we are now
 
-**Current: W06/W07 failure/recovery — In Progress. W08 loader refactoring remains In Progress.**
+**Current: W08 dbt v2 migration — In Progress (implementation/local acceptance
+complete; review/commit/integration pending).**
 
-Local main and cached origin/main both resolve to `a1b0fa8`, containing the Markdown
-migration (`Change txt to md (#3)`). Worktree was clean on resume. The handoff's
-uncommitted-migration instructions were stale; no duplicate migration commit is
-needed. Review verified 71 Bash and 67 PowerShell single-command fences, Bash
-syntax, local links and commit whitespace. Native Windows execution remains
-unverified. No live remote or hosted CI query was performed.
+On owner request, migrated to pip package dbt==2.0.8. Owner had already replaced
+the active venv but requirements still named Core v1. Direct pins now include
+Python duckdb==1.5.6 and pytz==2026.5 for the loader; v2's adapter is built in.
+Snapshot regenerated from the actual environment: seven packages including pip.
+No old Core/adapter packages remain in the inspected environment.
 
-Next: learner explicitly stages the six-file scope, reviews the staged diff/check, then commits the SQL alias improvement plus scoped training/runbook documentation
-on feature/source-failure-recovery. No temporary expectation-4 predicate remains.
+Branch feature/dbt-v2-migration was created with permission from committed
+failure/recovery revision 1756d63. That earlier branch now has a cached upstream;
+owner-supplied GitHub output confirms PR #4 OPEN against main, with no merge commit. Migration changes and prior checkpoint notes are
+uncommitted on this new branch. Main/cached origin/main remain at a1b0fa8 as last
+inspected; confirm parent PR integration before choosing the migration PR base.
+No agent commit, push or PR action.
+
+Next: review migration diff and commit locally, then resolve parent-branch PR
+integration with the owner before publishing the migration. Runbooks now use
+DBT_PROFILES_DIR and a repository Bash completion helper; owner must replace
+any old Click completion startup block. No shell startup files were edited.
+
+### dbt v2 verification, 2026-10-17
+
+- Active WSL Python 3.14.4, dbt 2.0.8, Python DuckDB 1.5.6, pytz 2026.5.
+- Recreated venv /tmp/staff_de_v2_repro_p8cq1ajh exactly matches seven snapshot pins.
+- scripts/validate_dbt_runtime.py passed in both environments using fresh copies
+  of sanitized project inputs and fresh dev.duckdb databases. Developer DB untouched.
+- Loader, connection, freshness and preview exit 0; baseline and recovery each
+  have 3 successful models + 5 passing tests; injected count=4 yields 1 failed
+  test + 7 skips and exit 1. Separate artifacts preserve both cases.
+- Active evidence: /tmp/staff_de_dbt_v2_ey44wfyh; recreated evidence:
+  /tmp/staff_de_dbt_v2_clgtjowx. Each retains summary.json, command logs and
+  baseline/failure/recovery run_results.json. /tmp retention is not guaranteed.
+- Initial loader failure exposed missing pytz for timezone-aware fetch results;
+  explicit dependency fixed it. dbt local leases required approved sandbox
+  escalation; no account login, remote provider or cloud operation performed.
+- Bash helper returns build for bu and --select/--selector for --sel; shell syntax,
+  Python syntax, local Markdown links and Git whitespace checks passed.
+- Native Windows/macOS, actual hosted CI, production batch reconciliation,
+  publication isolation and Airflow/cloud remain pending.
 
 ## Latest failure/recovery evidence
 
@@ -57,48 +86,83 @@ on feature/source-failure-recovery. No temporary expectation-4 predicate remains
 - This is a fixture expectation test, not an actual partial-load/batch contract
   or consumer publication gate. Existing relations survive skipped builds.
 
-## Intended dataflow
+## Execution ownership and test discovery
 
-Solid arrows show the existing local data path. Dashed arrows show planned gates
-and extensions. Existing execution is manual; the future gating is not enforced.
+Markers identify who starts or performs each step: **MANUAL** means a learner
+command; **DBT AUTO** means internal discovery/selection/scheduling after a dbt
+command starts; **AIRFLOW PLANNED** means not implemented. Solid arrows show
+existing execution or inputs, with labels distinguishing control from data.
+Dashed arrows show future orchestration. This is an execution diagram, not a
+claim that data passes through test nodes.
 
 ```mermaid
 flowchart TD
-    CSV["W02: fictional CSV<br/>seeds/sample_orders.csv"]
-    LOAD["W03: Python prototype<br/>load_orders.py"]
-    RAW["DuckDB: dev.duckdb<br/>dev.raw.orders<br/>order_id, status, amount, loaded_at"]
-    SRC["W04: dbt source declaration<br/>commerce.orders maps to dev.raw.orders"]
-    FIRST["W04: first_orders table<br/>selects order_id, status, amount"]
-    BASE["W04: base_commerce_orders view<br/>direct source projection including loaded_at"]
-    LAST["W04: completed_orders view<br/>filters completed orders"]
-    FRESH["W05: source freshness<br/>max loaded_at compared with current time"]
-    READY["W06: readiness and completeness gate<br/>missing input, batch counts, reconciliation"]
-    TEST["W07: dbt build and data tests"]
-    PUB["W13: gated consumer / BI output"]
-    AF["W10: local Airflow<br/>ingest → check → build/test → publish"]
-    CLOUD["W11–W12: Azure / Databricks<br/>cloud storage, ingestion, dbt, cloud Airflow"]
-    CSV --> LOAD --> RAW
-    RAW --> SRC --> FIRST --> LAST
-    SRC --> BASE
-    SRC --> FRESH
-    RAW -.-> READY
-    FRESH -.-> TEST
-    READY -.-> TEST
-    TEST -.-> PUB
-    LAST -.-> PUB
-    AF -. orchestrates planned gated execution .-> LOAD
-    AF -.-> READY
-    AF -.-> FRESH
-    AF -.-> TEST
-    AF -.-> PUB
-    AF -. deploy and verify separately .-> CLOUD
+    LOAD["MANUAL · W03<br/>python load_orders.py"]
+    CSV["W02 · seeds/sample_orders.csv"]
+    RAW["Existing source data<br/>dev.raw.orders"]
+    FRESH["MANUAL · W05<br/>dbt source freshness"]
+    BUILD["MANUAL · W07<br/>dbt build --select source:commerce.orders+"]
+    CONFIG["dbt_project.yml<br/>test-paths: tests"]
+    FILE["Handwritten singular test<br/>tests/assert_orders_fixture_count.sql"]
+    DISC["DBT AUTO · discover and parse<br/>register file as a test node"]
+    GRAPH["DBT AUTO · dependency and selection graph<br/>source() links test to commerce.orders"]
+    CHECK["DBT AUTO · execute selected source test<br/>count must equal expected_rows"]
+    FIRST["DBT AUTO · W04<br/>build first_orders table"]
+    BASE["DBT AUTO · W04<br/>build base_commerce_orders view"]
+    MODELTEST["DBT AUTO · W07<br/>four first_orders tests"]
+    LAST["DBT AUTO · W04<br/>build completed_orders view"]
+    STOP["DBT AUTO · test failure<br/>skip dependent nodes; command fails"]
+    AF["AIRFLOW PLANNED · W10–W12<br/>schedule ingestion, checks and build<br/>local first, cloud separately"]
+    READY["PLANNED · W06<br/>production batch readiness/reconciliation"]
+    PUB["PLANNED · W13<br/>publish only after successful gates"]
+    CSV -->|read by| LOAD
+    LOAD -->|writes| RAW
+    RAW -->|queried by| FRESH
+    BUILD -->|starts| DISC
+    CONFIG -->|discovery directory| DISC
+    FILE -->|SQL definition| DISC
+    DISC --> GRAPH --> CHECK
+    RAW -->|queried by| CHECK
+    CHECK -->|pass permits execution| FIRST
+    CHECK -->|pass permits execution| BASE
+    CHECK -->|fail| STOP
+    FIRST --> MODELTEST -->|pass| LAST
+    AF -. invokes .-> LOAD
+    AF -. invokes .-> FRESH
+    AF -. invokes .-> READY
+    AF -. invokes .-> BUILD
+    AF -. gates .-> PUB
 ```
 
-`SRC` is metadata, not a second copy of the data. `source()` resolves that metadata
-to the physical relation; `ref()` connects dbt models. `loaded_at` is explicitly
-created by `current_timestamp as loaded_at` in the loader. It is not added by dbt,
-and the current downstream model does not select it. The CSV is currently read by
-Python; the earlier dbt seed exercise is not an additional ingestion stage.
+The singular test does not need a function call in model SQL or registration in
+source YAML. `test-paths: ["tests"]` in dbt_project.yml tells dbt where to discover
+it. The `assert_` prefix is descriptive, not required. The filename supplies its
+test name. Parsing `source('commerce', 'orders')` records the source dependency;
+the selected source/descendants bring in the associated test under the current
+default test selection behavior. Discovery alone does not execute every test.
+
+Inspected target/failure/manifest.json confirms:
+
+- unique_id: test.training_analytics.assert_orders_fixture_count
+- resource_type: test
+- original_file_path: tests/assert_orders_fixture_count.sql
+- depends_on.nodes: source.training_analytics.commerce.orders
+- enabled: true; severity: ERROR; error_if: != 0
+
+This manifest is generated evidence, not a file to edit. `dbt test` executes tests
+without rebuilding models; `dbt build` schedules selected models and tests together.
+The test is not run automatically by load_orders.py, file saving, or `dbt run`.
+Freshness remains a separate manually invoked command. Airflow will invoke the
+commands and enforce task dependencies; dbt will still discover and run its tests.
+
+Models read source data directly: first_orders and base_commerce_orders use
+source(); completed_orders uses ref('first_orders'). The source declaration maps
+commerce.orders to dev.raw.orders; it is metadata, not a second data copy.
+loaded_at is created by the loader, not dbt. The first_orders projection drops it;
+base_commerce_orders retains it. Existing views can expose updated source data
+even when a build is skipped, so publication isolation remains separate work.
+
+[dbt singular tests and discovery](https://docs.getdbt.com/docs/build/data-tests?version=1.12)
 
 ## Developer workflow applied to every work item
 
@@ -157,7 +221,7 @@ them silently for the learner.
 | W05 — Freshness and source inspection | In Progress | Add table-level freshness config in `sources.yml` → run stale/reload/check and raw preview → explain thresholds, timestamps, selectors, exit status and `sources.json` | Config inspected: warn >5 min, error >10 min. Core stale failure supplied; recovery PASS learner-reported; latest artifact warn verified. Learner aggregate output confirms 3 rows / 3 distinct IDs and latest_load 2026-10-15T21:26:19.750278-07:00. Learner raw preview matches all fixture rows and shows identical loaded_at values. Checkpoint 11 learner correctly explains timestamp freshness versus exact count (2<>3). Minimum-count consequences explained by tutor, not independently demonstrated; exit code not supplied. |
 | W06 — Input readiness and batch completeness | In Progress | Define expected batch/input contract and reconciliation → implement checks → demonstrate missing/partial loads block downstream work | Fixture-only exact count=3 test now named assert_orders_fixture_count.sql; PASS/zero failures artifact verified at checkpoint 9 (dbt 2.0.8). Failure predicate count<>4 and restored count<>expected_rows=3 recovery verified from log/artifact at checkpoint 10. Core 1.12.0 successful selected build verified at prior checkpoint 22; negative-case evidence pending. Batch identity, independent expected counts, missing/partial failure and downstream gating remain pending. Do not generalize fixture count to production. |
 | W07 — Source-backed build/test and failure recovery | In Progress | Maintain `models/orders.yml` with SQL → build/test, inject bounded invalid input, inspect failure and restore → verify current full source-backed build and recovery | Prior checkpoint verifies four first_orders tests and deliberate duplicate failure before the current source-backed acceptance. Checkpoint 11: learner output and artifact verify selected source-backed build: 3 models success / 5 tests pass, dbt 2.0.8. Checkpoint 22 additionally verifies Core 1.12.0 selected build: 3 models / 5 tests pass using recreated environment/template. Checkpoint 8 in failure/recovery thread verifies target/failure/run_results.json is a successful baseline, Core 1.12.0, 3 models and 5 tests; SQL still expects 3. Source-count failure (1 test fail, 7 skips) and recovery (3 models, 5 tests pass) verified at checkpoint 10; learner interpretation and Git acceptance next. |
-| W08 — Maintainable Python loader and repository foundation | In Progress | Refactor prototype into reusable logic/configuration; establish Git and reproducible dependencies → validate inputs, errors/logging, safe writes and meaningful tests → demonstrate repeatability and recovery | Checkpoint 16: baseline commit 8590240 verified, main clean before requested instruction edits. Learner docs branch next; runtime reproducibility and remaining repository acceptance pending. Git foundation moved before further pipeline features; runtime reproducibility and loader refactor pending. Define batch/write semantics before expanding loader. |
+| W08 — Maintainable Python loader and repository foundation | In Progress | Refactor prototype into reusable logic/configuration; establish Git and reproducible dependencies → validate inputs, errors/logging, safe writes and meaningful tests → demonstrate repeatability and recovery | Historical Git baseline and Core v1 reproduction retained. Failure/recovery thread checkpoint 16 migrates to dbt 2.0.8, verifies seven-package clean reproduction and fresh-database success/failure/recovery. Review/commit/integration and loader refactor remain pending; define batch/write semantics before expanding loader. |
 | W09 — dbt professional delivery and CI/CD | TBD | Author isolated targets and CI configuration → exercise reviewed SQL/YAML change, failing checks, correction and promotion → verify artifact retention and cleanup | Local CI simulation, hosted CI, and deployed execution need distinct evidence. Teach manifest/state/deferral after basic build isolation. |
 | W10 — Local Airflow pipeline | TBD | Author DAG/config using reusable ingestion → ingest, readiness/freshness/completeness, dbt build/test, publication gating → prove success and blocked downstream tasks/recovery | Cover data intervals, retries, idempotency, backfills, concurrency, secrets and logs. No scheduler or DAG deployment verified. |
 | W11 — Cloud design and billing readiness | TBD | Choose compatible Azure/Databricks target and cloud Airflow hosting; estimate costs → verify billing, identity and budget alerts → approve bounded lab design and teardown | $200/month ceiling, target below $150. Billing upgrade and budget configuration unverified. Alerts are not a hard cap. Verify current official guidance before provisioning. |
@@ -323,3 +387,13 @@ Build acceptance complete for this selection; B11 steps 03-08 remain next.
 | 2026-10-17 | Failure/recovery thread checkpoint 11 | Learner correctly explains freshness checks timestamps while exact count rejects 2 versus 3. Explained minimum >=3 admits extra rows and count alone cannot prove membership/uniqueness. Six modified files verified on feature/source-failure-recovery; only SQL change is HAVING alias reuse, expectation remains 3. Diff whitespace check passes. Assigned learner whole-diff review before explicit staging/commit; no Git mutation by agent. |
 
 | 2026-10-17 | Failure/recovery thread checkpoint 12 | Verified feature/source-failure-recovery at a1b0fa8, six modified files, empty index and no new commit. SQL restores fixture expectation 3 and uses alias in HAVING. Bash runbook snippets pass bash -n; diff whitespace passes. Assigned explicit six-file staging, cached diff/check, local commit and status. No agent staging/commit/push; hosted PR and CI acceptance remain pending. |
+
+| 2026-10-17 | Failure/recovery thread checkpoint 13 | Verified local commit 1756d63 contains six intended files; feature/source-failure-recovery clean before this checkpoint, no upstream shown. Prepared /tmp/staff_de_training_failure_recovery_pr.md and assigned learner push, PR creation and checks. No remote operation by agent. Four new checkpoint-note edits remain uncommitted and are not part of 1756d63; consolidate at next Git boundary, do not delay publishing reviewed implementation. |
+
+| 2026-10-17 | Failure/recovery thread checkpoint 14 | Explained current source count gate runs inside selected dbt build after loader writes raw.orders, before dependent models. source() connects test and models to same source; error-severity failure causes observed skips. Loader is not rolled back; pre-existing raw-backed base view can expose changed raw rows despite skipped rebuild. Future orchestrator must propagate command failure and gate publication; no Airflow/publication gate exists yet. PR commands remain supplied, execution not checked this turn. |
+
+| 2026-10-17 | Failure/recovery thread checkpoint 15 | Inspected explicit test-paths in dbt_project.yml and generated manifest test node/source dependency/severity. Explained discovery versus selection versus execution; assert_ is not a required prefix. Replaced tracker diagram with MANUAL, DBT AUTO and AIRFLOW PLANNED markers and explicit singular-test file. No runtime execution. Review 15: continue to PR checkpoint, reassess before new implementation; next review 20. |
+
+| 2026-10-17 | Failure/recovery thread checkpoint 16 | Owner explicitly requests agent v2 migration. With permission created feature/dbt-v2-migration from 1756d63. Replaced Core/adapter pins with dbt 2.0.8 plus loader duckdb/pytz, regenerated seven-package snapshot, added v2 bound, validation runner and Bash completion helper; updated runbooks/README. Active and clean reproduced envs pass fresh-load, freshness, build, source-test failure/skips, recovery and preview. SQL/profile unchanged. No agent commit/push. Early qualitative handoff useful before next phase; next scheduled review 20. |
+
+| 2026-10-17 | dbt v2 Git review checkpoint 1 | Reviewed runtime/script/runbook diff; whitespace check passes. Prior local acceptance retained, no rerun. Owner output confirms parent PR #4 OPEN, mergedAt/mergeCommit null. Agent network approval declined. Supplied scoped stage/review/commit, parent squash merge, fetch and rebase --onto origin/main 1756d63, then migration publication commands. Commands only; no Git mutations or integration confirmed. |
