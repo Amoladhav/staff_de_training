@@ -29,12 +29,12 @@ Last updated: 2026-10-16
 - BLUE: Staff-level confident
 
 ## Current Work
-- dbt v2 Git review thread checkpoint 1; next scheduled review 5.
-- Current: W08 dbt v2 migration — In Progress; implementation and WSL acceptance complete, review/commit/integration pending.
-- Branch: feature/dbt-v2-migration from 1756d63. No agent commit/push. Owner output confirms parent PR #4 OPEN; integration pending.
-- Next: review/commit migration and confirm parent PR integration before publication.
-- Verified dbt 2.0.8, seven-package clean reproduction, fresh fixture load/freshness/build, deliberate failure with seven skips, recovery and preview. SQL/profile unchanged.
-- [Dataflow tracker](../docs/DATAFLOW_TRACKER.md) and [handoff](../docs/HANDOFF.md) are authoritative for current evidence. Windows, hosted CI, loader refactor and actual Airflow/cloud remain pending.
+- Git review checkpoint 9; next scheduled review 10.
+- dbt v2 migration — Done for bounded WSL acceptance and PR integration at 2fcc0fa (#5). Broader W08 engineering remains In Progress.
+- Reviewed feature HEAD 10eb922 and origin/main have identical tracked trees. Local main remains a1b0fa8.
+- Next: learner documentation checkpoint branch from origin/main, carrying four local note files, then review/commit. Documentation publication and main synchronization remain pending.
+- Active and recreated WSL validation passed; no hosted checks reported. Native Windows/macOS, loader refactor, production contracts and actual Airflow/cloud remain pending.
+- [Dataflow tracker](../docs/DATAFLOW_TRACKER.md) and [handoff](../docs/HANDOFF.md) hold current evidence and next actions.
 
 ### Setup evidence
 - WSL copy of all 18 OneDrive source files verified byte-for-byte before documentation updates; original retained.

@@ -1,113 +1,61 @@
 # Training handoff
 
-Updated: 2026-10-17 (America/Los_Angeles).
+Updated: 2026-10-17 (America/Los_Angeles), Git review checkpoint 9.
 
-## Objective and instructions
+## Instructions and objective
 
 Canonical workspace: /home/amola/projects/staff_de_training. Read root AGENTS.md,
 Staff_Data_Engineer_Training_Project_Starter/AGENTS.md and 01_PROJECT_INSTRUCTIONS.md,
 then docs/DATAFLOW_TRACKER.md and numbered logs. Preserve established paths.
-Latest owner request: migrate requirements/code to dbt v2; implementation was
-explicitly authorized. Training otherwise remains learner-led, small checkpoints,
-one shell command per fence, native Windows separate from WSL. Owner owns remote
-publication, credentials and cloud/provider operations. Required path remains local
-dbt → local Airflow → actual Azure/Databricks/cloud implementation with gradual Python.
+Training is learner-led; one shell command per fence. Owner performs Git writes
+and publication. Keep native Windows, WSL and macOS gates separate. Required path:
+local dbt → local Airflow → actual Azure/Databricks/cloud with gradual Python.
 
-## Exact next action
+## Verified outcome
 
-Commit the latest checkpoint notes, then learner runs:
-`git rebase --onto origin/main 1756d63 feature/dbt-v2-migration`.
-Migration is committed as e191883. First rebase onto stale a1b0fa8 was aborted.
-PR #4 is now MERGED per owner output; fetched origin/main is 1d8f98b and its tree
-is identical to parent 1756d63. Worktree verified clean before these note edits.
-Review the rebased diff before publication; no agent push. Local acceptance
-remains valid; do not rerun without new changes or concerns.
+The dbt v2 migration is integrated: origin/main 2fcc0fa, PR #5 squash merge.
+Parent PR #4 is integrated at 1d8f98b. Agent verified origin/main and reviewed
+feature HEAD 10eb922 have identical tracked trees. No runtime rerun needed.
+No hosted checks were reported; no CI or independent approval claimed.
 
-## Current implementation
+Requirements pin dbt 2.0.8, Python duckdb 1.5.6 and pytz 2026.5. Project bounds
+runtime >=2.0.8,<2.1.0; seven-package snapshot includes pip 26.2.1.
+Prior active and recreated WSL Python 3.14.4 acceptance passed fresh fixture load,
+connection/freshness, baseline 3 models + 5 tests, injected source-count failure
+with 7 skips and exit 1, restored success exit 0, and preview. SQL/profile unchanged.
+Evidence directories: /tmp/staff_de_dbt_v2_ey44wfyh and
+/tmp/staff_de_dbt_v2_clgtjowx; temporary evidence may disappear.
+Validator isolates project/database writes; Bash helper replaces Click completion.
+User shell startup files untouched. Local acceptance is not native Windows/macOS,
+production batch completeness, hosted CI, publication isolation or cloud acceptance.
 
-- requirements.txt: dbt==2.0.8, duckdb==1.5.6, pytz==2026.5. v2 uses built-in
-  DuckDB adapter; Python DuckDB/pytz support load_orders.py. Owner already replaced
-  the venv before requesting migration; agent installed missing loader dependencies.
-- requirements_snapshot.txt: seven actual installed pins, including pip 26.2.1.
-  Snapshot is not a hash/solver lock and does not prove another platform works.
-- dbt_project.yml bounds runtime >=2.0.8,<2.1.0. Existing SQL and profile template
-  passed without rewrites. Source still maps commerce.orders → dev.raw.orders.
-- scripts/validate_dbt_runtime.py copies sanitized inputs into a fresh temporary
-  project/database, verifies explicit exit codes and per-node statuses, and keeps
-  separate baseline/failure/recovery evidence. No developer database writes.
-- scripts/dbt_completion.bash provides common Bash command/option completion;
-  tested callbacks, no dynamic model completion. Old Click activation is obsolete.
-  Owner startup files untouched; runbook explains replacing old source block.
-- Bash/PowerShell runbooks use DBT_PROFILES_DIR; README documents v2, acceptance,
-  rollback boundaries and remaining limitations.
+## Git state and exact next action
 
-## Verified results
+Current feature/dbt-v2-migration at 10eb922 tracks its matching origin branch.
+Local main remains a1b0fa8; origin/main is 2fcc0fa. No rebase in progress.
+Four modified files contain finalized checkpoint notes: docs/HANDOFF.md,
+docs/DATAFLOW_TRACKER.md, numbered 04_PROGRESS_DASHBOARD.md and 13_SESSION_LOG.md.
+Learner should create docs/dbt-v2-integration-checkpoint from origin/main, carry
+these notes, then stage/review/commit them. HEAD and origin/main trees match,
+so this branch switch should preserve the notes without content conflicts.
+Commands supplied only; branch creation/commit not yet confirmed. Documentation
+publication and local main synchronization follow; no agent push or Git mutation.
+Avoid another pre-publication note-commit loop. Keep future status notes for the
+next meaningful checkpoint if the current documentation commit is already made.
 
-WSL Python 3.14.4. Active venv and recreated /tmp/staff_de_v2_repro_p8cq1ajh match
-all seven snapshot packages. Both ran complete validation successfully:
+## Remaining training work
 
-- dependency check, fresh fixture load, connection and freshness: exit 0;
-- baseline: 3 models successful and 5 tests pass;
-- expectation changed to 4 in temporary copy: 1 failed test, 7 skipped nodes, exit 1;
-- restored expectation 3: 3 successful models, 5 passing tests, exit 0;
-- completed_orders preview: exit 0.
-
-Active evidence /tmp/staff_de_dbt_v2_ey44wfyh; clean-runtime evidence
-/tmp/staff_de_dbt_v2_clgtjowx. Each has summary.json, command logs and separate
-run_results.json artifacts. Temporary paths may disappear. Bash snippets/helper,
-Python syntax, local Markdown links and diff whitespace checks passed. Native
-PowerShell parser/execution unavailable. First attempt exposed missing pytz;
-resolved explicitly. dbt ~/.dbt lease writes and package downloads needed approved
-sandbox escalation; no platform login or cloud calls were performed.
-
-## Git/worktree
-
-Branch feature/dbt-v2-migration created with owner permission from 1756d63.
-Previous feature branch has cached upstream at 1756d63. Last inspected main and
-cached origin/main: a1b0fa8 (Markdown migration already integrated). Prior four
-uncommitted checkpoint notes and owner requirement edits were carried into new
-branch; requirement edits were superseded by requested v2 migration.
-Changes remain uncommitted: requirements and snapshot, project version bound,
-README, both runbooks, tracker/handoff, dashboard/session/decision logs, and two
-new scripts. No agent staging, commit, merge or push.
-
-## Learning and remaining work
-
-Learner demonstrated freshness checks timestamps while exact count detects a
-partial fixture. Core v1 source-test blocking/recovery verified previously, now
-revalidated under v2. Reusable test SQL defines expected_rows once and uses it in
-HAVING. Test discovery comes from test-paths; source() defines dependencies.
-Tracker diagram labels MANUAL, DBT AUTO and AIRFLOW PLANNED execution.
-
-Loader remains full replacement with a fixed database path beside its script;
-it ignores DBT_DUCKDB_PATH. Validator copies the project to isolate writes; this
-is not a loader refactor. Native Windows integration, production batch contracts,
-consumer publication isolation, hosted CI, real Airflow and cloud remain pending.
-Existing views can expose changed raw data despite skipped builds. Preserve WSL,
-Windows and macOS acceptance boundaries. Budget target below $150/month, ceiling
-$200; no resources provisioned or spending controls verified.
+Loader remains full replacement at a fixed database path and ignores
+DBT_DUCKDB_PATH. Refactor before expansion. Count=3 is a fixture gate, not a
+production batch contract; raw-backed views can expose changed data despite
+skipped rebuilds. Native Windows integration, production reconciliation,
+consumer publication isolation, hosted CI, local Airflow and actual cloud work
+remain pending. Budget target below $150/month, ceiling $200; no provisioning
+or spending controls verified.
 
 ## Thread continuity
 
-Same failure/recovery thread, checkpoint 16; next scheduled review 20. Review 15
-recommended continuing to PR boundary. Early qualitative assessment at 16: long
-shell/Git/teaching history plus a completed runtime migration makes an optional
-fresh thread useful before another substantial phase. No context percentage or
-compaction guarantee. Do not reset count unless a new thread is confirmed.
-
-## Copyable resume prompt
-
-Resume /home/amola/projects/staff_de_training from docs/HANDOFF.md and canonical
-AGENTS.md instructions. Review the uncommitted dbt 2.0.8 migration on
-feature/dbt-v2-migration. Active and clean-runtime fresh-database failure/recovery
-checks already pass. Continue learner-led diff/stage/commit; confirm parent PR
-integration before migration publication. Do not repeat setup/tests without cause,
-push code, or treat local acceptance as Windows/cloud/CI acceptance.
-
-## Resume checkpoint — 2026-10-17 21:40 Pacific
-
-New Git review thread checkpoint 1; next review 5. Local migration diff reviewed; whitespace passes. Parent PR #4 remains OPEN per owner-supplied output. Network approval declined; no agent remote read completed. Supplied learner commands to stage/review/commit migration, squash-merge parent, fetch main, rebase migration-only commits using --onto origin/main 1756d63, review and publish. None confirmed executed. Local acceptance retained; no rerun. Exact next action: learner scoped staging and staged-diff review.
-
-## Latest verified checkpoint — 2026-10-17
-
-Git review checkpoint 3, next review 5. Supersedes earlier uncommitted/open-PR state: migration e191883 committed, initial rebase aborted, parent PR #4 merged at 21:46:49 Pacific as 1d8f98b and fetched. Parent and squash-merge trees identical. Only these checkpoint notes changed after clean-state inspection. Learner note commit and rebase pending.
+Git review thread started 2026-10-17 21:40 Pacific; checkpoint 9, next review 10.
+Review due at 5 was recorded at 6: continue bounded integration work, qualitative
+assessment. No context percentage or compaction guarantee. Migration phase now
+complete; assess handoff usefulness at next review before new implementation.
