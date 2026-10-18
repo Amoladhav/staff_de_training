@@ -21,7 +21,7 @@ its delivery workflow. No fixed session durations apply.
 ## Thread continuity review
 
 - Thread label: dbt v2 Git review — resumed 2026-10-17 21:40 Pacific.
-- Initialized at **0**; counted checkpoints: **1** (local review and publication commands supplied).
+- Initialized at **0**; counted checkpoints: **3** (includes rebase diagnosis and confirmed parent integration).
 - Last scheduled review: none in this thread. Next scheduled review: **5**.
 - Assessment: bounded Git checkpoint; continue. Qualitative assessment only.
 - Previous thread review preserved: failure/recovery checkpoint 16 recommended optional handoff after local migration acceptance; scheduled review 15, next would have been 20.
@@ -37,17 +37,17 @@ Python duckdb==1.5.6 and pytz==2026.5 for the loader; v2's adapter is built in.
 Snapshot regenerated from the actual environment: seven packages including pip.
 No old Core/adapter packages remain in the inspected environment.
 
-Branch feature/dbt-v2-migration was created with permission from committed
-failure/recovery revision 1756d63. That earlier branch now has a cached upstream;
-owner-supplied GitHub output confirms PR #4 OPEN against main, with no merge commit. Migration changes and prior checkpoint notes are
-uncommitted on this new branch. Main/cached origin/main remain at a1b0fa8 as last
-inspected; confirm parent PR integration before choosing the migration PR base.
-No agent commit, push or PR action.
+Migration committed by learner as e191883 on feature/dbt-v2-migration.
+The first rebase targeted stale origin/main a1b0fa8 and was aborted; clean branch
+verified before this checkpoint update. Owner GitHub output confirms PR #4 merged
+at 2026-10-17 21:46:49 Pacific as 1d8f98b. Fetched origin/main matches that commit.
+Agent verified no tree differences between parent 1756d63 and origin/main.
+Local main remains a1b0fa8; use origin/main as the rebase target.
 
-Next: review migration diff and commit locally, then resolve parent-branch PR
-integration with the owner before publishing the migration. Runbooks now use
-DBT_PROFILES_DIR and a repository Bash completion helper; owner must replace
-any old Click completion startup block. No shell startup files were edited.
+Next: learner commits these checkpoint notes, then rebases migration-only commits
+with git rebase --onto origin/main 1756d63 feature/dbt-v2-migration.
+Review resulting diff before publication. No agent Git mutation or publication.
+Local runtime acceptance retained; no code change or rerun.
 
 ### dbt v2 verification, 2026-10-17
 
@@ -397,3 +397,5 @@ Build acceptance complete for this selection; B11 steps 03-08 remain next.
 | 2026-10-17 | Failure/recovery thread checkpoint 16 | Owner explicitly requests agent v2 migration. With permission created feature/dbt-v2-migration from 1756d63. Replaced Core/adapter pins with dbt 2.0.8 plus loader duckdb/pytz, regenerated seven-package snapshot, added v2 bound, validation runner and Bash completion helper; updated runbooks/README. Active and clean reproduced envs pass fresh-load, freshness, build, source-test failure/skips, recovery and preview. SQL/profile unchanged. No agent commit/push. Early qualitative handoff useful before next phase; next scheduled review 20. |
 
 | 2026-10-17 | dbt v2 Git review checkpoint 1 | Reviewed runtime/script/runbook diff; whitespace check passes. Prior local acceptance retained, no rerun. Owner output confirms parent PR #4 OPEN, mergedAt/mergeCommit null. Agent network approval declined. Supplied scoped stage/review/commit, parent squash merge, fetch and rebase --onto origin/main 1756d63, then migration publication commands. Commands only; no Git mutations or integration confirmed. |
+
+| 2026-10-17 | dbt v2 Git review checkpoints 2–3 | Diagnosed stale-target rebase; learner aborted. Parent PR #4 now MERGED per owner output; origin/main 1d8f98b verified locally, tree identical to 1756d63. Migration e191883 retained and worktree clean before notes. Assigned checkpoint-note commit followed by migration-only rebase and review; execution pending. |

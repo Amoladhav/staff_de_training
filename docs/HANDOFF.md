@@ -15,12 +15,13 @@ dbt → local Airflow → actual Azure/Databricks/cloud implementation with grad
 
 ## Exact next action
 
-Review uncommitted migration on feature/dbt-v2-migration, then learner stages and
-commits. Local acceptance is complete; do not repeat it without code changes or
-new concerns. Parent feature/source-failure-recovery commit 1756d63 was pushed
-according to cached upstream; owner-supplied GitHub output confirms PR #4 OPEN against main, not merged. Confirm its
-integration before choosing migration PR base; do not assume main contains it.
-Do not push from the agent. No hosted CI or independent approval is claimed.
+Commit the latest checkpoint notes, then learner runs:
+`git rebase --onto origin/main 1756d63 feature/dbt-v2-migration`.
+Migration is committed as e191883. First rebase onto stale a1b0fa8 was aborted.
+PR #4 is now MERGED per owner output; fetched origin/main is 1d8f98b and its tree
+is identical to parent 1756d63. Worktree verified clean before these note edits.
+Review the rebased diff before publication; no agent push. Local acceptance
+remains valid; do not rerun without new changes or concerns.
 
 ## Current implementation
 
@@ -106,3 +107,7 @@ push code, or treat local acceptance as Windows/cloud/CI acceptance.
 ## Resume checkpoint — 2026-10-17 21:40 Pacific
 
 New Git review thread checkpoint 1; next review 5. Local migration diff reviewed; whitespace passes. Parent PR #4 remains OPEN per owner-supplied output. Network approval declined; no agent remote read completed. Supplied learner commands to stage/review/commit migration, squash-merge parent, fetch main, rebase migration-only commits using --onto origin/main 1756d63, review and publish. None confirmed executed. Local acceptance retained; no rerun. Exact next action: learner scoped staging and staged-diff review.
+
+## Latest verified checkpoint — 2026-10-17
+
+Git review checkpoint 3, next review 5. Supersedes earlier uncommitted/open-PR state: migration e191883 committed, initial rebase aborted, parent PR #4 merged at 21:46:49 Pacific as 1d8f98b and fetched. Parent and squash-merge trees identical. Only these checkpoint notes changed after clean-state inspection. Learner note commit and rebase pending.

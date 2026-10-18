@@ -366,3 +366,8 @@ No rerun needed; staging/review/commit is next.
 - Resumed in new thread; reviewed migration diff and retained prior local acceptance. Whitespace check passes.
 - Owner GitHub output confirms parent PR #4 OPEN, no merge commit. Network read approval declined.
 - Supplied learner-owned scoped stage/review/commit, parent squash merge, fetch/rebase migration-only commits, and migration push/PR commands. Execution and integration pending; no agent Git mutation. Next review 5.
+
+### dbt v2 Git review checkpoints 2–3 — 2026-10-17
+- First rebase targeted stale origin/main a1b0fa8; diagnosed missing parent changes and advised abort, not conflict resolution.
+- Learner aborted; agent verified clean feature/dbt-v2-migration at e191883 before notes. Owner confirms PR #4 MERGED at 21:46:49 Pacific; fetched origin/main 1d8f98b tree equals 1756d63 exactly.
+- Assigned note commit then migration-only rebase and diff review. No agent Git mutation, runtime rerun or publication; next review 5.
