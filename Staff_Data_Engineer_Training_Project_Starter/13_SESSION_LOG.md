@@ -340,3 +340,34 @@ No rerun needed; staging/review/commit is next.
 ### Failure/recovery thread checkpoint 12 — 2026-10-17
 - Verified feature/source-failure-recovery at a1b0fa8, six modified files and empty index; no new commit. SQL expectation restored with alias reuse. Bash snippet syntax and diff whitespace checks pass.
 - Assigned explicit scoped staging, cached diff/check, local commit and status. No agent Git mutation/publication; learner execution unconfirmed. Next review 15.
+
+### Failure/recovery thread checkpoint 13 — 2026-10-17
+- Verified 1756d63 includes six intended files on feature/source-failure-recovery; clean before notes, no upstream shown. Prepared PR body in /tmp/staff_de_training_failure_recovery_pr.md.
+- Assigned learner push, PR creation and hosted checks. No agent remote action. Four checkpoint-note changes remain uncommitted and are excluded from 1756d63; consolidate at next integration boundary. Next review 15.
+
+### Failure/recovery thread checkpoint 14 — 2026-10-17
+- ANSWER NOW: located fixture-count gate after raw ingestion and before model builds. Explained source() dependency linkage and error-severity skipping within selected build; freshness is separate. Existing raw-backed views may expose modified source data even when rebuild is skipped, so this is not publication isolation.
+- Future orchestration must propagate command failure and guard publication; implementation still pending. Push/PR acceptance not updated without evidence. Next review 15.
+
+### Failure/recovery thread checkpoint 15 — 2026-10-17
+- Owner requested explicit test-file invocation and ownership markers in diagrams. Inspected test-paths and manifest node: test.training_analytics.assert_orders_fixture_count depends on source.training_analytics.commerce.orders, enabled, severity ERROR.
+- Replaced tracker diagram with MANUAL/DBT AUTO/AIRFLOW PLANNED execution qualifiers and explicit discovery/file node. Explained test prefix convention, automatic discovery, selection, runtime scheduling and generated manifest ownership. No dbt run or SQL change.
+- Scheduled review 15: continue to PR checkpoint; reassess before next implementation phase. Next review 20; qualitative assessment only.
+
+### Failure/recovery thread checkpoint 16 — 2026-10-17
+- Owner requests migration to v2 and authorizes implementation. Inspected venv: dbt 2.0.8 installed, old Core/adapter absent, Python DuckDB missing; requirements still described v1. With approved Git escalation created feature/dbt-v2-migration from 1756d63, preserving existing notes and owner edits.
+- Replaced requirements with dbt 2.0.8 plus Python duckdb 1.5.6 and pytz 2026.5. Initial loader timestamp fetch exposed missing pytz formerly supplied transitively; fixed with explicit pin. Snapshot regenerated: seven packages. Clean venv exact-match verified.
+- Added project v2 version bound, reusable temporary-project validation script and basic Bash v2 completion helper. Updated profile env variable references to DBT_PROFILES_DIR, README and runbooks. No SQL rewrite, original profile or developer DB mutation.
+- Both active and clean venv pass loader/debug/freshness, 3 models+5 tests baseline, source-count failure exit 1 with seven skips, restored success exit 0, and preview. Evidence /tmp/staff_de_dbt_v2_ey44wfyh and /tmp/staff_de_dbt_v2_clgtjowx. Temporary paths are not permanent records.
+- Package downloads and dbt local lease writes required approved escalation. No platform login/cloud execution. Static syntax/link/whitespace and Bash completion callback checks pass; Windows unverified.
+- Migration remains uncommitted. No agent push/PR. Parent feature branch cached upstream exists, live integration unverified. Early qualitative handoff useful before next phase; next scheduled review 20.
+
+### dbt v2 Git review checkpoint 1 — 2026-10-17 21:40 Pacific
+- Resumed in new thread; reviewed migration diff and retained prior local acceptance. Whitespace check passes.
+- Owner GitHub output confirms parent PR #4 OPEN, no merge commit. Network read approval declined.
+- Supplied learner-owned scoped stage/review/commit, parent squash merge, fetch/rebase migration-only commits, and migration push/PR commands. Execution and integration pending; no agent Git mutation. Next review 5.
+
+### dbt v2 Git review checkpoints 2–3 — 2026-10-17
+- First rebase targeted stale origin/main a1b0fa8; diagnosed missing parent changes and advised abort, not conflict resolution.
+- Learner aborted; agent verified clean feature/dbt-v2-migration at e191883 before notes. Owner confirms PR #4 MERGED at 21:46:49 Pacific; fetched origin/main 1d8f98b tree equals 1756d63 exactly.
+- Assigned note commit then migration-only rebase and diff review. No agent Git mutation, runtime rerun or publication; next review 5.

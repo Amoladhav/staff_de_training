@@ -4,119 +4,110 @@ Updated: 2026-10-17 (America/Los_Angeles).
 
 ## Objective and instructions
 
-Canonical workspace: `/home/amola/projects/staff_de_training`. Read root AGENTS.md,
-linked `Staff_Data_Engineer_Training_Project_Starter/AGENTS.md` and
-`01_PROJECT_INSTRUCTIONS.md`, then tracker and numbered logs. Preserve existing
-paths. Continue learner-led Staff DE training: setup → dbt → Databricks with gradual
-Python → deeper Python, including required local and actual cloud Airflow/pipeline
-implementation. Local validation is not cloud or native-platform acceptance.
+Canonical workspace: /home/amola/projects/staff_de_training. Read root AGENTS.md,
+Staff_Data_Engineer_Training_Project_Starter/AGENTS.md and 01_PROJECT_INSTRUCTIONS.md,
+then docs/DATAFLOW_TRACKER.md and numbered logs. Preserve established paths.
+Latest owner request: migrate requirements/code to dbt v2; implementation was
+explicitly authorized. Training otherwise remains learner-led, small checkpoints,
+one shell command per fence, native Windows separate from WSL. Owner owns remote
+publication, credentials and cloud/provider operations. Required path remains local
+dbt → local Airflow → actual Azure/Databricks/cloud implementation with gradual Python.
 
 ## Exact next action
 
-On verified feature/source-failure-recovery at a1b0fa8, learner explicitly stages
-the six-file scope, reviews git diff --cached and its --check, then commits with
-message "test: verify source failure recovery and reuse expected count".
-Verify resulting commit and status before learner-owned push/PR.
-Learner demonstrated freshness versus exact-count reasoning; tutor explained that
-minimum count permits extras and counts alone cannot prove correct membership.
-Publication remains learner-owned. Diff whitespace check passed at checkpoint 11.
+Commit the latest checkpoint notes, then learner runs:
+`git rebase --onto origin/main 1756d63 feature/dbt-v2-migration`.
+Migration is committed as e191883. First rebase onto stale a1b0fa8 was aborted.
+PR #4 is now MERGED per owner output; fetched origin/main is 1d8f98b and its tree
+is identical to parent 1756d63. Worktree verified clean before these note edits.
+Review the rebased diff before publication; no agent push. Local acceptance
+remains valid; do not rerun without new changes or concerns.
 
-Failure/recovery now verified: Core 1.12.0 log at 2026-10-17 10:04:26 Pacific
-records assert_orders_fixture_count FAIL 1 and seven skipped downstream nodes
-(3 models, 4 tests). SQL compared count<>4 but projected expected_rows=3.
-At 10:05:38 recovery passes all 8 nodes; current run_results.json generated
-2026-10-17T17:05:38.559028Z confirms 3 models and 5 tests. Current SQL uses
-expected_rows=3 and HAVING count(*) <> expected_rows, removing duplicate literals.
-Both runs used target/failure; failure JSON overwritten, but dbt.log retains proof.
-No need to repeat builds. Actual shell exit codes were not supplied. This is
-fixture-level blocking/recovery, not production completeness or publication gating.
+## Current implementation
 
-## Git and worktree
+- requirements.txt: dbt==2.0.8, duckdb==1.5.6, pytz==2026.5. v2 uses built-in
+  DuckDB adapter; Python DuckDB/pytz support load_orders.py. Owner already replaced
+  the venv before requesting migration; agent installed missing loader dependencies.
+- requirements_snapshot.txt: seven actual installed pins, including pip 26.2.1.
+  Snapshot is not a hash/solver lock and does not prove another platform works.
+- dbt_project.yml bounds runtime >=2.0.8,<2.1.0. Existing SQL and profile template
+  passed without rewrites. Source still maps commerce.orders → dev.raw.orders.
+- scripts/validate_dbt_runtime.py copies sanitized inputs into a fresh temporary
+  project/database, verifies explicit exit codes and per-node statuses, and keeps
+  separate baseline/failure/recovery evidence. No developer database writes.
+- scripts/dbt_completion.bash provides common Bash command/option completion;
+  tested callbacks, no dynamic model completion. Old Click activation is obsolete.
+  Owner startup files untouched; runbook explains replacing old source block.
+- Bash/PowerShell runbooks use DBT_PROFILES_DIR; README documents v2, acceptance,
+  rollback boundaries and remaining limitations.
 
-Resume inspection: clean main and cached origin/main both at `a1b0fa8`
-(`Change txt to md (#3)`). Markdown migration is already committed and integrated
-locally; the previous handoff was stale. No duplicate migration commit needed.
-Reviewed Bash syntax, 71 Bash/67 PowerShell single-command fences, local links
-and commit whitespace. No native PowerShell execution or live remote/CI query.
-Checkpoint notes and Bash completion guidance update five documentation files: handoff, tracker,
-progress dashboard, session log and Bash runbook. These remain uncommitted on learner-created feature/source-failure-recovery,
-verified at checkpoint 4. No agent Git mutations.
+## Verified results
 
-## Verified evidence
+WSL Python 3.14.4. Active venv and recreated /tmp/staff_de_v2_repro_p8cq1ajh match
+all seven snapshot packages. Both ran complete validation successfully:
 
-- WSL Python 3.14.4; Core 1.12.0 / dbt-duckdb 1.11.0 / DuckDB 1.5.6.
-- requirements.txt declares direct pins; requirements_snapshot.txt records 60
-  packages including pip 25.1.1. Snapshot is not a solver/hash lock.
-- Recreated `/tmp/staff_de_training_repro` matched all 60 installed versions;
-  pip check passed. It was verified existing; /tmp may disappear between sessions.
-- Template profiles.example.yml uses required DBT_DUCKDB_PATH. Temporary profile
-  `/tmp/staff_de_training_profiles/profiles.yml` connection success confirmed by
-  log and owner output. Runbooks now use a venv-local profile directory and the
-  documented Core DBT_ENGINE_PROFILES_DIR variable for concise commands.
-- Core 1.12.0 run_results.json at 2026-10-17T00:12:52.832704Z (October 16 Pacific):
-  source:commerce.orders+ build, 3 successful models and 5 passing tests/zero
-  failures. Owner supplied matching PASS=8 output.
-- Markdown rewrite checks: Bash fenced commands parse with bash -n; every command
-  has its own fence; local links/control characters checked. No pipeline execution
-  for documentation edits. PowerShell parser/native execution unavailable.
+- dependency check, fresh fixture load, connection and freshness: exit 0;
+- baseline: 3 models successful and 5 tests pass;
+- expectation changed to 4 in temporary copy: 1 failed test, 7 skipped nodes, exit 1;
+- restored expectation 3: 3 successful models, 5 passing tests, exit 0;
+- completed_orders preview: exit 0.
 
-## Command references and preferences
+Active evidence /tmp/staff_de_dbt_v2_ey44wfyh; clean-runtime evidence
+/tmp/staff_de_dbt_v2_clgtjowx. Each has summary.json, command logs and separate
+run_results.json artifacts. Temporary paths may disappear. Bash snippets/helper,
+Python syntax, local Markdown links and diff whitespace checks passed. Native
+PowerShell parser/execution unavailable. First attempt exposed missing pytz;
+resolved explicitly. dbt ~/.dbt lease writes and package downloads needed approved
+sandbox escalation; no platform login or cloud calls were performed.
 
-Use docs/bash_commands.md and docs/powershell_commands.md. Section numbers match:
-1 configure; 2 branch; 3 dbt loop; 4 clean environment; 5 integration; 6 commit;
-7 PR; 8 merge; 9 deployment/account context. Keep frequent commands concise and
-copyable, one command per fence. Optional setup/troubleshooting is secondary.
-Use PROJECT_ROOT/BR_NAME and minimal runtime variables. Keep historical evidence
-in logs/tracker rather than turning references into tutorials/transcripts.
-Native Windows commands only in PowerShell, separate Windows environment and DB;
-UNC can access canonical source files. No Windows/WSL venv reuse or duplicate repo.
-Learner owns remote, provider and credential operations; no secret inspection.
+## Git/worktree
 
-## Pending work and limitations
+Branch feature/dbt-v2-migration created with owner permission from 1756d63.
+Previous feature branch has cached upstream at 1756d63. Last inspected main and
+cached origin/main: a1b0fa8 (Markdown migration already integrated). Prior four
+uncommitted checkpoint notes and owner requirement edits were carried into new
+branch; requirement edits were superseded by requested v2 migration.
+Changes remain uncommitted: requirements and snapshot, project version bound,
+README, both runbooks, tracker/handoff, dashboard/session/decision logs, and two
+new scripts. No agent staging, commit, merge or push.
 
-- Markdown migration review complete; checkpoint notes await the next reviewed commit.
-- W05/W06 completeness reasoning and production batch contract remain pending.
-  W07 fixture-level source-test blocking/recovery verified at checkpoint 10; Git review next.
-- W08 remains In Progress: loader is a full-replacement prototype, stamps loaded_at,
-  ignores DBT_DUCKDB_PATH and writes beside its script. Refactor before expansion.
-- source YAML expects dev.raw.orders; preserve dev.duckdb catalog until deliberately
-  generalized. Clean Python reproduction uses existing DB, not fresh DB acceptance.
-- Native Windows integration awaits configurable loader paths; docs mark this.
-- No hosted CI, branch protection, actual deployment, local Airflow or cloud pipeline.
-  Azure account recipes are references, not proof of login or resource provisioning.
-  Budget ceiling $200/month, target below $150; alerts are not spending hard caps.
-- Keep Windows/WSL/macOS validation separate. Preserve OneDrive source snapshot.
+## Learning and remaining work
+
+Learner demonstrated freshness checks timestamps while exact count detects a
+partial fixture. Core v1 source-test blocking/recovery verified previously, now
+revalidated under v2. Reusable test SQL defines expected_rows once and uses it in
+HAVING. Test discovery comes from test-paths; source() defines dependencies.
+Tracker diagram labels MANUAL, DBT AUTO and AIRFLOW PLANNED execution.
+
+Loader remains full replacement with a fixed database path beside its script;
+it ignores DBT_DUCKDB_PATH. Validator copies the project to isolate writes; this
+is not a loader refactor. Native Windows integration, production batch contracts,
+consumer publication isolation, hosted CI, real Airflow and cloud remain pending.
+Existing views can expose changed raw data despite skipped builds. Preserve WSL,
+Windows and macOS acceptance boundaries. Budget target below $150/month, ceiling
+$200; no resources provisioned or spending controls verified.
 
 ## Thread continuity
 
-New failure/recovery thread initialized at zero, checkpoint 12 recorded; scheduled review 10 recommends continuing; next
-scheduled review 15. Prior Git/runtime thread review at 30 recommended the handoff.
-Continue this bounded phase; qualitative assessment only.
+Same failure/recovery thread, checkpoint 16; next scheduled review 20. Review 15
+recommended continuing to PR boundary. Early qualitative assessment at 16: long
+shell/Git/teaching history plus a completed runtime migration makes an optional
+fresh thread useful before another substantial phase. No context percentage or
+compaction guarantee. Do not reset count unless a new thread is confirmed.
 
 ## Copyable resume prompt
 
-Resume /home/amola/projects/staff_de_training from docs/HANDOFF.md. Read AGENTS.md,
-linked instructions and docs/DATAFLOW_TRACKER.md. Migration already integrated at
-a1b0fa8. Verify current branch/files and continue learner-led source-test failure
-and recovery without repeating runtime setup or PR merges. Preserve separate
-failure/recovery artifacts and do not infer execution from assigned commands.
+Resume /home/amola/projects/staff_de_training from docs/HANDOFF.md and canonical
+AGENTS.md instructions. Review the uncommitted dbt 2.0.8 migration on
+feature/dbt-v2-migration. Active and clean-runtime fresh-database failure/recovery
+checks already pass. Continue learner-led diff/stage/commit; confirm parent PR
+integration before migration publication. Do not repeat setup/tests without cause,
+push code, or treat local acceptance as Windows/cloud/CI acceptance.
 
-Completion side question: installed Click completion verified for dbt commands/options; Bash runbook records session-only activation. No startup file changed; learner activation unconfirmed. Failure exercise remains next.
+## Resume checkpoint — 2026-10-17 21:40 Pacific
 
-Active side issue: learner reports completion does not work. Isolated Bash activation/registration and callback pass locally; learner shell, executable resolution and complete -p dbt diagnostics requested. Resolve before returning to pending pipeline exercise.
+New Git review thread checkpoint 1; next review 5. Local migration diff reviewed; whitespace passes. Parent PR #4 remains OPEN per owner-supplied output. Network approval declined; no agent remote read completed. Supplied learner commands to stage/review/commit migration, squash-merge parent, fetch main, rebase migration-only commits using --onto origin/main 1756d63, review and publish. None confirmed executed. Local acceptance retained; no rerun. Exact next action: learner scoped staging and staged-diff review.
 
-Checkpoint 4: learner Bash output resolves ~/.local/bin/dbt first and registers _complete_it. Assigned explicit project-venv PATH precedence, hash -r and Click activation; then command -v dbt and complete -p dbt. Cause of PATH/registration changes unknown; session fix not yet confirmed. Feature branch now verified locally, SQL unchanged.
+## Latest verified checkpoint — 2026-10-17
 
-Checkpoint 5: ~/.local/bin/dbt verified standalone ELF binary version 2.0.8; project Python entry point reports Core 1.12.0/duckdb 1.11.0. Exact installation provenance unknown. Both retained. Qualitative review: continue; session correction acceptance still pending.
-
-Checkpoint 6: supplied learner removal of only ~/.local/bin/dbt, hash reset, project venv activation and executable/version verification followed by Click registration. Removal not executed by agent or confirmed by learner. Resume from that confirmation before failure/recovery.
-
-Checkpoint 7: persistent completion recipe added to Bash runbook: generate .venv/dbt_completion.bash and source conditionally from ~/.bashrc. Keep project activation session-specific; no dbt profiles.yml change. User startup files untouched; removal/persistence confirmation pending.
-
-Checkpoint 9: repeat success confirmed from latest artifact/log (PASS=8 ERROR=0 SKIP=0); SQL remains expectation 3, target/recovery absent. Supplied complete expectation-4 SQL for learner to save before rerun. Negative-case acceptance still pending. Date change does not reset thread counter; review due 10.
-
-Checkpoint 10 worktree: five documentation files plus fixture-count SQL modified on feature/source-failure-recovery. No agent commit or push. Previous pending-negative-case notes are superseded by evidence above.
-
-Checkpoint 11: freshness/completeness explanation accepted. Git diff review assigned before staging/commit; six-file scope unchanged, no temporary failure injection remains.
-
-Checkpoint 12: index empty and six changes verified before staging assignment. Bash snippets and diff whitespace checks passed. Commit commands supplied, execution unconfirmed.
+Git review checkpoint 3, next review 5. Supersedes earlier uncommitted/open-PR state: migration e191883 committed, initial rebase aborted, parent PR #4 merged at 21:46:49 Pacific as 1d8f98b and fetched. Parent and squash-merge trees identical. Only these checkpoint notes changed after clean-state inspection. Learner note commit and rebase pending.

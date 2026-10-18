@@ -29,13 +29,12 @@ Last updated: 2026-10-16
 - BLUE: Staff-level confident
 
 ## Current Work
-- Failure/recovery thread checkpoint 12; review recommends continuing; next qualitative review at 15.
-- Migration reviewed and already integrated at a1b0fa8; no duplicate commit needed.
-- Active checkpoint: W06/W07 failure/recovery — In Progress; W08 loader refactoring remains In Progress.
-- Current evidence and status: [Dataflow tracker](../docs/DATAFLOW_TRACKER.md).
-- Next action: learner stages the explicit six-file scope, reviews cached diff/check, then commits SQL alias improvement and docs. Freshness versus exact-count reasoning demonstrated; minimum-count limitation explained. Source-test failure/skips and recovery verified.
-- Then: bounded failure/recovery, batch completeness contract and source-backed build/test acceptance.
-- Azure billing/budget readiness and PowerShell saved variable remain unverified.
+- dbt v2 Git review thread checkpoint 1; next scheduled review 5.
+- Current: W08 dbt v2 migration — In Progress; implementation and WSL acceptance complete, review/commit/integration pending.
+- Branch: feature/dbt-v2-migration from 1756d63. No agent commit/push. Owner output confirms parent PR #4 OPEN; integration pending.
+- Next: review/commit migration and confirm parent PR integration before publication.
+- Verified dbt 2.0.8, seven-package clean reproduction, fresh fixture load/freshness/build, deliberate failure with seven skips, recovery and preview. SQL/profile unchanged.
+- [Dataflow tracker](../docs/DATAFLOW_TRACKER.md) and [handoff](../docs/HANDOFF.md) are authoritative for current evidence. Windows, hosted CI, loader refactor and actual Airflow/cloud remain pending.
 
 ### Setup evidence
 - WSL copy of all 18 OneDrive source files verified byte-for-byte before documentation updates; original retained.

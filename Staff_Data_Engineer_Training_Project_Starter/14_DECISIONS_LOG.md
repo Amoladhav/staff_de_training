@@ -122,3 +122,10 @@ Record decisions that materially change the plan.
 ### D-019 superseding format — concise Markdown developer runbooks
 - Latest owner request replaces plain-text/figlet references with docs/bash_commands.md and docs/powershell_commands.md. Use concise headings, individually copyable command blocks, minimal variables, frequent commands in full development/delivery order.
 - Preserve native Windows commands and platform boundaries. Label pending integration/deployment rather than inventing implementation. Keep detailed teaching in lessons, historical evidence in tracker/logs.
+
+## D-020 — dbt v2 runtime migration (2026-10-17)
+- Owner explicitly requests moving requirements and code to v2 after installing dbt 2.0.8 in the project venv. Agent implementation authorized for this migration; learner Git review/publication remains next.
+- Pin pip package dbt==2.0.8, use its built-in DuckDB adapter, retain Python duckdb==1.5.6 and pytz==2026.5 for the loader. Remove v1 Core/adapter declarations; regenerate snapshot from inspected environment.
+- Bound project to >=2.0.8,<2.1.0 and validate fresh-load/freshness/success/failure/recovery in temporary projects. Existing SQL/profile mapping remains compatible; no speculative rewrites.
+- Use DBT_PROFILES_DIR from v2 CLI help. Replace obsolete Click completion guidance with a project-maintained common-command Bash helper; no automatic shell startup edits.
+- Keep migration on feature/dbt-v2-migration based on 1756d63. Confirm parent integration before publication. Local reproducibility is not Windows, hosted CI or cloud acceptance.

@@ -1,6 +1,7 @@
 # PowerShell · native Windows development runbook
 
-Windows Python, Git, GitHub CLI and Azure CLI only. [Bash counterpart](bash_commands.md) uses matching section numbers. Native Windows execution is not yet verified.
+Windows Python, Git, GitHub CLI and Azure CLI only. [Bash counterpart](bash_commands.md) uses matching section numbers. Native Windows execution is not yet verified. Requirements now target dbt 2.0.8
+with its built-in DuckDB adapter; Python duckdb/pytz support the loader.
 
 **Flow:** [configure](#1-configure-this-session) → [branch](#2-start-or-resume-a-branch) → [build/test](#3-dbt-development-loop) → [portability](#4-clean-environment-check) → [integration](#5-integration-check) → [commit](#6-review-and-commit) → [PR](#7-push-and-open-a-pr) → [merge](#8-merge-and-synchronize) → [deploy](#9-deploy-and-verify).
 
@@ -31,7 +32,7 @@ Set-Location -LiteralPath $env:PROJECT_ROOT
 ```
 
 ```powershell
-$env:DBT_ENGINE_PROFILES_DIR = Join-Path $WindowsVenv "profiles"
+$env:DBT_PROFILES_DIR = Join-Path $WindowsVenv "profiles"
 ```
 
 ```powershell
@@ -39,11 +40,11 @@ $env:DBT_DUCKDB_PATH = Join-Path $env:LOCALAPPDATA "staff_de_training\dev.duckdb
 ```
 
 ```powershell
-New-Item -ItemType Directory -Force -Path $env:DBT_ENGINE_PROFILES_DIR
+New-Item -ItemType Directory -Force -Path $env:DBT_PROFILES_DIR
 ```
 
 ```powershell
-Copy-Item training_analytics\profiles.example.yml "$env:DBT_ENGINE_PROFILES_DIR\profiles.yml"
+Copy-Item training_analytics\profiles.example.yml "$env:DBT_PROFILES_DIR\profiles.yml"
 ```
 
 ```powershell

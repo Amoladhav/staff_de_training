@@ -8,7 +8,7 @@ Run one command at a time; stop on failure. Variables last for the current termi
 
 ## 1. Configure this session
 
-Existing Python environment assumed. Set the branch to the task you are starting or resuming.
+Existing Python environment with dbt 2.0.8 assumed. Set the branch to the task you are starting or resuming.
 
 ```bash
 export PROJECT_ROOT='/home/amola/projects/staff_de_training'
@@ -27,7 +27,7 @@ source .venv/bin/activate
 ```
 
 ```bash
-export DBT_ENGINE_PROFILES_DIR="$PROJECT_ROOT/.venv/profiles"
+export DBT_PROFILES_DIR="$PROJECT_ROOT/.venv/profiles"
 ```
 
 ```bash
@@ -35,18 +35,18 @@ export DBT_DUCKDB_PATH="$PROJECT_ROOT/training_analytics/dev.duckdb"
 ```
 
 ```bash
-mkdir -p "$DBT_ENGINE_PROFILES_DIR"
+mkdir -p "$DBT_PROFILES_DIR"
 ```
 
 ```bash
-cp training_analytics/profiles.example.yml "$DBT_ENGINE_PROFILES_DIR/profiles.yml"
+cp training_analytics/profiles.example.yml "$DBT_PROFILES_DIR/profiles.yml"
 ```
 
 ```bash
 dbt --version
 ```
 
-Use the template copy above; the original ignored `profiles.yml` stays untouched. This Core profile variable keeps later commands short.
+Use the template copy above; the original ignored `profiles.yml` stays untouched. This v2 profile variable keeps later commands short. Expected CLI: dbt 2.0.8.
 
 <details>
 <summary>First-time Python setup or dependency changes</summary>
@@ -75,6 +75,8 @@ python -m pip check
 python -m pip freeze --all > "$PROJECT_ROOT/requirements_snapshot.txt"
 ```
 
+Requirements pin dbt==2.0.8 plus duckdb and pytz for the Python loader. The v2
+DuckDB adapter is built in; do not install dbt-core or dbt-duckdb into this venv.
 A snapshot captures installed packages; it is not a solver lock or a cross-platform guarantee.
 
 </details>
@@ -200,10 +202,15 @@ diff -u requirements_snapshot.txt "$REPRO_DIR/reproduced.txt"
 ```
 
 ```bash
-"$REPRO_DIR/bin/dbt" build --project-dir "$PROJECT_ROOT/training_analytics" --select "source:commerce.orders+" --target-path "$REPRO_DIR/target" --log-path "$REPRO_DIR/logs"
+"$REPRO_DIR/bin/python" "$PROJECT_ROOT/scripts/validate_dbt_runtime.py"
 ```
 
-No diff means equal package versions. The final build uses the existing development database; it is a clean **Python environment**, not a fresh database test.
+No diff means equal package versions. The validation script copies sanitized inputs
+to a new temporary project/database and checks loader, connection, freshness,
+source-backed build, deliberate failure/skips, recovery and preview. It retains
+the printed evidence directory with separate artifacts and checks exit codes.
+It does not touch your development database. dbt may write local leases/caches
+under ~/.dbt; there is no account login or cloud execution in this check.
 
 ## 5. Integration check
 
@@ -355,60 +362,31 @@ Account selection does not provision or deploy anything.
 
 ## Optional Bash tab completion
 
-With the project venv active, enable command/option completion for this terminal
-(no extra package required):
+The previous `_DBT_COMPLETE=bash_source` recipe was for Click/Core v1 and must
+not be used with v2. This repository supplies lightweight Bash completion for
+common commands/options; it does not complete model names or invoke the database.
 
 ```bash
-eval "$(_DBT_COMPLETE=bash_source dbt)"
+source "$PROJECT_ROOT/scripts/dbt_completion.bash"
 ```
 
-Try `dbt bu` then Tab, or `dbt build --sel` then Tab twice. This registers a
-Bash function for the current shell; it does not persist across terminals.
-Project model-name completion is not established by this check.
-
-To persist completion, generate its script once using the project executable:
-
-```bash
-_DBT_COMPLETE=bash_source "$PROJECT_ROOT/.venv/bin/dbt" > "$PROJECT_ROOT/.venv/dbt_completion.bash"
-```
-
-Add the following configuration to `~/.bashrc` once (substitute the path if your
-canonical checkout differs). This registers completion without activating a
-project globally:
-
-```bash
-if [ -r /home/amola/projects/staff_de_training/.venv/dbt_completion.bash ]; then
-    source /home/amola/projects/staff_de_training/.venv/dbt_completion.bash
-fi
-```
-
-Open a new terminal, activate the project venv and verify `complete -p dbt`.
-Regenerate the script after recreating the venv or changing the CLI. The generated
-script is ignored with `.venv`; `profiles.yml` needs no completion settings.
-
-
-If `type -a dbt` lists another executable first, put the project venv first:
-
-```bash
-export PATH="$PROJECT_ROOT/.venv/bin:$PATH"
-```
-
-Clear cached command locations, then rerun the completion activation above:
-
-```bash
-hash -r
-```
-
-Verify registration; the expected function is `_dbt_completion`:
+Try `dbt bu` then Tab or `dbt build --sel` then Tab twice. Verify registration:
 
 ```bash
 complete -p dbt
 ```
 
-The venv prompt alone does not prove executable precedence. Another registered
-completion function means the intended Click registration is not currently active.
+Expected function: `_staff_de_dbt_completion`. For persistence, replace the old
+venv-generated completion source block in `~/.bashrc` with this configuration:
 
-[Click shell completion](https://click.palletsprojects.com/en/stable/shell-completion/).
+```bash
+if [ -r /home/amola/projects/staff_de_training/scripts/dbt_completion.bash ]; then
+    source /home/amola/projects/staff_de_training/scripts/dbt_completion.bash
+fi
+```
+
+No startup file is edited automatically. Re-source the script in an existing
+terminal to replace its old registration. Project venv activation remains explicit.
 
 ## Troubleshooting
 
