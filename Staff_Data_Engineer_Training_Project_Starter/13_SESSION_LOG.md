@@ -371,3 +371,21 @@ No rerun needed; staging/review/commit is next.
 - First rebase targeted stale origin/main a1b0fa8; diagnosed missing parent changes and advised abort, not conflict resolution.
 - Learner aborted; agent verified clean feature/dbt-v2-migration at e191883 before notes. Owner confirms PR #4 MERGED at 21:46:49 Pacific; fetched origin/main 1d8f98b tree equals 1756d63 exactly.
 - Assigned note commit then migration-only rebase and diff review. No agent Git mutation, runtime rerun or publication; next review 5.
+
+### dbt v2 Git review checkpoint 4 — 2026-10-17
+- Verified successful rebase: migration 6b1efc1 and notes 10eb922 atop integrated parent 1d8f98b. Clean before notes; whitespace passes; runtime/scripts/project/runbooks unchanged from e191883.
+- Supplied learner push/PR/check commands. No publication confirmed. Current checkpoint notes remain uncommitted for next boundary; avoid recursive note commits. Next review 5.
+
+### dbt v2 Git review checkpoints 5–6 — 2026-10-17
+- Clarified checkpoint notes can remain local during push. Owner push succeeded; matching HEAD/cached upstream 10eb922 verified. PR creation/checks pending.
+- Scheduled review 5 recorded at 6: continue bounded integration work; next review 10. Four note files remain modified for next Git boundary.
+
+### dbt v2 Git review checkpoint 7 — 2026-10-17
+- Owner reports no checks on migration branch. No hosted CI success inferred. Assigned PR status/mergeability read before integration; local acceptance retained, next review 10.
+
+### dbt v2 Git review checkpoint 8 — 2026-10-17
+- Owner output confirms PR #5 OPEN, MERGEABLE/CLEAN against main, no checks. Supplied squash merge then remote-status/fetch verification; execution pending. Keep local notes/current branch until integration verified. Next review 10.
+
+### dbt v2 Git review checkpoint 9 — 2026-10-17
+- PR #5 integration verified at origin/main 2fcc0fa; tracked tree equals reviewed HEAD 10eb922. Bounded migration complete; no hosted checks or native/cloud acceptance claimed.
+- Finalized four checkpoint-note files; assigned learner docs/dbt-v2-integration-checkpoint from origin/main and one review/commit. Local main still a1b0fa8; synchronization/docs publication pending. Next review 10.

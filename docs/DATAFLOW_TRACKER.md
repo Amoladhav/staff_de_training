@@ -21,15 +21,15 @@ its delivery workflow. No fixed session durations apply.
 ## Thread continuity review
 
 - Thread label: dbt v2 Git review — resumed 2026-10-17 21:40 Pacific.
-- Initialized at **0**; counted checkpoints: **3** (includes rebase diagnosis and confirmed parent integration).
-- Last scheduled review: none in this thread. Next scheduled review: **5**.
-- Assessment: bounded Git checkpoint; continue. Qualitative assessment only.
+- Initialized at **0**; counted checkpoints: **9** (PR #5 integration verified).
+- Last scheduled review: **5**, recorded at checkpoint 6 after the brief status clarification. Next scheduled review: **10**.
+- Assessment: review due at 5 recorded now; bounded PR/integration work remains. Continue this thread. Qualitative assessment only.
 - Previous thread review preserved: failure/recovery checkpoint 16 recommended optional handoff after local migration acceptance; scheduled review 15, next would have been 20.
 
 ## Where we are now
 
-**Current: W08 dbt v2 migration — In Progress (implementation/local acceptance
-complete; review/commit/integration pending).**
+**Current: dbt v2 migration — Done (bounded WSL acceptance and PR integration).
+W08 broader engineering work remains In Progress.**
 
 On owner request, migrated to pip package dbt==2.0.8. Owner had already replaced
 the active venv but requirements still named Core v1. Direct pins now include
@@ -37,17 +37,16 @@ Python duckdb==1.5.6 and pytz==2026.5 for the loader; v2's adapter is built in.
 Snapshot regenerated from the actual environment: seven packages including pip.
 No old Core/adapter packages remain in the inspected environment.
 
-Migration committed by learner as e191883 on feature/dbt-v2-migration.
-The first rebase targeted stale origin/main a1b0fa8 and was aborted; clean branch
-verified before this checkpoint update. Owner GitHub output confirms PR #4 merged
-at 2026-10-17 21:46:49 Pacific as 1d8f98b. Fetched origin/main matches that commit.
-Agent verified no tree differences between parent 1756d63 and origin/main.
-Local main remains a1b0fa8; use origin/main as the rebase target.
+PR #5 squash integration verified at origin/main 2fcc0fa. Agent compared HEAD
+10eb922 with origin/main: identical tracked trees, so reviewed code is unchanged.
+Parent PR #4 integrated at 1d8f98b. Local main still a1b0fa8.
 
-Next: learner commits these checkpoint notes, then rebases migration-only commits
-with git rebase --onto origin/main 1756d63 feature/dbt-v2-migration.
-Review resulting diff before publication. No agent Git mutation or publication.
-Local runtime acceptance retained; no code change or rerun.
+Four local checkpoint-note files remain modified. Next: learner creates
+ docs/dbt-v2-integration-checkpoint from origin/main, carrying these notes,
+then stages/reviews/commits them as one documentation checkpoint. No runtime
+rerun needed. No hosted checks reported; Windows/macOS/cloud gates remain pending.
+Migration publication is complete; documentation publication and local main
+synchronization remain separate follow-up work. No agent Git mutation.
 
 ### dbt v2 verification, 2026-10-17
 
@@ -399,3 +398,13 @@ Build acceptance complete for this selection; B11 steps 03-08 remain next.
 | 2026-10-17 | dbt v2 Git review checkpoint 1 | Reviewed runtime/script/runbook diff; whitespace check passes. Prior local acceptance retained, no rerun. Owner output confirms parent PR #4 OPEN, mergedAt/mergeCommit null. Agent network approval declined. Supplied scoped stage/review/commit, parent squash merge, fetch and rebase --onto origin/main 1756d63, then migration publication commands. Commands only; no Git mutations or integration confirmed. |
 
 | 2026-10-17 | dbt v2 Git review checkpoints 2–3 | Diagnosed stale-target rebase; learner aborted. Parent PR #4 now MERGED per owner output; origin/main 1d8f98b verified locally, tree identical to 1756d63. Migration e191883 retained and worktree clean before notes. Assigned checkpoint-note commit followed by migration-only rebase and review; execution pending. |
+
+| 2026-10-17 | dbt v2 Git review checkpoint 4 | Rebase success verified: 6b1efc1 and 10eb922 atop origin/main 1d8f98b. Clean before notes, whitespace passes; code/runbooks unchanged from e191883. Supplied push/PR/check commands; execution pending. Checkpoint notes remain local for next Git boundary, not another pre-publication commit requirement. |
+
+| 2026-10-17 | dbt v2 Git review checkpoints 5–6 | Clarified four local note edits do not block pushing committed history. Owner push output confirms feature branch publication; HEAD and cached upstream both 10eb922. PR creation next. Review 5 recorded at 6: continue bounded PR/integration phase; next review 10, qualitative assessment. |
+
+| 2026-10-17 | dbt v2 Git review checkpoint 7 | Owner reports no checks on feature/dbt-v2-migration. Local acceptance retained; no hosted CI pass claimed. Assigned read-only gh pr view for number/state/base/head/mergeability/check rollup before integration. |
+
+| 2026-10-17 | dbt v2 Git review checkpoint 8 | Owner PR #5 output confirms OPEN, main base, migration head, MERGEABLE/CLEAN, empty checks. Supplied learner squash merge, PR merge verification and fetch/history commands. Merge not yet confirmed; retain four local notes and current branch during remote merge. |
+
+| 2026-10-17 | dbt v2 Git review checkpoint 9 | Verified origin/main 2fcc0fa integrates PR #5; tracked tree equals reviewed HEAD 10eb922. Bounded migration Done. Four checkpoint notes finalized for learner docs branch/commit from origin/main. Local main synchronization and docs publication pending; no runtime rerun. |
