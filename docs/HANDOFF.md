@@ -1,61 +1,71 @@
 # Training handoff
 
-Updated: 2026-10-17 (America/Los_Angeles), Git review checkpoint 9.
+Updated 2026-10-18 (America/Los_Angeles), durable-tests/CLI checkpoint 16 (resumed atomic-publication checkpoint 20).
 
-## Instructions and objective
+## Objective and instructions
+Continue feature/orders-loader-validation in /home/amola/projects/staff_de_training.
+Read root/starter AGENTS.md and 01_PROJECT_INSTRUCTIONS.md, then tracker/current
+numbered logs. Preserve learner edits and .venv. Owner n means next: inspect saved
+source before advancing; edits may be made without explanation or not yet saved.
+Small learner-led chunks, one shell command per block. Agent reviews/tests and
+maintains notes; owner edits exercises and performs Git writes/publication/cloud
+credentials. Reuse context; avoid redundant reads/checks/research for faster turns.
+Proactively suggest coherent code check-ins after reviewing changes and passing
+acceptance; learner performs Git operations. First assessment: loader plus durable
+success/rejection/preservation/rollback tests; then CLI/caller integration.
+Hex/Fivetran optional later; master plan owns broader role-aligned scope.
 
-Canonical workspace: /home/amola/projects/staff_de_training. Read root AGENTS.md,
-Staff_Data_Engineer_Training_Project_Starter/AGENTS.md and 01_PROJECT_INSTRUCTIONS.md,
-then docs/DATAFLOW_TRACKER.md and numbered logs. Preserve established paths.
-Training is learner-led; one shell command per fence. Owner performs Git writes
-and publication. Keep native Windows, WSL and macOS gates separate. Required path:
-local dbt → local Airflow → actual Azure/Databricks/cloud with gradual Python.
+## Verified current source and acceptance
+- src/orders_pipeline/loader.py: validates expected_rows int (not bool), non-negative;
+  both paths must be Path objects; CSV must be a regular file; DB parent existing
+  directory; existing destination must be regular file. Actual read/connect still
+  validates permissions/format. No invented size/mtime/minimum-volume rules.
+- Typed temporary orders_candidate, count/non-null/unique IDs and completed/pending
+  status guards precede explicit BEGIN. Schema creation/replacement/COMMIT inside
+  try, ROLLBACK then bare raise on Exception. Success print removed;
+  learner return(rows_staged, candidate_timestamp) retained, a two-element tuple.
+- Publication checkpoint 10: 12 disposable checks pass fresh/existing publication,
+  seven input rejection cases, injected failure after actual replacement before
+  commit (fresh/existing), repeat snapshot. Explicit rollback and original error
+  propagation verified, old sentinel preserved or new schema rolled back.
+- Checkpoints 12/15/17/19: eight count, three file, five destination and seven path
+  type boundary checks pass with mocked connect. These are focused checks, not
+  one full regression suite rerun against latest source.
+- Checkpoint 20: two real disposable loads verify tuple matches persisted rows and
+  max timestamp. Two rows returns (2, datetime); header-only expected-zero load
+  returns (0, None). Empty snapshot accepted; no invented timestamp for no rows.
+- Current thread checkpoint 10: both saved durable tests inspected and pass under
+  existing WSL .venv, exit 0: count-rejection full snapshot preservation and exact
+  successful publication/returned summary. Durable rollback and broader coverage
+  remain pending. Temporary fixtures cleaned; project DB/.venv unchanged.
+  Rebuilt wheel/full pipeline acceptance pending. Prior wheel only
+  contains empty initializer; dependency/build notes retained in tracker.
+- CLI parser-only; main wiring pending. Legacy training_analytics/load_orders.py
+  still top-level, do not import. scripts/validate_dbt_runtime.py migration pending.
 
-## Verified outcome
+## Exact next action
+Three durable tests pass (agent run, exit 0): success/data/tuple, count-rejection
+preservation, and injected pre-COMMIT failure with actual replacement, explicit
+rollback, original exception and restored complete snapshot. Learner code reviewed;
+agent only trimmed trailing whitespace/added final newline in loader/test afterward.
+Next learner stages package config/lock/build constraints, initializer/loader, test
+and current continuity notes, then reviews staged diff before local commit.
+Suggested message: feat: add validated atomic orders loader with regression tests.
+CLI scaffold/legacy caller and broader planning/runbook edits remain unstaged for
+later review. No Git writes by agent. Inspect staged scope before commit guidance.
+Remaining: other guards/empty/repeat/fresh-target durable coverage, CLI/main/caller
+migration, logging/diagnostics, validator/runbooks, rebuilt package/pipeline and
+Git delivery. Local checkpoint is not feature completion; tuple retained.
+Owner requests visual location/flow/pseudocode; Hex/Fivetran optional.
 
-The dbt v2 migration is integrated: origin/main 2fcc0fa, PR #5 squash merge.
-Parent PR #4 is integrated at 1d8f98b. Agent verified origin/main and reviewed
-feature HEAD 10eb922 have identical tracked trees. No runtime rerun needed.
-No hosted checks were reported; no CI or independent approval claimed.
+## Worktree and continuity
+Checkpoint 20 verified feature/orders-loader-validation at 25afacd. Modified tracked
+instructions/master plan/dashboard/session/decision logs, tracker/handoff/runbooks,
+legacy learner loader; untracked build_constraints.txt, pyproject.toml, uv.lock, src/.
+No Git writes, installs, remote refresh or cloud actions this thread. Preserve work;
+carry notes with substantive delivery, no notes-only PR loop.
 
-Requirements pin dbt 2.0.8, Python duckdb 1.5.6 and pytz 2026.5. Project bounds
-runtime >=2.0.8,<2.1.0; seven-package snapshot includes pip 26.2.1.
-Prior active and recreated WSL Python 3.14.4 acceptance passed fresh fixture load,
-connection/freshness, baseline 3 models + 5 tests, injected source-count failure
-with 7 skips and exit 1, restored success exit 0, and preview. SQL/profile unchanged.
-Evidence directories: /tmp/staff_de_dbt_v2_ey44wfyh and
-/tmp/staff_de_dbt_v2_clgtjowx; temporary evidence may disappear.
-Validator isolates project/database writes; Bash helper replaces Click completion.
-User shell startup files untouched. Local acceptance is not native Windows/macOS,
-production batch completeness, hosted CI, publication isolation or cloud acceptance.
-
-## Git state and exact next action
-
-Current feature/dbt-v2-migration at 10eb922 tracks its matching origin branch.
-Local main remains a1b0fa8; origin/main is 2fcc0fa. No rebase in progress.
-Four modified files contain finalized checkpoint notes: docs/HANDOFF.md,
-docs/DATAFLOW_TRACKER.md, numbered 04_PROGRESS_DASHBOARD.md and 13_SESSION_LOG.md.
-Learner should create docs/dbt-v2-integration-checkpoint from origin/main, carry
-these notes, then stage/review/commit them. HEAD and origin/main trees match,
-so this branch switch should preserve the notes without content conflicts.
-Commands supplied only; branch creation/commit not yet confirmed. Documentation
-publication and local main synchronization follow; no agent push or Git mutation.
-Avoid another pre-publication note-commit loop. Keep future status notes for the
-next meaningful checkpoint if the current documentation commit is already made.
-
-## Remaining training work
-
-Loader remains full replacement at a fixed database path and ignores
-DBT_DUCKDB_PATH. Refactor before expansion. Count=3 is a fixture gate, not a
-production batch contract; raw-backed views can expose changed data despite
-skipped rebuilds. Native Windows integration, production reconciliation,
-consumer publication isolation, hosted CI, local Airflow and actual cloud work
-remain pending. Budget target below $150/month, ceiling $200; no provisioning
-or spending controls verified.
-
-## Thread continuity
-
-Git review thread started 2026-10-17 21:40 Pacific; checkpoint 9, next review 10.
-Review due at 5 was recorded at 6: continue bounded integration work, qualitative
-assessment. No context percentage or compaction guarantee. Migration phase now
-complete; assess handoff usefulness at next review before new implementation.
+New confirmed thread counter 16; review 15: continue through rollback verification/
+commit review, reassess handoff before CLI integration; next scheduled review 20. Prior atomic-publication review 20
+recommended fresh thread before durable tests/CLI; owner resumed here. Continue
+focused thread. Existing source/environment edits preserved; no Git writes.

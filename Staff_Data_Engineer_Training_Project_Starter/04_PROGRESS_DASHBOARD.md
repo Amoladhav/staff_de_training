@@ -1,8 +1,14 @@
 # Progress Dashboard
 
-Last updated: 2026-10-16
+Last updated: 2026-10-18
 
-## Overall Status
+## Current Work
+- Checkpoint 16: three durable loader tests reviewed and agent-run suite passes, exit 0. Covers success, count rejection/preservation and injected publication failure with explicit rollback/error identity/restored snapshot. Formatting-only cleanup afterward.
+- Local loader/package/tests/continuity-notes commit recommended; learner staging and staged review next. CLI scaffold, legacy caller and wider planning/runbooks remain unstaged for later review. No agent Git writes.
+- W08 In Progress: remaining durable coverage, CLI/callers, logging and rebuilt-package/pipeline acceptance pending. Source checks are not installed-package/hosted CI/cloud acceptance. Hex/Fivetran optional.
+- [Tracker](../docs/DATAFLOW_TRACKER.md) owns evidence/flow; [handoff](../docs/HANDOFF.md) refreshed. Count 16; last review 15: continue through verification/commit, reassess before CLI; next review 20.
+
+## Historical readiness baseline
 
 | Track | Planned | Complete | In Progress | Readiness | Confidence | Status |
 |---|---:|---:|---:|---|---:|---|
@@ -28,15 +34,7 @@ Last updated: 2026-10-16
 - GREEN: interview-ready
 - BLUE: Staff-level confident
 
-## Current Work
-- Git review checkpoint 9; next scheduled review 10.
-- dbt v2 migration — Done for bounded WSL acceptance and PR integration at 2fcc0fa (#5). Broader W08 engineering remains In Progress.
-- Reviewed feature HEAD 10eb922 and origin/main have identical tracked trees. Local main remains a1b0fa8.
-- Next: learner documentation checkpoint branch from origin/main, carrying four local note files, then review/commit. Documentation publication and main synchronization remain pending.
-- Active and recreated WSL validation passed; no hosted checks reported. Native Windows/macOS, loader refactor, production contracts and actual Airflow/cloud remain pending.
-- [Dataflow tracker](../docs/DATAFLOW_TRACKER.md) and [handoff](../docs/HANDOFF.md) hold current evidence and next actions.
-
-### Setup evidence
+### Historical setup evidence
 - WSL copy of all 18 OneDrive source files verified byte-for-byte before documentation updates; original retained.
 - Linux Python 3.14.4, venv/ensurepip imports, Linux Git path verified.
 - Azure CLI still resolves to Windows; native Linux CLI not verified.

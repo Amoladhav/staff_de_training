@@ -1,6 +1,10 @@
 # Session Log
 
-Append one record per training session.
+Append one record per training session/checkpoint. Entries are chronological;
+read the latest relevant entries first. Older next-action statements are historical.
+Current state: [handoff](../docs/HANDOFF.md); authoritative work-item status and
+thread count: [tracker](../docs/DATAFLOW_TRACKER.md). Search checkpoint headings
+for evidence instead of rereading the entire log.
 
 ### Setup continuation — 2026-10-13
 - Status: IN PROGRESS; no duration or competency scores assigned.
@@ -389,3 +393,346 @@ No rerun needed; staging/review/commit is next.
 ### dbt v2 Git review checkpoint 9 — 2026-10-17
 - PR #5 integration verified at origin/main 2fcc0fa; tracked tree equals reviewed HEAD 10eb922. Bounded migration complete; no hosted checks or native/cloud acceptance claimed.
 - Finalized four checkpoint-note files; assigned learner docs/dbt-v2-integration-checkpoint from origin/main and one review/commit. Local main still a1b0fa8; synchronization/docs publication pending. Next review 10.
+
+### Main flow resumed, checkpoint 14 — 2026-10-17
+- Git delivery complete, main synchronized at 25afacd. Resume W06/W08 contract-first loader work per master plan.
+- Inspected current full-replacement loader; asked snapshot/delta and invalid-batch preservation questions before implementation. No branch/code/database changes. Next review 15.
+
+### Main flow checkpoint 15 — 2026-10-18
+- Learner selects snapshot input; unsure about invalid-batch behavior beyond count=3 fixture test. Explained independent batch expectation and validation before accepted-table replacement. Snapshot agreement recorded; comprehension of mismatch handling pending.
+- Clarified delta inserts versus updates/retry deduplication. Assigned 60-expected/60-received reasoning check. No implementation. Review 15: continue bounded lesson, next review 20.
+
+### Main flow checkpoint 16 — 2026-10-18
+- Learner correctly separates reconciliation from static volume rules. Clarified 60 fails only if configured rule excludes it, not merely because a threshold exists.
+- Proposed independently declared expected-count reconciliation for snapshot loader, no arbitrary floor; candidate validation precedes replacement. Assigned duplicate-ID sufficiency check. No implementation; next review 20.
+
+### Main flow checkpoint 17 — 2026-10-18
+- Learner correctly explains all mandatory checks must pass; any failure rejects batch. Contract reasoning sufficient to proceed.
+- Assigned feature/orders-loader-validation from main, preserving local notes. Initial scope uses independent expected count and existing order-ID/status rules, validates before replacing accepted snapshot. Next: focused loader configuration lesson. Branch/code changes not performed by agent; next review 20.
+
+### Main flow checkpoint 18 — 2026-10-18
+- Owner shorthand n means next. Branch verified; loader still unchanged. Assigned argparse configuration exercise and --help only. Explained standard-library parser, Path conversion, required inputs and non-enforcement of expected count until validation implementation.
+- Loader CLI callers/runbooks need adaptation before acceptance; no agent code/database mutation. Next review 20.
+
+### Main flow checkpoint 19 — 2026-10-18
+- Owner requests proper script placement and modern dependency management, emphasizing robust workplace-quality architecture and measured performance. Persisted in AGENTS.md.
+- Verified learner argparse edit. Proposed src package, pyproject/uv lock, thin CLI/reusable service, validation before atomic replacement and meaningful tests. Official packaging/uv guidance checked. No implementation or environment changes; next step package/dependency lesson.
+
+### Main flow checkpoint 20 — 2026-10-18
+- Owner reinforces quality standard every iteration; persisted instruction. Explained automated lock-derived exports and local hooks versus required CI drift enforcement. No implementation claimed.
+- Official uv/Git guidance consulted. Review 20: continue bounded packaging lesson, next review 25.
+
+### Main flow checkpoint 21 — 2026-10-18
+- Explained deployment dependency installation from first principles: project code, third-party packages and Python runtime; requirements export as compatibility format for pip-only consumers. Distinguished wheel metadata, lockfile and container/runtime. No deployment target selected or implementation performed. Next review 25.
+
+### Main flow checkpoint 22 — 2026-10-18
+- Owner names eventual hosted dbt, Snowflake, Azure and SQL Server targets. Recorded roadmap and explicit cloud adaptability requirement. Separate target gates, supported integrations and actual deployment evidence required.
+- Package/configuration boundaries are immediate design work; cloud roles and deployment artifacts will be selected later. No provisioning; next review 25.
+
+### Main flow checkpoint 23 — 2026-10-18
+- Assigned root pyproject configuration: package metadata/build backend, loader deps, separate dbt group and src path. Verified Python 3.14.4, no pyproject, uv absent from agent PATH.
+- Learner TOML parse only; package scaffold/uv installation/lock validation pending. Existing requirements retained, no environment changes. Next review 25.
+
+### Main flow checkpoint 24 — 2026-10-18
+- Learner pyproject matches expected configuration; TOML parse verified. Assigned minimal src package with empty __init__.py, explained package naming and no import-time execution.
+- Existing loader preserved; uv installation/locking and import-safe migration pending. Next review 25.
+
+### Main flow checkpoint 25 — 2026-10-18
+- Empty package initializer verified. uv absent from inspected PATH/local-bin/venv; assigned pinned standalone 0.13.1 installation with no startup edits, then version check. No commands executed by agent.
+- Review 25: optional new thread useful before environment migration; handoff refreshed with actual learner edits, baseline versus current acceptance and exact next step. Next review 30 if continuing.
+
+### Dependency acceptance thread checkpoint 1 — 2026-10-18
+- Resumed from checkpoint 25; verified feature/orders-loader-validation at 25afacd, learner scaffold/config and uv 0.13.1 at /home/amola/.local/bin/uv.
+- Existing .venv remains Python 3.14.4 with dbt 2.0.8, duckdb 1.5.6 and pytz 2026.5. No installs, sync, ingestion or Git writes performed.
+- Assigned learner lock generation and check using explicit existing Python/no Python downloads. Next inspect lock, then isolated environment acceptance with dbt group selected; build-tool reproducibility remains pending.
+- Confirmed new thread count 1; previous review 25 preserved, next review 5. Official uv sync/config guidance checked.
+
+### Dependency acceptance thread checkpoint 2 — 2026-10-18
+- Owner requested Markdown organization that reduces turnaround without compromising exchange quality.
+- Added focused resume/document-ownership instructions; moved tracker acceptance and dashboard current work before reference history; added log navigation. Preserved filenames, evidence and learner edits.
+- Pending learner lock/check exercise unchanged. No install, sync, ingestion or Git mutation. Next review 5; qualitative assessment: continue.
+
+### Dependency acceptance thread checkpoint 3 — 2026-10-18
+- Learner reports seven packages resolved; agent parsed uv.lock and passed offline lock --check using writable /tmp cache after default-cache read-only failure.
+- Seven entries include local project and six external dependencies; no installation acceptance implied.
+- Assigned unique temporary environment dependency sync with --locked --group dbt --no-install-project; preserve .venv. Next inspect installation/runtime, then address build reproducibility and package acceptance. Next review 5.
+
+### Dependency acceptance thread checkpoint 4 — 2026-10-18
+- Owner n means next. Inspected existing learner-created /tmp/staff_de_uv_acceptance.p3WuP2/venv; no install performed by agent.
+- Python -I verifies Python 3.14.4, all six external lock versions, venv-local duckdb/pytz imports and in-memory SELECT 1. Project package absent as intended.
+- Bounded dependency environment smoke acceptance; dbt CLI/pipeline and project build acceptance pending. Asked build-versus-runtime dependency reasoning before constraining build tooling. Review at 5.
+
+### Dependency acceptance thread checkpoint 5 — 2026-10-18
+- Learner reports no prior understanding of build/runtime dependency distinction. Explained Hatchling as source-to-wheel build tool versus DuckDB/pytz application dependencies; build isolation and unresolved unbounded build-tool versions distinguished from locked runtime dependencies.
+- Assigned focused DuckDB classification check; comprehension pending. No configuration, environment or Git mutation.
+- Scheduled review 5: current state remains easy to locate; continue bounded lesson. Qualitative review, next review 10.
+
+### Dependency acceptance thread checkpoint 6 — 2026-10-18
+- Learner believes imports are build dependencies because code is shipped as a package. Corrected import timing versus artifact distribution: loader imports DuckDB at runtime; Hatchling packages code at build time; wheel metadata declares runtime requirements without normally bundling dependencies.
+- Clarified standard-library/local imports are not external dependency requirements. Assigned installed loader without DuckDB reasoning check; comprehension pending. No code/configuration/environment changes; next review 10.
+
+### Dependency acceptance thread checkpoint 7 — 2026-10-18
+- Learner correctly predicts missing DuckDB import failure; precise error ModuleNotFoundError clarified. Runtime consequence understood.
+- Official PyPI lists Hatchling 1.32.4 with Python 3.14 classifier; installed uv build supports --build-constraints. Assigned backend version pin only; learner edit pending.
+- Transitive build dependency constraints and actual package build/install acceptance remain next. No agent code/config/install/Git changes. Next review 10.
+
+### Dependency acceptance thread checkpoint 8 — 2026-10-18
+- Owner asks whether uv scans src and automatically chooses TOML dependencies/versions. Explained explicit dependency authoring via uv add/remove or manual edits, role selection, transitive resolution and test-based compatibility acceptance.
+- Verified installed uv add --no-sync/--bounds/--group flags and official dependency guidance. Illustrative command only; no dependency or environment changes. Existing Hatchling edit assignment retained, pending verification. Next review 10.
+
+### Dependency acceptance thread checkpoint 9 — 2026-10-18
+- Inspected root pyproject.toml after n: Hatchling remains unpinned on disk. Reassigned focused save of hatchling==1.32.4; no agent implementation/install/build.
+- Transitive build constraints remain next after verifying edit. Next scheduled review 10.
+
+### Dependency acceptance thread checkpoint 10 — 2026-10-18
+- Verified learner pin hatchling==1.32.4 in root pyproject.toml.
+- Assigned temporary input extraction from build-system.requires, then uv pip compile with hashes/existing interpreter into root build_constraints.txt. Explains compilation as dependency resolution, not Python bytecode; no install/build performed.
+- Next inspect constraints and perform constrained build/package acceptance. Review 10: current state clear, continue bounded lesson; next review 15.
+
+### Dependency acceptance thread checkpoint 11 — 2026-10-18
+- Inspected learner-generated build_constraints.txt: six exact build dependency pins with SHA-256 hashes, including Hatchling 1.32.4.
+- Assigned constrained wheel build with --require-hashes, existing Python and temporary output directory. No build/install performed by agent; actual build and installed artifact acceptance remain pending. Next review 15.
+
+### Dependency acceptance thread checkpoint 12 — 2026-10-18
+- Owner asks why prior plain uv build worked and how build constraints differ from uv.lock. Explained independent isolated build resolution and optional constraints versus locked project dependencies/groups; current lock contains no Hatchling.
+- Clarified additional release reproducibility control, not mandatory for every project. Without constraints, pinned Hatchling still permits transitive build version drift. No build executed; existing assigned constrained build remains next. Review at 15.
+
+### Dependency acceptance thread checkpoint 13 — 2026-10-18
+- No wheel found in assigned /tmp/staff_de_uv_acceptance.p3WuP2/dist after owner n. Reissued constrained build command; no failure inferred and no build/install run by agent.
+- Next inspect produced artifact/metadata, then isolated install acceptance. Next review 15.
+
+### Dependency acceptance thread checkpoint 14 — 2026-10-18
+- Owner supplied wheel path. Verified ZIP integrity, four expected members, empty initializer, orders-pipeline 0.1.0, Python bound, DuckDB/pytz runtime requirements and Hatchling 1.32.4 generator.
+- Assigned wheel-only install into explicit temporary interpreter with --no-deps; locked dependencies already present. Installation/import acceptance pending, no loader in artifact. Artifact alone does not confirm build flags/hash enforcement. Next review 15.
+
+### Dependency acceptance thread checkpoint 15 — 2026-10-18
+- Python -I imports installed orders_pipeline from temporary venv site-packages; distribution metadata matches inspected wheel. uv pip check passes all seven installed packages with writable /tmp cache; original .venv versions unchanged.
+- Empty-package/dependency acceptance complete; loader functionality, adapted validator, native platforms and cloud remain pending. No ingestion or Git writes.
+- Saved handoff/runbook updates. Exact next lesson: import-time execution versus callable functions/main guard, then learner import-safe CLI module. Preserve old loader until coordinated caller migration.
+- Review 15: optional new thread useful at phase boundary; qualitative assessment. Next review 20 if continuing; reset only on confirmed new thread.
+
+### Import-safety thread checkpoint 1 — 2026-10-18
+- Owner resumed after dependency acceptance checkpoint 15. Verified branch feature/orders-loader-validation at 25afacd and source-only learner loader/package state; preserved edits and .venv. Prior packaging acceptance retained without rerunning it.
+- Assigned top-level/function execution prediction and main-guard familiarity check before explanation/refactor. No loader import, ingestion, code edits or Git operations performed. W08 In Progress; next review 5, previous review 15 preserved.
+
+### Import-safety thread checkpoint 2 — 2026-10-18
+- Learner correctly predicts import prints only Module opened; function bodies do not run. Corrected automatic-main assumption: main is an ordinary function and requires an explicit call.
+- Explained __name__ = __main__ for direct script execution versus module name on import, with guarded main() example. Asked consequence of unguarded call before assigning parser edit. No code/runtime/Git mutation; next review 5.
+
+### Import-safety thread checkpoint 3 — 2026-10-18
+- Learner correctly explains an unguarded main() executes on import; execution-boundary reasoning accepted.
+- Assigned focused extraction of existing parser into src/orders_pipeline/cli.py: parse_args(argv=None) returns parser.parse_args(argv). Explained injected argument lists for tests versus process arguments by default and no ingestion on import.
+- Learner file/edit and import/parser acceptance pending. Original loader and .venv preserved; no agent code or Git mutations. Next review 5.
+
+### Import-safety thread checkpoint 4 — 2026-10-18
+- Owner reported ready; cli.py inspected as zero bytes on disk. Original loader parser preserved. No implementation accepted or executed.
+- Requested learner save implementation to src/orders_pipeline/cli.py and reply saved; possible unsaved buffer is not confirmed. No code/environment/Git changes; next review 5.
+
+### Import-safety thread checkpoint 5 — 2026-10-18
+- Inspected saved learner cli.py. Verified with existing .venv Python -I -B: quiet import with invalid process argv, explicit Path/Path/int parsing, each required flag missing and invalid integer rejected with exit 2. No ingestion or environment mutation.
+- Source parser accepted; installed wheel still only prior empty scaffold. Service implementation pending; asked why contract validation must live in service for direct Airflow callers.
+- Review 5: continue focused thread; save issue resolved, current state clear. Qualitative review; next review 10. No agent code edits or Git writes.
+
+### Import-safety thread checkpoint 6 — 2026-10-18
+- Learner added loader to cli.py plus top-level args accesses. Source review: args undefined at import, duckdb missing on function invocation, expected_rows unused and replacement precedes validation. No execution performed.
+- Assigned learner removal of top-level args assignments and extraction of function to loader.py with Path/duckdb imports, preserving parser-only CLI and existing legacy loader. Safe validation/write implementation follows import-boundary review. Prior checkpoint 5 acceptance does not cover changed source. Next review 10.
+
+### Import-safety thread checkpoint 7 — 2026-10-18
+- Source review: loader.py created with import cli, undefined arg parsing and parameter overwrites; cli.py still contains old duplicate loader and top-level undefined args. expected_rows default changed to 0.
+- Explained caller-to-service direction; assigned removal of coupling/duplicate code and restoration of required expected_rows. No import/ingestion run or agent code edits. Next review 10.
+
+### Import-safety thread checkpoint 8 — 2026-10-18
+- Reinspected both modules after owner n; saved files unchanged from checkpoint 7. No import/tests/ingestion run.
+- Narrowed assignment to saving cli.py with only imports and parse_args function, removing everything after its return. Loader cleanup follows; no code edits by agent. Next review 10.
+
+### Import-safety thread checkpoint 9 — 2026-10-18
+- Learner corrected both CLI and loader modules; source inspected. Imports under .venv Python -I -B pass quietly with invalid process argv and patched duckdb.connect confirming no DB connection. Explicit parser Path/Path/int values verified.
+- No ingestion or code/environment mutation by agent. Loader still ignores expected_rows and replaces before validation; not accepted for execution. Next probe temporary-table and transaction familiarity before candidate staging/safe writes. Review at 10.
+
+### Import-safety thread checkpoint 10 — 2026-10-18
+- Learner identifies staging purpose but conflates temp-table lifetime, in-memory storage and commit/lock release. Explained connection scope, spill possibility and rollback of transaction changes.
+- Checked official DuckDB docs; disposable in-memory SQL confirms committed temp table survives and later rolled-back insert disappears. Existing developer database untouched; no loader execution.
+- Assigned SQL prediction before staging implementation. Review 10: continue focused thread; next review 15. No source/environment/Git mutation.
+
+### Import-safety thread checkpoint 11 — 2026-10-18
+- Learner predicts temp table disappears at COMMIT and later transaction cannot find it. Reinforced connection versus transaction lifetime with statement-by-statement contents: 10, then 10/20, then 10 after rollback.
+- Assigned COMMIT-versus-connection.close automatic cleanup check before implementation. No new execution or code changes; prior verified disposable SQL supports explanation. Next review 15.
+
+### Import-safety thread checkpoint 12 — 2026-10-18
+- Learner correctly answers connection close; temporary-table lifecycle comprehension accepted.
+- Rechecked loader source and assigned staging-only edit: no raw schema creation, CREATE TEMP TABLE orders_candidate with existing typed CSV read, summary from candidate using staging labels. No permanent replacement until validation/publication implementation.
+- Learner edit pending; no ingestion or agent source changes. Next review 15.
+
+### Import-safety thread checkpoint 13 — 2026-10-18
+- Reinspected loader.py after owner n: still unchanged, with immediate raw.orders replacement. Staging edit not saved on disk; no ingestion/test executed.
+- Requested saving candidate-only edit in canonical loader.py, then review. No source/environment/Git changes; next review 15.
+
+### Import-safety thread checkpoint 14 — 2026-10-18
+- Inspected partial staging edit: no schema creation, CREATE TEMP TABLE raw.orders, summary reads orders_candidate with staging labels. Table-name mismatch remains.
+- Assigned exact replacement of creation header with create temp table orders_candidate as. No execution or source edits by agent; staging acceptance pending. Next review 15.
+
+### Import-safety thread checkpoint 15 — 2026-10-18
+- Source inspection: creation now order_candidate (singular), summary orders_candidate (plural). Assigned missing s; no execution performed.
+- After correction, verify staging using disposable fixture/database with sentinel accepted rows. Project database remains untouched.
+- Review 15: continue through narrow correction; state clear despite repeated save checks. Qualitative assessment, next review 20. No agent source edits.
+
+### Import-safety thread checkpoint 16 — 2026-10-18
+- Learner candidate naming fixed. Ran source loader with existing .venv against disposable /tmp synthetic CSV/database: two staged rows, accepted sentinel unchanged, candidate absent after reopening. Fixtures cleaned; project DB untouched.
+- Assigned expected-count mismatch guard after fetchone/before print, raising ValueError with expected and actual counts. Explain failure propagation and distinction from SQL rollback. Validation/publication not accepted yet; next review 20.
+
+### Import-safety thread checkpoint 17 — 2026-10-18
+- Learner count guard correct, including else print. Disposable two-row fixture: expected 2 passes; expected 3/1 fail with precise ValueError and no success output. Accepted sentinel unchanged each time; candidate not persisted. Project database untouched.
+- Assigned candidate aggregate extension and null/duplicate ID guards; preserve row count check and move print after all guards. Remaining status/config validation and publication pending; next review 20.
+
+### Import-safety thread checkpoint 18 — 2026-10-18
+- Learner saved aggregate extension/null guard, but omitted duplicate guard and retained else print. Null-before-count order acceptable.
+- Disposable fixtures: valid passes, null rejects with diagnostic/no success print, duplicate wrongly passes. Accepted sentinel preserved in all cases; project DB untouched.
+- Assigned distinct-ID guard and success print after all guards. No agent source edits; next review 20.
+
+### Import-safety thread checkpoint 19 — 2026-10-18
+- Resumed after interruption with recorded checkpoint 18 retained. Learner duplicate guard and final print placement corrected.
+- Disposable regression checks pass valid/null/duplicate/count-under/count-over; no success output on rejection and sentinel preserved. Developer DB untouched.
+- Existing models/orders.yml status contract inspected (non-null completed/pending); assigned invalid-status filtered aggregate and guard. Clarify duplicate count denotes excess occurrences and SQL NULL needs explicit predicate. Next review 20.
+
+### Import-safety thread checkpoint 20 — 2026-10-18
+- Learner status guard accepted. Eight disposable checks pass valid/null ID/duplicate/count under/count over/null status/unsupported status/two bad statuses. Rejections suppress success output; accepted sentinel unchanged; candidate absent after reconnect. Project database untouched, .venv unchanged.
+- Current loader stages/validates only; source ad hoc checks do not establish durable suite, rebuilt package or pipeline acceptance. Explicit transaction/publication next after probing try/except/raise familiarity.
+- Git verified feature/orders-loader-validation at 25afacd with learner edits/untracked package retained; no Git writes. Updated concise handoff, tracker/dashboard.
+- Review 20: optional fresh thread useful before publication phase after multiple phases/edit cycles. Qualitative assessment, next review 25 if continuing; switching optional.
+
+### Atomic-publication thread checkpoint 1 — 2026-10-18
+- Owner resumed from import-safety checkpoint 20. Read canonical instructions/current notes; verified feature/orders-loader-validation at 25afacd and inspected learner CLI/loader source.
+- Prior eight-case candidate acceptance retained; no repeated tests, environment changes, code edits or Git writes. Publication remains unimplemented.
+- Assigned Python try/except/bare-raise control-flow probe; learner response pending. Next teach transaction handling at demonstrated depth, then guide learner implementation. New-thread counter 1; next qualitative review 5.
+
+### Atomic-publication thread checkpoint 2 — 2026-10-18
+- Learner predicts A/message/C for exception probe. Explained that raise does not print; handler prints C, bare raise propagates, uncaught exception produces traceback afterward, D unreachable.
+- Follow-up asks behavior without bare raise and caller failure consequence. Transactions wait for comprehension; no source/environment changes or execution. Next review 5.
+
+### Atomic-publication thread checkpoint 3 — 2026-10-18
+- Learner correctly predicts continuation/no caller exception after removing bare raise; clarified except handles, print only displays.
+- Introduced explicit transaction publication after validation, successful commit and failure rollback/re-raise, backed by current DuckDB transaction docs. Asked why rollback and re-raise are separately necessary after pre-commit failure.
+- No source/environment changes or database execution; implementation pending comprehension check. Next review 5.
+
+### Atomic-publication thread checkpoint 4 — 2026-10-18
+- Owner asks coverage/additions for senior/staff analytics engineering job description. ANSWER NOW: compared current plan with named tools/domain requirements; recorded recommendations as proposed in master plan.
+- Recommend manufacturing/BOM capstone with explicit Databricks governance/jobs/AI-BI, Hex, Fivetran, evaluated ML and stakeholder deliverables, after current foundations. Current official product docs checked; costs/access remain undecided.
+- No change to learner source, .venv, Git or services. Current transaction reasoning exercise parked, not cancelled. Next review 5.
+
+### Atomic-publication thread checkpoint 5 — 2026-10-18
+- Owner requests Hex/Fivetran as optional later work, faster agent responses and resume. Revised plan and root/starter agent workflow instructions; no model changes or measured speed claims.
+- Resume pending rollback-versus-re-raise reasoning check; no learner code or environment changes. Review 5: continue focused thread; next review 10.
+
+### Atomic-publication thread checkpoint 6 — 2026-10-18
+- Owner n: inspected unchanged candidate-only loader; explained swallowed publication failure and assigned explicit transaction publication block after guards.
+- BEGIN outside try; schema/replacement/COMMIT inside; ROLLBACK and bare raise on Exception; summary after commit. Supplied for learner editing only, no execution/source mutation by agent.
+- Next inspect saved source and run bounded disposable success/rollback checks. Independent transaction reasoning remains unverified; next review 10.
+
+### Atomic-publication thread checkpoint 7 — 2026-10-18
+- Owner n: saved loader remains candidate-only, ending with rows_staged print. Publication edit absent; asked learner to save checkpoint 6 block in canonical source.
+- No execution/source/environment changes. Next inspect saved edit before disposable checks; next review 10.
+
+### Atomic-publication thread checkpoint 8 — 2026-10-18
+- Learner transaction handler saved, but it replaces candidate creation and commits before validation. SQL typo/missing TABLE and singular candidate name identified.
+- Assigned restoring typed candidate creation and moving corrected transaction below all guards; print remains last. Earlier validation evidence does not cover changed source. No execution or agent code edits; next inspect correction, next review 10.
+
+### Atomic-publication thread checkpoint 9 — 2026-10-18
+- Source inspected: candidate creation and SQL/name corrected; BEGIN before staging, publication/commit still before validation, bare raise absent.
+- Assigned moving BEGIN plus try/except below final guard and restoring bare raise after rollback. No execution/agent code edits. Next inspect saved correction; review at 10.
+
+### Atomic-publication thread checkpoint 10 — 2026-10-18
+- Learner corrected order and bare raise. Twelve disposable checks pass: fresh/existing publication, seven input rejections, injected post-replacement/pre-commit failure on fresh/existing targets, repeated snapshot.
+- Proxy observes explicit rollback and original exception propagation; reconnect proves sentinel/schema rollback. Success rows/timestamp and repeat uniqueness checked. No project DB/environment/source mutation; fixtures cleaned. Ad hoc checks only, durable suite/package acceptance pending.
+- Next probe negative expected_rows before-connect validation, then parameter/path guards. Review 10: continue focused thread, next review 15. Handoff refreshed.
+
+### Atomic-publication thread checkpoint 11 — 2026-10-18
+- Learner correctly rejects negative expected_rows before opening connections. Explained no-I/O configuration validation and runtime type annotations versus enforcement.
+- Assigned int/non-bool and non-negative guards before with; zero allowed under current contract. Next inspect saved edit and verify no connection for invalid values, then paths. No execution/source changes; next review 15.
+
+### Atomic-publication thread checkpoint 12 — 2026-10-18
+- Inspected count guards and passed eight boundary checks with mocked connect: six invalid values never connect; zero/two pass to mocked boundary. No real DB connections. Negative diagnostic typo assigned for correction.
+- Next probe existing directory versus valid CSV path before path validation lesson. No source/environment changes by agent; next review 15.
+
+### Atomic-publication thread checkpoint 13 — 2026-10-18
+- Learner proposes file existence/readability, minimum size and timestamp range. Explained regular-file check, read-time failures/races, and why size/mtime do not establish batch completeness/freshness.
+- Assigned is_file guard before connection; no size/age restriction added, zero rows remain allowed. Runtime path types/database-path guards pending. Next inspect and test missing/directory rejection without connect. No source edits/execution; next review 15.
+
+### Atomic-publication thread checkpoint 14 — 2026-10-18
+- Owner n: inspected function start; is_file guard absent and exepcted_rows typo unchanged. Requested saving guard and typo correction. No tests or agent source edits; next review 15.
+
+### Atomic-publication thread checkpoint 15 — 2026-10-18
+- File guard saved and three focused mocked-connect checks pass: missing/directory rejected, existing header-only file reaches boundary. No database created; fixtures cleaned. Empty-snapshot ingestion not tested.
+- Diagnostic spelling/spacing remain cosmetic fixes. Next probe new database path policy, then path types/database guards.
+- Review 15: continue, bounded active task clear despite save checks; reassess before durable tests/CLI. Next review 20; no source/environment edits.
+
+### Atomic-publication thread checkpoint 16 — 2026-10-18
+- Owner n: inspected saved start; count-message spelling corrected and values included, validation logic unchanged.
+- Explained new-file destination policy versus existing input CSV. Assigned existing-directory parent and existing-target regular-file guards before connect, no automatic mkdir. Actual connect retains access/format validation; runtime Path guards pending.
+- No tests/source/environment changes; next inspect learner edit then focused mocked checks. Next review 20.
+
+### Atomic-publication thread checkpoint 17 — 2026-10-18
+- Destination guards verified with five mocked checks: three invalid destination shapes rejected before connect, new/existing regular file allowed to boundary. No DB access; temporary fixtures cleaned; format/permissions not claimed verified.
+- Assigned explicit Path type guards before filesystem methods, consistent with CLI Path parsing. Databae and CSV-message double space remain cosmetic corrections. Next inspect/test, then structured return/logging; review 20.
+
+### Atomic-publication thread checkpoint 18 — 2026-10-18
+- Source inspection: both Path guards added after filesystem methods. Assigned moving them before csv_path.is_file to prevent incidental AttributeError. Cosmetic message fixes still pending.
+- No tests/source/environment changes; known ordering defect needs correction first. Next inspect then focused type checks; next review 20.
+
+### Atomic-publication thread checkpoint 19 — 2026-10-18
+- Corrected guard ordering verified; seven mocked checks pass: invalid string/None/int per path rejected without connect, valid Paths allowed to boundary. No real DB access; fixtures cleaned.
+- Next probe return versus print for reusable loader results; structured result/logging pending. Cosmetic messages remain cleanup. Review 20 before next substantial phase.
+
+### Atomic-publication thread checkpoint 20 — 2026-10-18
+- Learner independently added tuple return after print; source inspected. Two disposable real-load checks confirm returned count/max timestamp matches committed data: nonempty (2, datetime), header-only (0, None). Project DB/.venv untouched; fixtures cleaned.
+- Assigned removing service print while retaining tuple return; future thin CLI owns presentation. No unnecessary dataclass redesign. Next inspect/test silent result, then durable tests/CLI; operational logging pending.
+- Git verified feature/orders-loader-validation at 25afacd with learner work retained. Review 20: optional new thread useful before substantial next phase; concise handoff saved. Qualitative only; next review 25 if continuing.
+
+### Durable-tests/CLI thread checkpoint 1 — 2026-10-18
+- Confirmed new thread resumes atomic-publication checkpoint 20. Print removed, tuple retained; four bounded disposable checks pass silent nonempty/empty return with persisted values, count error and original connection exception. No code/environment/Git mutations.
+- Owner requests visual flow/logic/pseudocode and dataflow/SDLC position. Current map saved in tracker; next learner reasoning check covers exception plus unchanged persisted snapshot before authoring first durable test. CLI parser-only; integration follows tests. Review due at 5.
+
+### Durable-tests/CLI thread checkpoint 2 — 2026-10-18
+- Learner says unclear. Explained one concrete invalid replacement: an error alone does not prove old data survived; test both ValueError and full unchanged snapshot after reconnect. Explanation only, understanding pending; no code/tests. Next focused durable test after clarification; review 5.
+
+### Durable-tests/CLI thread checkpoint 3 — 2026-10-18
+- Learner confirms before/after count comparison. Explained equal counts can hide replacement/corruption; compare ordered full rows including loaded_at and assert expected exception. Focused equal-count example assigned; understanding pending. No code/tests; next durable test implementation, review 5.
+
+### Durable-tests/CLI thread checkpoint 4 — 2026-10-18
+- Learner confirms preservation reasoning and asks standalone/unit/mock classification. Explained isolated integration test with real loader/DuckDB and disposable files, independently runnable, no mocks. Mocking is a technique; guard-only unit tests can mock connection boundaries. Next learner authors durable preservation test. No code/tests/dependencies changed; review due 5.
+
+### Durable-tests/CLI thread checkpoint 5 — 2026-10-18
+- Owner n: no tests directory exists; silent tuple retained. Assigned first unittest-based durable integration test and source-checkout discovery command. Learner authors/runs; no agent code edits, installs or execution. Next inspect file/output, expand coverage, then CLI.
+- Review 5: continue focused thread, next review 10; qualitative assessment, no handoff required.
+
+### Durable-tests/CLI thread checkpoint 6 — 2026-10-18
+- Owner requests proactive appropriate code check-ins. Persisted project guidance and D-024: recommend reviewed, validated coherent increments, learner performs Git writes. Next assess loader/tests checkpoint after durable acceptance, then CLI/caller checkpoint. Test file/output still pending inspection; no Git/code/test operations. Review 10.
+
+### Durable-tests/CLI thread checkpoints 7–8 — 2026-10-18
+- Checkpoint 7 was the prior save/run reminder, counted retrospectively here under exercise cadence.
+- Checkpoint 8: learner reports 1 unittest pass; source inspected and confirms expected rejection plus ordered full-row preservation in disposable real DuckDB. No agent rerun. Cosmetic test/comment spelling only.
+- Next assign success test for exact stored business data and tuple/persisted count/timestamp agreement, non-null timestamp. Loader/tests check-in assessment after meaningful coverage; CLI remains pending. Next review 10.
+
+### Durable-tests/CLI thread checkpoints 9–10 — 2026-10-18
+- Checkpoint 9 supplied full success test on learner request; recorded here retrospectively.
+- Checkpoint 10 inspected saved learner code and ran suite using existing WSL .venv: 2 tests pass, exit 0. Learner output had reported run count only. No learner code/environment/project DB edits.
+- Next durable rollback test: inject failure after actual replacement, before commit; current count rejection is before BEGIN. Explain/probe failure location before wrapper/patch implementation. Loader/tests commit assessment upcoming, CLI after tests.
+- Review 10: continue, clear bounded next step; qualitative assessment, next review 15.
+
+### Durable-tests/CLI thread checkpoints 11–12 — 2026-10-18
+- Checkpoint 11 elaborated prevention versus rollback and controlled pre-COMMIT failure; no code/test execution. Recorded at 12.
+- Checkpoint 12 learner asks about four post-staging conditions; clarified ID-null/ID-unique/status/count guards precede BEGIN, whereas rollback test needs valid input and injected publication failure. Durable count guard covered; other three pending. Next confirm distinction then guide rollback test; review 15.
+
+### Durable-tests/CLI thread checkpoint 13 — 2026-10-18
+- Learner requests rollback pseudocode. Supplied helper and test stages: real DuckDB connection, failure before COMMIT after actual replacement, explicit rollback tracking, original error identity, scoped connect patch and normal reconnection/full-row comparison afterward. No source edits or execution; next helper implementation then test body. Review 15.
+
+### Durable-tests/CLI thread checkpoint 14 — 2026-10-18
+- Owner asks for code. Supplied FailBeforeCommit helper plus rollback test, using real disposable DuckDB, scoped connect patch, injected error identity, replacement/rollback markers and full original snapshot comparison. Code/run command supplied only, no source edits/tests by agent. Next inspect saved additions and test evidence, then assess commit scope; review due 15.
+
+### Durable-tests/CLI thread checkpoint 15 — 2026-10-18
+- Explained runner, unittest.TestCase, test methods, assertions, fixture and separate failure-injection wrapper; mapped patch/real DuckDB execution for debugging. Learner typing, so no source inspection/execution.
+- Verified official docs: https://code.visualstudio.com/docs/python/testing ; https://docs.github.com/en/copilot/tutorials/write-tests ; https://docs.pytest.org/en/stable/getting-started.html . Distinguished editor discovery/run/debug from AI generation, suggested contract-first reviewed test workflow. No editor/framework/dependency changes.
+- Review 15: continue through rollback verification and commit assessment; reassess handoff before CLI phase. Next scheduled review 20.
+
+### Durable-tests/CLI thread checkpoint 16 — 2026-10-18
+- Saved rollback helper/test reviewed; existing WSL .venv suite verifies 3 tests pass, exit 0. Learner had supplied run count without outcome. Agent trims trailing whitespace/adds final newline in loader/test only, preserving logic; no further execution needed for this formatting.
+- Local code checkpoint recommended with package config/lock/build constraints, initializer/loader, test and continuity notes. Learner staging/review pending, no agent Git writes. CLI scaffold/legacy caller and broader planning/runbooks excluded for later review. Next inspect staged scope then guide commit; remaining feature acceptance explicitly pending. Review 20.
