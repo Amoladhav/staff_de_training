@@ -1,6 +1,11 @@
 # Decisions Log
 
-Record decisions that materially change the plan.
+Record decisions that materially change the plan. This is historical rationale;
+current operating rules are consolidated in [AGENTS.md](AGENTS.md).
+Search by heading/title and date: legacy IDs D-016 through D-018 are reused, so
+an ID alone is not a unique reference. Later explicit clarifications supersede
+earlier guidance (notably command-runbook format and competency-based pacing).
+For current assignments use the [handoff](../docs/HANDOFF.md).
 
 ## D-018 — Professional feature implementation (2026-10-15)
 - Owner requires professional engineering as features are added, not only conceptual production context.
@@ -129,3 +134,31 @@ Record decisions that materially change the plan.
 - Bound project to >=2.0.8,<2.1.0 and validate fresh-load/freshness/success/failure/recovery in temporary projects. Existing SQL/profile mapping remains compatible; no speculative rewrites.
 - Use DBT_PROFILES_DIR from v2 CLI help. Replace obsolete Click completion guidance with a project-maintained common-command Bash helper; no automatic shell startup edits.
 - Keep migration on feature/dbt-v2-migration based on 1756d63. Confirm parent integration before publication. Local reproducibility is not Windows, hosted CI or cloud acceptance.
+
+## D-021 — Focused Markdown resume path (2026-10-18)
+- Owner requests faster request turnaround without compromising teaching quality.
+- Keep current state first, use bounded relevant log reads and reuse unchanged instructions within a thread. Preserve evidence/history, established paths and all acceptance/teaching requirements.
+- Root AGENTS.md defines document ownership and read order; no measured latency improvement is claimed.
+
+## D-022 — Role priorities and response turnaround (2026-10-18)
+- Owner defers Hex/Fivetran to optional later work, outside core acceptance gates.
+- Keep core role-aligned Databricks/manufacturing path; preserve current loader work.
+- Reuse verified context, avoid unrelated live checks and batch concise maintenance
+  to reduce waiting without weakening teaching, validation or continuity.
+
+## D-023 — Visual lesson orientation (2026-10-18)
+- Owner requests flow, logic and pseudocode to avoid losing dataflow/SDLC position.
+- Begin focused lessons with current location, show relevant flow/pseudocode, then one learner action. Tracker owns current map/status; preserve learner-led implementation and optional Hex/Fivetran scope.
+
+## D-024 — Proactive code check-in suggestions (2026-10-18)
+- Owner explicitly asks to remember appropriate code check-in recommendations at proper checkpoints.
+- Recommend coherent implementation increments after inspecting change scope and relevant passing checks; provide scope/message and learner-led staged review/commit steps when ready. Do not postpone every commit until full feature delivery or claim unverified acceptance.
+- Active plan: assess loader plus durable tests after success/rejection/preservation/rollback coverage, then CLI/caller acceptance. Keep continuity notes with substantive changes; Git writes/publication remain learner-led.
+
+## D-025 — Proportionate CLI testing and teaching granularity (2026-10-19)
+- Owner questioned excessive unit-test depth for DE work. Tutor recalibrated scope: prioritize loader integrity/preservation/rollback and caller exit gating; consolidate thin-CLI coverage without expanding framework/parser permutations.
+- Finish one real process failure-status check, then validate successful execution through caller/package integration. Reduce one-test-per-turn microsteps; retain small explanations for genuinely new mechanisms. This is scope calibration, not evidence of completed integration.
+
+## D-026 — Fast delivery with risk-based assurance (2026-10-19)
+- Owner explicitly prioritizes rapid robust/reliable/efficient/scalable pipeline development. Use coherent delivery increments; agent implements routine wiring/checks while learner owns engineering decisions/review and Git operations.
+- Preserve correctness/recovery/gating/dependency acceptance; stop exhaustive thin-wrapper microsteps. Follow source integration with installed-package checks. Measure representative volume/latency/memory before tuning or scale claims. Current fixture validates correctness only.

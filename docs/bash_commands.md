@@ -171,7 +171,10 @@ dbt docs serve --port 8080
 
 ## 4. Clean-environment check
 
-Use after dependency/runtime changes. This checks reproduction on the current OS; repeat separately on Windows/macOS for portability evidence.
+The runtime validator exercises the current source checkout through its module CLI,
+with explicit fixture/database/count arguments and disposable data. It checks load
+rejection, dbt baseline/failure/recovery and preview. Installed-wheel and other
+platform acceptance are separate; section 4a describes package acceptance.
 
 ```bash
 cd "$PROJECT_ROOT"
@@ -212,9 +215,67 @@ the printed evidence directory with separate artifacts and checks exit codes.
 It does not touch your development database. dbt may write local leases/caches
 under ~/.dbt; there is no account login or cloud execution in this check.
 
+## 4a. Package build and installed acceptance (WSL)
+
+Run from workspace root with uv 0.13.1 and the existing Python 3.14 interpreter.
+The package now contains the loader, CLI and orders-load console command. Verify
+the current wheel independently of source imports. Retain legacy requirements until
+the dependency migration is intentionally completed. Native platform acceptance and
+automated constraint regeneration/drift checks remain pending.
+
+Check project lock consistency:
+
+```bash
+uv lock --check --python .venv/bin/python --no-python-downloads
+```
+
+Allocate an isolated destination, then install locked dependencies:
+
+```bash
+ACCEPTANCE_ROOT=$(mktemp -d /tmp/staff_de_uv_acceptance.XXXXXX)
+```
+
+```bash
+UV_PROJECT_ENVIRONMENT="${ACCEPTANCE_ROOT:?}/venv" uv sync --locked --group dbt --no-install-project --python "$PWD/.venv/bin/python" --no-python-downloads
+```
+
+Generate build constraints only when intentionally updating build dependencies.
+The temporary input is derived from TOML, not a maintained second declaration:
+
+```bash
+.venv/bin/python -c 'import tomllib; from pathlib import Path; config = tomllib.loads(Path("pyproject.toml").read_text()); Path("/tmp/staff_de_build_requirements.in").write_text("\n".join(config["build-system"]["requires"]) + "\n")'
+```
+
+```bash
+uv pip compile /tmp/staff_de_build_requirements.in --python .venv/bin/python --no-python-downloads --generate-hashes --output-file build_constraints.txt
+```
+
+Build with the reviewed constraints (optional additional build control):
+
+```bash
+uv build --wheel --build-constraints build_constraints.txt --require-hashes --python .venv/bin/python --no-python-downloads --out-dir "${ACCEPTANCE_ROOT:?}/dist"
+```
+
+Install the current 0.1.0 wheel after inspecting its contents and metadata.
+Update the artifact filename when the project version changes:
+
+```bash
+uv pip install --python "${ACCEPTANCE_ROOT:?}/venv/bin/python" --no-deps "$ACCEPTANCE_ROOT/dist/orders_pipeline-0.1.0-py3-none-any.whl"
+```
+
+Verify the installed import independently of the checkout and check dependencies:
+
+```bash
+"${ACCEPTANCE_ROOT:?}/venv/bin/python" -I -c 'import orders_pipeline; import importlib.metadata as m; print(orders_pipeline.__file__); print(m.version("orders-pipeline")); print(m.requires("orders-pipeline"))'
+```
+
+```bash
+uv pip check --python "${ACCEPTANCE_ROOT:?}/venv/bin/python"
+```
+
 ## 5. Integration check
 
-**Local write path:** fictional fixture → raw table → freshness → models/tests → consumer preview. Requires the configured database to match the loader’s fixed path. The loader fully replaces `raw.orders`.
+**Local write path:** fictional fixture → validated atomic raw snapshot → freshness → models/tests → consumer preview. The loader and dbt use the same explicit database path. Stop on any nonzero exit; the separate commands below do not automatically gate one another.
 
 ```bash
 cd "$PROJECT_ROOT/training_analytics"
@@ -225,7 +286,7 @@ test "$DBT_DUCKDB_PATH" = "$PROJECT_ROOT/training_analytics/dev.duckdb"
 ```
 
 ```bash
-python load_orders.py
+PYTHONPATH="$PROJECT_ROOT/src" python -m orders_pipeline.cli --csv-path "$PROJECT_ROOT/training_analytics/seeds/sample_orders.csv" --database-path "$DBT_DUCKDB_PATH" --expected-rows 3
 ```
 
 ```bash
@@ -240,7 +301,7 @@ dbt build --select "source:commerce.orders+"
 dbt show --select completed_orders --limit 10
 ```
 
-Expected fixture build: **3 models + 5 tests**. Freshness is a separate command; a fresh timestamp does not prove batch completeness. Deliberate bad-input blocking and recovery still require their own acceptance exercise.
+Expected fixture build: **3 models + 5 tests**. Freshness is a separate command; a fresh timestamp does not prove batch completeness. The disposable runtime validator covers rejected counts and dbt failure/recovery. This is source-checkout validation, not installed-wheel or cloud acceptance.
 
 ## 6. Review and commit
 
@@ -422,3 +483,30 @@ dbt --help
 ## References
 
 [dbt profile configuration](https://docs.getdbt.com/docs/local/profiles.yml) · [dbt workflow guidance](https://docs.getdbt.com/best-practices/best-practice-workflows) · [Python environments](https://docs.python.org/3.14/library/venv.html) · [Azure account commands](https://learn.microsoft.com/en-us/cli/azure/account)
+
+## Focused loader/CLI checks
+
+From the workspace root with the WSL venv active:
+
+```bash
+PYTHONPATH=src python -B -m unittest discover -s tests -v
+```
+
+Run the representative pipeline in a disposable workspace and retain its evidence:
+
+```bash
+python -B scripts/validate_dbt_runtime.py
+```
+
+The compatibility script `training_analytics/load_orders.py` delegates to the same
+CLI and requires identical arguments and package import availability.
+
+Installed command (after wheel installation in the selected environment):
+
+```bash
+orders-load --help
+```
+
+Use the same --csv-path, --database-path and --expected-rows arguments as the module
+CLI. Verify installed behavior from outside the checkout with PYTHONPATH unset;
+source-based tests alone do not prove the wheel contains the current implementation.

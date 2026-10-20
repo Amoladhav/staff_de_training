@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling==1.32.4"]
+build-backend = "hatchling.build"
+
+[project]
+name = "orders-pipeline"
+version = "0.1.0"
+description = "Validated orders snapshot ingestion."
+requires-python = ">=3.14,<3.15"
+dependencies = [
+    "duckdb==1.5.6",
+    "pytz==2026.5",
+]
+
+[project.scripts]
+orders-load = "orders_pipeline.cli:main"
+
+[dependency-groups]
+dbt = [
+    "dbt==2.0.8",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/orders_pipeline"]

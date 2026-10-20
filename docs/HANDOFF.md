@@ -1,61 +1,56 @@
 # Training handoff
 
-Updated: 2026-10-17 (America/Los_Angeles), Git review checkpoint 9.
+Updated 2026-10-19 (America/Los_Angeles), CLI/caller checkpoint 20.
 
-## Instructions and objective
+## Objective and working style
+Workspace /home/amola/projects/staff_de_training; branch feature/orders-loader-validation.
+Read root/starter AGENTS.md and 01_PROJECT_INSTRUCTIONS.md, tracker/current logs.
+Owner prioritizes fast robust/reliable/efficient/scalable pipeline delivery. Use
+coherent increments; agent routine implementation/verification, learner contracts,
+tradeoffs/debugging/review and Git writes. Avoid test-per-turn microsteps. Explain
+important flow briefly. Preserve existing edits/.venv, paths and credential boundaries.
+One learner-facing shell command per block. Do not equate agreement with guidance.
+Do not expand custom validator/framework; its brittle status totals/SQL mutation
+can be consolidated during CI work. Scale requires representative measurements.
 
-Canonical workspace: /home/amola/projects/staff_de_training. Read root AGENTS.md,
-Staff_Data_Engineer_Training_Project_Starter/AGENTS.md and 01_PROJECT_INSTRUCTIONS.md,
-then docs/DATAFLOW_TRACKER.md and numbered logs. Preserve established paths.
-Training is learner-led; one shell command per fence. Owner performs Git writes
-and publication. Keep native Windows, WSL and macOS gates separate. Required path:
-local dbt → local Airflow → actual Azure/Databricks/cloud with gradual Python.
+## Verified acceptance
+- Atomic loader plus three real-DuckDB tests committed b80610d. CLI/caller increment
+  remains uncommitted: selected errors stderr/1, success 0, unexpected propagation;
+  five CLI tests plus three loader tests passed at checkpoint 16.
+- Legacy script delegates to CLI. Runtime validator calls module with explicit
+  inputs; disposable WSL load/reject/freshness/dbt baseline 3 models+5 tests,
+  injected failure 1 fail+7 skips, recovery 3+5 and preview passed. Evidence:
+  /tmp/staff_de_dbt_v2_xqprpvzd/summary.json/logs. This is source-checkout evidence.
+- Checkpoint 20: added orders-load console entry point. Wheel at
+  /tmp/staff_de_orders_release/dist/orders_pipeline-0.1.0-py3-none-any.whl verified
+  byte-for-byte against source modules; entry-point and metadata inspected.
+  Build attempt hit read-only cache lock; escalation declined. Artifact was present
+  and owner supplied its listing; do not claim rejected agent build succeeded.
+- Installed wheel offline using /tmp cache into existing temporary acceptance env:
+  /tmp/staff_de_uv_acceptance.p3WuP2/venv. Isolated import from site-packages;
+  real orders-load outside checkout without PYTHONPATH publishes exact rows (0),
+  rejects count (1), preserves full accepted snapshot. Three loader tests pass
+  against installed package. uv pip check confirms seven compatible packages;
+  offline lock check passes. Evidence /tmp/staff_de_orders_release/acceptance.json.
+  Parent tool output included stream-fd permission warnings, but checks exited 0.
+- Project .venv/database untouched. Native Windows/macOS/cloud/hosted CI and scale
+  remain unverified. Source dbt and installed loader/CLI acceptance are separate.
 
-## Verified outcome
+## Exact next action and Git scope
+Guide learner stage/diff/check/commit for coherent CLI/caller/package increment:
+pyproject.toml, src/orders_pipeline/cli.py, tests/test_cli.py,
+training_analytics/load_orders.py, scripts/validate_dbt_runtime.py,
+docs/bash_commands.md, docs/powershell_commands.md, docs/DATAFLOW_TRACKER.md,
+docs/HANDOFF.md, starter 04_PROGRESS_DASHBOARD.md, 13_SESSION_LOG.md,
+14_DECISIONS_LOG.md. Proposed message: feat: integrate validated orders CLI and package.
+Review entire selected diff; it contains earlier uncommitted runbook/continuity work.
+Root/starter AGENTS.md and master plan delivery-scope edits remain outside this
+code checkpoint; do not discard. No agent staging/commit/push. Last verified HEAD
+b80610d on feature/orders-loader-validation; remote tracking not refreshed.
+Commands supplied are not execution evidence; verify owner commit before advancing.
+Then branch/PR integration and useful orchestration work; no more CLI microtests.
 
-The dbt v2 migration is integrated: origin/main 2fcc0fa, PR #5 squash merge.
-Parent PR #4 is integrated at 1d8f98b. Agent verified origin/main and reviewed
-feature HEAD 10eb922 have identical tracked trees. No runtime rerun needed.
-No hosted checks were reported; no CI or independent approval claimed.
-
-Requirements pin dbt 2.0.8, Python duckdb 1.5.6 and pytz 2026.5. Project bounds
-runtime >=2.0.8,<2.1.0; seven-package snapshot includes pip 26.2.1.
-Prior active and recreated WSL Python 3.14.4 acceptance passed fresh fixture load,
-connection/freshness, baseline 3 models + 5 tests, injected source-count failure
-with 7 skips and exit 1, restored success exit 0, and preview. SQL/profile unchanged.
-Evidence directories: /tmp/staff_de_dbt_v2_ey44wfyh and
-/tmp/staff_de_dbt_v2_clgtjowx; temporary evidence may disappear.
-Validator isolates project/database writes; Bash helper replaces Click completion.
-User shell startup files untouched. Local acceptance is not native Windows/macOS,
-production batch completeness, hosted CI, publication isolation or cloud acceptance.
-
-## Git state and exact next action
-
-Current feature/dbt-v2-migration at 10eb922 tracks its matching origin branch.
-Local main remains a1b0fa8; origin/main is 2fcc0fa. No rebase in progress.
-Four modified files contain finalized checkpoint notes: docs/HANDOFF.md,
-docs/DATAFLOW_TRACKER.md, numbered 04_PROGRESS_DASHBOARD.md and 13_SESSION_LOG.md.
-Learner should create docs/dbt-v2-integration-checkpoint from origin/main, carry
-these notes, then stage/review/commit them. HEAD and origin/main trees match,
-so this branch switch should preserve the notes without content conflicts.
-Commands supplied only; branch creation/commit not yet confirmed. Documentation
-publication and local main synchronization follow; no agent push or Git mutation.
-Avoid another pre-publication note-commit loop. Keep future status notes for the
-next meaningful checkpoint if the current documentation commit is already made.
-
-## Remaining training work
-
-Loader remains full replacement at a fixed database path and ignores
-DBT_DUCKDB_PATH. Refactor before expansion. Count=3 is a fixture gate, not a
-production batch contract; raw-backed views can expose changed data despite
-skipped rebuilds. Native Windows integration, production reconciliation,
-consumer publication isolation, hosted CI, local Airflow and actual cloud work
-remain pending. Budget target below $150/month, ceiling $200; no provisioning
-or spending controls verified.
-
-## Thread continuity
-
-Git review thread started 2026-10-17 21:40 Pacific; checkpoint 9, next review 10.
-Review due at 5 was recorded at 6: continue bounded integration work, qualitative
-assessment. No context percentage or compaction guarantee. Migration phase now
-complete; assess handoff usefulness at next review before new implementation.
+## Continuity
+Checkpoint 20, scheduled qualitative review: fresh thread useful after learner
+check-in at this delivery boundary; optional, continuing is fine. Next review 25.
+Do not reset counter unless new thread confirmed. Previous history retained in logs.
