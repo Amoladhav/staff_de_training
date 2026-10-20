@@ -204,16 +204,10 @@ python -m venv "$REPRO_DIR"
 diff -u requirements_snapshot.txt "$REPRO_DIR/reproduced.txt"
 ```
 
-```bash
-"$REPRO_DIR/bin/python" "$PROJECT_ROOT/scripts/validate_dbt_runtime.py"
-```
-
-No diff means equal package versions. The validation script copies sanitized inputs
-to a new temporary project/database and checks loader, connection, freshness,
-source-backed build, deliberate failure/skips, recovery and preview. It retains
-the printed evidence directory with separate artifacts and checks exit codes.
-It does not touch your development database. dbt may write local leases/caches
-under ~/.dbt; there is no account login or cloud execution in this check.
+No diff means equal package versions. The former disposable pipeline validator
+was removed in commit `63311ad`. Historical success/failure/recovery evidence
+remains in the tracker; there is currently no replacement end-to-end acceptance
+command. Dependency reproduction alone does not establish pipeline acceptance.
 
 ## 4a. Package build and installed acceptance (WSL)
 
@@ -492,11 +486,9 @@ From the workspace root with the WSL venv active:
 PYTHONPATH=src python -B -m unittest discover -s tests -v
 ```
 
-Run the representative pipeline in a disposable workspace and retain its evidence:
-
-```bash
-python -B scripts/validate_dbt_runtime.py
-```
+The former disposable pipeline validator was removed in `63311ad`. Its prior
+results are historical evidence; orchestration delivery must add repeatable
+success, blocked-downstream and recovery acceptance.
 
 The compatibility script `training_analytics/load_orders.py` delegates to the same
 CLI and requires identical arguments and package import availability.

@@ -3,10 +3,10 @@
 Last updated: 2026-10-19
 
 ## Current Work
-- Checkpoint 20: source CLI/caller and installed-package acceptance passed; learner staged review/check-in pending. orders-load console command added; wheel verified against source and installed offline in temporary env. Build escalation declined; artifact listing supplied by owner, no claim rejected build succeeded.
-- Installed command verifies exact publication/rejection/preservation outside checkout; three installed loader tests and dependency/lock checks passed. Prior eight source tests and dbt failure/recovery evidence retained. [Tracker](../docs/DATAFLOW_TRACKER.md) owns details.
-- HEAD b80610d last verified; no agent Git writes. Scope/instructions edits kept separate. Native platforms/cloud/hosted CI/performance pending.
-- [Handoff](../docs/HANDOFF.md) has exact stage scope/next action. Review 20 recommends optional fresh thread after check-in; next review 25 if continuing.
+- Orchestration readiness checkpoint 1: owner CLI/package commit `63311ad` verified on `feature/orders-loader-validation`; finish its PR/integration before branching from updated main.
+- Prior source and installed acceptance JSON inspected; no rerun. Deleted validator references corrected in runbooks. Owner committed instruction/curriculum edits as `1ce364e`; branch ahead one, six checkpoint/runbook files remain modified.
+- Airflow runtime/DAG and repeatable pipeline acceptance next; no installation or execution. Platform/cloud/hosted CI/performance pending.
+- [Tracker](../docs/DATAFLOW_TRACKER.md) owns evidence/count; [handoff](../docs/HANDOFF.md) owns exact next action. Review at checkpoint 5.
 
 ## Historical readiness baseline
 

@@ -236,11 +236,8 @@ Use `python -m orders_pipeline.cli --help` for option discovery. Bash counterpar
 section 5 of [bash_commands.md](bash_commands.md). Source configuration here is
 session-scoped; installed-package acceptance is separate.
 
-Run the disposable representative workflow:
-
-```powershell
-python -B (Join-Path $env:PROJECT_ROOT "scripts/validate_dbt_runtime.py")
-```
+The former disposable workflow validator was removed in `63311ad`; no replacement
+end-to-end command is currently available. Retain historical WSL evidence separately.
 
 Native Windows dependencies/profiles/runtime execution remain separate acceptance
 requirements; a WSL pass does not satisfy them.

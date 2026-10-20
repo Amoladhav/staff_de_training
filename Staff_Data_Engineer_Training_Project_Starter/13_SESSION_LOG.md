@@ -818,3 +818,11 @@ No rerun needed; staging/review/commit is next.
 - Added orders-load entry point; offline build blocked on home cache write, escalation declined. Found current wheel, owner supplied listing; modules/entry-point/metadata verified. No claim rejected tool built it.
 - Installed via temporary cache offline into acceptance venv. Isolated console success/rejection/full snapshot preservation checks passed; three loader tests passed against installed wheel, seven dependencies compatible, offline lock/diff checks passed. Evidence /tmp/staff_de_orders_release/acceptance.json. Existing source dbt acceptance retained separately.
 - Source/.venv DB safety preserved; no Git writes. Learner staged review/check-in supplied for CLI/caller/package scope. Review 20: optional fresh thread after check-in, saved handoff; next review 25.
+
+### Orchestration readiness thread checkpoint 1 — 2026-10-19
+- Verified owner commit 63311ad and matching local tracking ref; live remote/PR not verified. Preserved and reviewed pending owner instruction/curriculum changes.
+- Re-inspected prior installed/source acceptance JSON. Owner commit removed validator; corrected stale Bash/PowerShell invocations. No test reruns or environment/Git writes.
+- Owner asked what happens to current feature branch. Corrected premature async branch instruction: finish loader review/commit/PR/integration, synchronize main, then create orchestration branch.
+- Proposed isolated Airflow runtime and manual serial load/freshness/build/success gate; retry/backfill batch contract remains to be designed. Official prerequisites list Python 3.14 support for Airflow 3.3.2: https://airflow.apache.org/docs/apache-airflow/stable/installation/prerequisites.html . Best practices: https://airflow.apache.org/docs/apache-airflow/stable/best-practices.html . No Airflow installed in project venv.
+- New confirmed thread counter 1; next review 5. Continue here.
+- Final refresh: owner committed instruction/curriculum changes as 1ce364e during this turn. Branch ahead one; six checkpoint/runbook files remain modified.
