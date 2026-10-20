@@ -271,3 +271,62 @@ Completion requires evidence such as:
 - architecture defense
 - production failure reasoning
 - clear explanation to an interviewer
+
+## Expanded target-platform verification — owner, 2026-10-18
+
+Include eventual hosted dbt ("dbt online"), Snowflake, Azure and SQL Server
+hands-on scenarios alongside Databricks/Airflow. These are planned outcomes,
+not configured integrations. Determine exact services, platform roles, adapter
+compatibility, authentication, Python runtime support and costs before execution.
+Keep separate acceptance evidence per target; avoid a promise of unchanged SQL
+or universal connectivity. Preserve local-first progression and existing budget.
+Package reusable logic, externalize configuration, separate secrets and targets,
+and prove one representative cloud path before expanding to additional platforms.
+
+## Role-aligned scope — revised 2026-10-18
+
+Owner supplied a senior/staff analytics engineering role emphasizing SQL/Python/dbt,
+Databricks Unity Catalog/AI-BI/Genie, Hex, Git/CI, manufacturing/BOM, Spark jobs,
+Fivetran and applied AI/ML. Owner prioritizes the core role-aligned path below. Hex and Fivetran are deferred
+nice-to-have work, not core acceptance gates. This does not authorize provisioning
+services or replace existing required tracks.
+
+Existing SQL/Python/dbt, modeling, Databricks/Spark, Git/CI, stakeholder/interview
+and AI/BI tracks provide the foundation; planned coverage is not demonstrated
+proficiency. Include explicit acceptance labs:
+- Unity Catalog governance, privileges, lineage and access-denial evidence;
+  Spark ingestion in Lakeflow Jobs with retries, idempotency and failure recovery.
+- AI/BI dashboard plus Genie business questions checked against reference SQL,
+  ambiguous questions and permissions.
+- Optional later: Hex SQL/Python analytical app using curated marts.
+- Optional later: bounded Fivetran source-to-Databricks integration covering
+  initial/incremental sync, supported updates/deletes, schema change and recovery.
+  Neither optional tool blocks core completion; revisit only after core delivery
+  or a concrete job need, with service access/cost checks.
+- Synthetic manufacturing/BOM capstone: revision/effectivity-aware parent-child
+  components, units, multilevel quantities, cycle detection, shared components,
+  cost rollup and supply shortage exposure. Model declared grains and avoid
+  double-counting; distinguish synthetic domain practice from industry employment.
+- Small applied ML extension: leakage-safe temporal evaluation against a simple
+  baseline, business error costs, monitoring and human review. Genie alone does
+  not demonstrate predictive-model understanding.
+- Business communication artifact per milestone: metric definition, stakeholder
+  narrative, recommendation, uncertainty and tradeoffs; brief presentation.
+
+Sequence: finish current loader and dbt delivery foundations, then one Databricks
+manufacturing path with governance, jobs, AI/BI/Genie and a bounded ML extension.
+Hex/Fivetran remain optional later work. Preserve
+Airflow and existing target-platform commitments; prioritize the main path before
+breadth. Preserve budget ceiling $200/month, target below $150, owner credentials
+and actual target acceptance. Concrete paid labs depend on cost/access checks.
+Current orders exercise remains intact; no capstone migration initiated.
+
+## Delivery scope adjustment — 2026-10-19
+
+Owner prioritizes fast delivery of robust, reliable, efficient and scalable pipelines.
+Teach through complete feature increments: contract → implementation → risk-based
+checks → operational integration → review/check-in. Agent handles routine wiring;
+learner focuses on decisions, debugging and review. Avoid repetitive microtests of
+thin wrappers. Preserve actual cloud/platform gates. For scale, establish a realistic
+volume/latency/memory target and benchmark before tuning or selecting distributed
+execution; this small fixture is correctness evidence only.

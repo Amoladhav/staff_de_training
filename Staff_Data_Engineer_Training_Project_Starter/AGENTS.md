@@ -90,3 +90,60 @@ checkout. Native Windows validation remains separate. Include compact Bash
 counterparts and help discovery in a troubleshooting section. Update these
 references as the accepted workflow evolves. Keep legacy history in numbered logs,
 but current links must use the Markdown files.
+
+## Proactive code check-in recommendations — owner request, 2026-10-18
+
+- Proactively suggest code check-ins at coherent implementation/acceptance checkpoints; do not wait for the owner to ask or defer all commits until feature completion.
+- Before recommending a specific commit, inspect current changes and relevant validation evidence. Explain the proposed scope, evidence and any remaining acceptance gaps; guide learner-led staging, staged-diff review and commit with one command per block.
+- For the active loader feature, assess a loader-plus-durable-tests checkpoint after meaningful success, rejection/preservation and rollback coverage passes; assess a separate CLI/caller integration checkpoint after its acceptance passes. These are review points, not permission to mark unfinished work complete.
+- Keep continuity documentation with the relevant code checkpoint; avoid notes-only commit loops. Local commits, pushing, PR/CI and integration are distinct steps; preserve learner ownership of Git operations.
+
+## Professional engineering baseline — owner clarification, 2026-10-18
+
+The owner is preparing for a sophisticated workplace and expects high-quality,
+robust, maintainable architecture and measured performance. Teach in small chunks
+while designing toward professional delivery from the start. Establish Python
+package boundaries, dependency locking, testability, safe writes and operational
+behavior before extending script prototypes. Explain tool/architecture choices;
+do not equate newer tools or extra layers with correctness or speed. Keep lessons
+learner-led; do not silently implement the entire exercise. Performance claims
+require representative measurements. Preserve established paths during migrations
+and update callers, validation and runbooks together before acceptance.
+
+Owner reinforcement, 2026-10-18: apply this engineering baseline at every
+iteration. Proactively assess architecture, maintainability, correctness,
+performance evidence, dependency reproducibility and automated enforcement
+without waiting for reminders. Keep the change proportional and learning-focused.
+
+## Cloud adaptability — owner clarification, 2026-10-18
+
+Plan eventual hands-on verification with hosted dbt (owner: "dbt online"),
+Snowflake, Azure and SQL Server, alongside the existing Databricks/Airflow track.
+Keep reusable application logic separate from CLI/orchestration, use explicit
+configuration and secret references, reproducible packaging and isolated targets.
+Do not assume identical SQL, adapters, authentication or deployment across targets.
+Verify each integration with current official support/compatibility guidance and
+actual target execution. Choose concrete services and deployment roles before
+provisioning; preserve budget/owner-operated credentials and cloud boundaries.
+Avoid speculative universal abstractions; extract shared interfaces as actual
+second-target requirements emerge. Local success is not cloud acceptance.
+
+## Response turnaround
+Follow root AGENTS.md response-turnaround instructions: reuse unchanged context,
+inspect only necessary evidence and keep routine conceptual turns/tool work small.
+Hex and Fivetran are optional later curriculum, not core completion gates (owner,
+2026-10-18). Preserve learner-led exercises and required checkpoint maintenance.
+
+## Delivery-oriented training scope — owner request, 2026-10-19
+
+Prepare for rapid development of robust, reliable, efficient and scalable pipelines.
+Use coherent delivery increments rather than one trivial test per turn. Agent may
+implement routine scaffolding/integration and run bounded checks while explaining
+consequential design decisions; preserve learner edits and involve the learner in
+contracts, tradeoffs, failure diagnosis and review. Git writes/publication remain
+learner-led. Prioritize data correctness, atomicity/idempotency, recovery, downstream
+gating and reproducible deployment. Keep risk-based tests; avoid exhaustive thin-CLI
+or framework permutations. Retain small explanations for new concepts, but combine
+routine edits/verification into one increment. Establish representative performance
+measurements before claiming efficiency/scalability. This adjusts teaching scope,
+not platform/cloud acceptance or credential boundaries.
