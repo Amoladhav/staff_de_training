@@ -736,3 +736,85 @@ No rerun needed; staging/review/commit is next.
 ### Durable-tests/CLI thread checkpoint 16 — 2026-10-18
 - Saved rollback helper/test reviewed; existing WSL .venv suite verifies 3 tests pass, exit 0. Learner had supplied run count without outcome. Agent trims trailing whitespace/adds final newline in loader/test only, preserving logic; no further execution needed for this formatting.
 - Local code checkpoint recommended with package config/lock/build constraints, initializer/loader, test and continuity notes. Learner staging/review pending, no agent Git writes. CLI scaffold/legacy caller and broader planning/runbooks excluded for later review. Next inspect staged scope then guide commit; remaining feature acceptance explicitly pending. Review 20.
+
+### Durable-tests/CLI thread checkpoint 17 — 2026-10-18
+- Owner n: verified owner commit b80610d, intended 11-file scope, empty index and matching last-tested loader/test content. Commit whitespace check passes; no rerun. Local origin feature ref matches HEAD, no remote/PR/CI verification.
+- Remaining instruction/plan/runbook/legacy edits and parser-only untracked CLI preserved. Notes updated post-commit for next substantive delivery, no agent Git writes.
+- Next thin CLI main/error/presentation boundaries, tests and caller migration. Early qualitative review 17: optional handoff at code commit boundary before CLI phase; saved handoff/prompt. Continue if preferred; scheduled review 20.
+
+### CLI/caller thread checkpoint 1 — 2026-10-18
+- Resumed canonical instructions/handoff/logs. Live branch/HEAD b80610d and parser-only CLI verified; prior passing tests retained without rerun. Learner edits/.venv preserved.
+- Thin-main flow/pseudocode and return-versus-exit probe assigned before implementation. CLI tests/caller migration/package acceptance pending; next meaningful code checkpoint remains reviewed CLI/caller acceptance. Counter 1, review 5.
+
+### CLI/caller thread checkpoint 2 — 2026-10-19
+- Reviewed saved learner main: argv forwarding and module guard present; temporary path print only. Suggested loader import/call, tuple summary, return 0 and SystemExit at entry boundary. Explained argv=None delegation and return versus SystemExit for tests.
+- Suggestion only: no source edits/tests. Next inspect learner success-path wiring, then error handling/tests. Same thread, counter 2, review 5.
+
+### CLI/caller thread checkpoint 3 — 2026-10-19
+- Inspected CLI: correct loader keyword call/tuple unpack and SystemExit guard. Success currently returns None; broad Exception handler prints to stdout then re-raises.
+- Assigned explicit return 0 and narrow ValueError-to-stderr/return-1 handling, with success output outside try. Unexpected errors retain traceback; database operational exceptions still to select before tests. Review only; no execution/source edits. Counter 3, review 5.
+
+### CLI/caller thread checkpoint 4 — 2026-10-19
+- Saved ValueError handler and explicit returns 0/1 verified. Error print still uses stdout despite sys import; assigned file=sys.stderr correction before database exception handling/tests. No execution/source edits. Counter 4, review 5.
+
+### CLI/caller thread checkpoint 5 — 2026-10-19
+- Saved stderr print verified. Installed DuckDB exception class availability and official API reference checked; assigned IOException/ConversionException/InvalidInputException alongside ValueError. Other exceptions propagate; selected categories are a CLI policy, not proof of user fault.
+- No loader/CLI execution or source edits. Next inspect saved tuple, then durable CLI tests. Scheduled qualitative review: continue focused thread; next review 10.
+
+### CLI/caller thread checkpoint 6 — 2026-10-19
+- Saved selected exception tuple verified. tests currently contains only test_loader.py. Assigned CLI success-test pseudocode using scoped patch of cli.load_orders, captured streams, explicit argv and assertions for typed forwarding/return/summary/no stderr.
+- Explained patch lookup namespace and stream-capture helpers. Learner authors tests/test_cli.py; next inspect then execute focused tests. No source edits or execution this turn. Counter 6; review 10.
+
+### CLI/caller thread checkpoint 7 — 2026-10-19
+- Owner requested agent implementation. Added tests/test_cli.py success test with fixed aware timestamp, scoped cli.load_orders patch, stream capture and assertions for typed forwarding/return/exact output/no stderr.
+- Existing WSL .venv unittest discovery passed all four tests (exit 0); no learner CLI/.venv/project database changes. Explained test structure; failure/propagation/parser/module exit and caller/package acceptance pending. Counter 7; review 10. No Git writes.
+
+### CLI/caller thread checkpoint 8 — 2026-10-19
+- Owner asks how to test. Supplied separate WSL focused CLI and full-suite commands, explicit workspace root/.venv interpreter and explanation of discovery/source path/output. Commands not rerun by agent; learner execution pending. Counter 8; review 10.
+
+### CLI/caller thread checkpoint 9 — 2026-10-19
+- Saved CLI/success test unchanged; owner execution unconfirmed. Supplied validation-failure test and focused test command, explaining side_effect raises where return_value returns. Assertions cover return 1, stderr diagnostic, no stdout and one loader invocation. Learner addition pending; no agent code edits/tests. Counter 9; review 10.
+
+### CLI/caller thread checkpoint 10 — 2026-10-19
+- Saved learner failure test inspected; focused CLI suite passed two tests (agent run, exit 0). No source edits/loader rerun.
+- Supplied RuntimeError propagation test using assertRaises and exception identity, one loader call and empty captured streams. Saved addition pending. Scheduled qualitative review: continue focused tests; reassess before caller/package phase. Next review 15.
+
+### CLI/caller thread checkpoint 11 — 2026-10-19
+- Saved unexpected-error test inspected; focused CLI suite passed three tests, exit 0. No source edits. Assigned handled-error subtest expansion covering ValueError and selected three DuckDB classes, with fresh captures/patch per case. Explained method count versus subcases and mocked policy versus actual DB triggers. Next inspect/run expansion. Counter 11; review 15.
+
+### CLI/caller thread checkpoint 12 — 2026-10-19
+- Inspected saved handled-error subtests; previous ValueError-only method retained. Focused suite passed four methods/four handled-error subcases (agent run). Suggested removing redundant older method.
+- Assigned missing-arguments test with SystemExit(2), stderr/no stdout and loader.assert_not_called. Next inspect learner changes and run. No agent source edits. Counter 12; review 15.
+
+### CLI/caller thread checkpoint 13 — 2026-10-19
+- Saved missing-args test inspected; focused CLI suite passed five methods. Redundant ValueError-only method retained; suggested removal and whitespace cleanup.
+- Assigned two-case parser test for missing args/noninteger count, verifying exit 2 and no loader invocation. Next inspect/run, then process exit integration. No source edits. Counter 13; review 15.
+
+### CLI/caller thread checkpoint 14 — 2026-10-19
+- Saved parser expansion inspected; six CLI methods passed (agent run, exit 0). Two superseded methods still retained; harmless duplication noted.
+- Supplied subprocess failure-exit test with temporary cwd/paths, explicit source import path, same interpreter and timeout; asserts status 1/streams/no database creation. Learner addition pending. No source edits. Counter 14; review 15 before caller phase.
+
+### CLI/caller thread checkpoint 15 — 2026-10-19
+- Owner asks whether testing detail is excessive for DE. Tutor acknowledges over-granular CLI lessons; explains risk-based priority for data integrity, rollback, idempotency and gating versus thin-wrapper details.
+- Revised next scope: consolidate duplicates, finish one real failure-exit check if not yet saved, then move to caller/package integration with real success execution. No further parser-unit expansion. No source edits/tests this turn. Scheduled review 15: continue scope correction; next review 20.
+
+### CLI/caller thread checkpoint 16 — 2026-10-19
+- Owner requests fast robust/reliable/efficient/scalable development scope. Updated persistent project instructions/plan toward coherent increments, routine agent implementation and learner design/review; Git/credential/platform boundaries unchanged.
+- Consolidated duplicate CLI tests; migrated legacy script to thin wrapper and runtime validator to module CLI/explicit config, added count rejection before baseline; updated runbooks.
+- Eight tests passed plus compatibility-wrapper smoke check. Initial validator sandbox lease write failure retained; approved rerun passed at /tmp/staff_de_dbt_v2_xqprpvzd: load/reject, debug/freshness, baseline 3/5, failure 1 fail/7 skipped, recovery 3/5, preview. Project DB/.venv untouched.
+- Source CLI/caller increment ready for meaningful learner review/check-in; current installed-wheel acceptance remains next. No agent Git writes. Counter 16; review 20. No scale claims from tiny fixture.
+
+### CLI/caller thread checkpoint 17 — 2026-10-19
+- Explained runtime validator as repeatable orders-fixture-specific integration acceptance: disposable workspace, fixed expectations, deliberate failure/recovery. Not production orchestration or automatic CI; not one-time. Keep focused and generalize only for concrete second-pipeline requirements. No code/execution. Counter 17; review 20.
+
+### CLI/caller thread checkpoint 18 — 2026-10-19
+- Owner asks whether developers write acceptance scripts. Explained common integration/smoke checks with varied packaging: test suite, small script or CI job. Current cross-process harness justified by ingestion/dbt failure-recovery boundary; avoid custom framework growth or treating syntax recall as competency. No code/tests. Counter 18; review 20.
+
+### CLI/caller thread checkpoint 19 — 2026-10-19
+- Owner requests context-aware independent guidance. Re-read validator/handoff; acknowledged earlier blanket defense failed to separate good fixture specificity from brittle implementation (global status counts, SQL-text mutation).
+- Recommended retaining bounded checks for now without further harness expansion; behavior-focused replacement/retirement during testing/CI consolidation, not immediate generic-framework detour. Package acceptance stays next. Clarified dbt downstream skips are not proof of deployed orchestration gating. No code/tests. Counter 19; review 20.
+
+### CLI/caller thread checkpoint 20 — 2026-10-19
+- Added orders-load entry point; offline build blocked on home cache write, escalation declined. Found current wheel, owner supplied listing; modules/entry-point/metadata verified. No claim rejected tool built it.
+- Installed via temporary cache offline into acceptance venv. Isolated console success/rejection/full snapshot preservation checks passed; three loader tests passed against installed wheel, seven dependencies compatible, offline lock/diff checks passed. Evidence /tmp/staff_de_orders_release/acceptance.json. Existing source dbt acceptance retained separately.
+- Source/.venv DB safety preserved; no Git writes. Learner staged review/check-in supplied for CLI/caller/package scope. Review 20: optional fresh thread after check-in, saved handoff; next review 25.

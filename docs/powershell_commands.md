@@ -168,6 +168,11 @@ Stop the docs server with Ctrl+C. Inspect `target/compiled/`, `target/run_result
 
 ## 4. Clean-environment check
 
+The uv package-scaffold workflow is currently WSL-verified only; see
+[Bash section 4a](bash_commands.md#4a-uv-package-scaffold-acceptance-wsl).
+The snapshot workflow below is historical; native uv build/install acceptance
+requires its own Windows interpreter, environment and verification.
+
 Generate and review a **Windows-specific** snapshot after a successful native install. Do not overwrite the Linux snapshot. This proves reproduction on Windows only; test Linux/macOS separately.
 
 ```powershell
@@ -214,9 +219,31 @@ No `Compare-Object` output means matching package lines. It does not use Bash `d
 
 ## 5. Integration check
 
-**Pending native Windows support.** The current loader writes `dev.duckdb` beside its script and ignores `DBT_DUCKDB_PATH`. Running it through the UNC checkout would target the shared Linux database, while this runbook targets a separate Windows database.
+**Native Windows execution pending.** The shared validator now uses explicit loader
+arguments and a disposable database. The commands below use the active native
+Windows venv; they are supplied, not Windows-verified. Ensure the configured Windows
+database parent exists and stop on a nonzero `$LASTEXITCODE` before running dbt.
 
-The required native sequence is **fixture load → freshness → build/test → preview**. Add runnable loader commands after its database path becomes configurable and that behavior is tested. Do not treat connection/package checks as Windows integration acceptance.
+```powershell
+$env:PYTHONPATH = Join-Path $env:PROJECT_ROOT "src"
+```
+
+```powershell
+python -m orders_pipeline.cli --csv-path (Join-Path $env:PROJECT_ROOT "training_analytics/seeds/sample_orders.csv") --database-path $env:DBT_DUCKDB_PATH --expected-rows 3
+```
+
+Use `python -m orders_pipeline.cli --help` for option discovery. Bash counterpart:
+section 5 of [bash_commands.md](bash_commands.md). Source configuration here is
+session-scoped; installed-package acceptance is separate.
+
+Run the disposable representative workflow:
+
+```powershell
+python -B (Join-Path $env:PROJECT_ROOT "scripts/validate_dbt_runtime.py")
+```
+
+Native Windows dependencies/profiles/runtime execution remain separate acceptance
+requirements; a WSL pass does not satisfy them.
 
 ## 6. Review and commit
 

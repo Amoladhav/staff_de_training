@@ -12,6 +12,9 @@ dependencies = [
     "pytz==2026.5",
 ]
 
+[project.scripts]
+orders-load = "orders_pipeline.cli:main"
+
 [dependency-groups]
 dbt = [
     "dbt==2.0.8",

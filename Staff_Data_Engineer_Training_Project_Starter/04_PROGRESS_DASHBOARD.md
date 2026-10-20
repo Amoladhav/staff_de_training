@@ -1,12 +1,12 @@
 # Progress Dashboard
 
-Last updated: 2026-10-18
+Last updated: 2026-10-19
 
 ## Current Work
-- Checkpoint 16: three durable loader tests reviewed and agent-run suite passes, exit 0. Covers success, count rejection/preservation and injected publication failure with explicit rollback/error identity/restored snapshot. Formatting-only cleanup afterward.
-- Local loader/package/tests/continuity-notes commit recommended; learner staging and staged review next. CLI scaffold, legacy caller and wider planning/runbooks remain unstaged for later review. No agent Git writes.
-- W08 In Progress: remaining durable coverage, CLI/callers, logging and rebuilt-package/pipeline acceptance pending. Source checks are not installed-package/hosted CI/cloud acceptance. Hex/Fivetran optional.
-- [Tracker](../docs/DATAFLOW_TRACKER.md) owns evidence/flow; [handoff](../docs/HANDOFF.md) refreshed. Count 16; last review 15: continue through verification/commit, reassess before CLI; next review 20.
+- Checkpoint 20: source CLI/caller and installed-package acceptance passed; learner staged review/check-in pending. orders-load console command added; wheel verified against source and installed offline in temporary env. Build escalation declined; artifact listing supplied by owner, no claim rejected build succeeded.
+- Installed command verifies exact publication/rejection/preservation outside checkout; three installed loader tests and dependency/lock checks passed. Prior eight source tests and dbt failure/recovery evidence retained. [Tracker](../docs/DATAFLOW_TRACKER.md) owns details.
+- HEAD b80610d last verified; no agent Git writes. Scope/instructions edits kept separate. Native platforms/cloud/hosted CI/performance pending.
+- [Handoff](../docs/HANDOFF.md) has exact stage scope/next action. Review 20 recommends optional fresh thread after check-in; next review 25 if continuing.
 
 ## Historical readiness baseline
 

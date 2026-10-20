@@ -154,3 +154,11 @@ For current assignments use the [handoff](../docs/HANDOFF.md).
 - Owner explicitly asks to remember appropriate code check-in recommendations at proper checkpoints.
 - Recommend coherent implementation increments after inspecting change scope and relevant passing checks; provide scope/message and learner-led staged review/commit steps when ready. Do not postpone every commit until full feature delivery or claim unverified acceptance.
 - Active plan: assess loader plus durable tests after success/rejection/preservation/rollback coverage, then CLI/caller acceptance. Keep continuity notes with substantive changes; Git writes/publication remain learner-led.
+
+## D-025 — Proportionate CLI testing and teaching granularity (2026-10-19)
+- Owner questioned excessive unit-test depth for DE work. Tutor recalibrated scope: prioritize loader integrity/preservation/rollback and caller exit gating; consolidate thin-CLI coverage without expanding framework/parser permutations.
+- Finish one real process failure-status check, then validate successful execution through caller/package integration. Reduce one-test-per-turn microsteps; retain small explanations for genuinely new mechanisms. This is scope calibration, not evidence of completed integration.
+
+## D-026 — Fast delivery with risk-based assurance (2026-10-19)
+- Owner explicitly prioritizes rapid robust/reliable/efficient/scalable pipeline development. Use coherent delivery increments; agent implements routine wiring/checks while learner owns engineering decisions/review and Git operations.
+- Preserve correctness/recovery/gating/dependency acceptance; stop exhaustive thin-wrapper microsteps. Follow source integration with installed-package checks. Measure representative volume/latency/memory before tuning or scale claims. Current fixture validates correctness only.

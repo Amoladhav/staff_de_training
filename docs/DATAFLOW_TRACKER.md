@@ -1,6 +1,6 @@
 # Dataflow and developer workflow tracker
 
-Updated: 2026-10-18 (America/Los_Angeles).
+Updated: 2026-10-19 (America/Los_Angeles).
 
 This is the current work-item status reference. The master training plan defines
 the wider curriculum; this file tracks the representative orders pipeline and
@@ -20,26 +20,35 @@ its delivery workflow. No fixed session durations apply.
 
 ## Thread continuity review
 
-- Thread label: orders loader durable tests and CLI — resumed 2026-10-18 from atomic-publication checkpoint 20.
-- Confirmed new thread initialized at **0**; counted checkpoints: **16** (three durable tests verified; local commit review next).
-- Last scheduled review: **15**. Next scheduled review: **20**.
-- Assessment at 15: continue through the current rollback exercise; assess handoff after its verification/commit review before CLI integration. Qualitative assessment only, no capacity telemetry.
-- Previous thread review preserved: atomic-publication checkpoint **20** recommended a fresh thread before durable tests/CLI after validation edit cycles; owner resumed here. Import-safety checkpoint 20 review retained in history.
+- Thread label: CLI/caller integration — resumed 2026-10-18 from durable-tests checkpoint 17.
+- Confirmed new thread initialized at **0**; counted checkpoints: **20** (installed-package acceptance passed; learner check-in ready).
+- Last scheduled review: **20**. Next scheduled review: **25**.
+- Assessment at 20: source and installed-package boundary reached after long accumulated training history; clean-thread handoff useful after learner check-in. Handoff saved. Qualitative assessment, not capacity telemetry; continuing remains fine. Qualitative assessment, not capacity telemetry.
+- Previous review preserved: durable-tests checkpoint **17** recommended this handoff at committed loader/tests boundary; last scheduled review 15. Atomic-publication checkpoint 20 review retained in history.
 
 ## Where we are now
 
-**Current: W08 loader durable tests and thin CLI — In Progress.**
-Three durable tests in `tests/test_loader.py` inspected and passed under the existing
-WSL .venv (agent run, exit 0): exact successful publication/tuple, count rejection
-preserving complete snapshot, and injected pre-COMMIT failure proving replacement,
-explicit rollback, original error propagation and restored snapshot. Only trailing
-whitespace/final-newline cleanup applied by agent afterward; logic preserved.
-Next: learner stages bounded loader/package/tests and current continuity notes,
-then reviews staged diff before a local checkpoint commit. Legacy caller changes,
-CLI scaffold and broader planning/runbook changes remain unstaged for later review.
-This is incremental source acceptance, not complete guard/package/CLI acceptance.
-CLI/main integration follows loader tests. dbt v2 migration is Done within its
-bounded WSL/PR acceptance; historical runtime evidence follows below.
+**Current: W08 source and installed-package acceptance passed; learner check-in pending.**
+CLI/caller source pipeline passed at checkpoint 16 (eight tests plus disposable dbt
+baseline/failure/recovery). Checkpoint 20 adds orders-load console entry point and
+verifies current wheel code matches source. Owner supplied wheel listing; build tool
+escalation was declined, so do not claim agent build completion. Artifact inspection
+and subsequent install/runtime checks establish current wheel acceptance.
+Wheel: /tmp/staff_de_orders_release/dist/orders_pipeline-0.1.0-py3-none-any.whl.
+Installed offline into existing temporary acceptance venv using /tmp uv cache;
+project .venv unchanged. Isolated Python imports site-packages. Console command run
+from disposable cwd with PYTHONPATH removed: exact two-row publication, exit 0;
+bad count exit 1 with full accepted snapshot unchanged. Three durable loader tests
+passed against installed code. uv pip check: seven compatible packages; offline
+uv lock --check and tracked diff whitespace checks passed. Tool stream-fd warnings
+appeared in parent command output; processes/assertions completed successfully.
+Evidence: /tmp/staff_de_orders_release/acceptance.json; prior source pipeline:
+/tmp/staff_de_dbt_v2_xqprpvzd/summary.json. Current installed dbt end-to-end run not
+repeated; source dbt and installed loader/CLI acceptance are distinct evidence.
+Next: learner stages/reviews/commits CLI/caller/package increment, then branch/PR
+integration and orchestration planning. No agent Git writes; HEAD b80610d last
+verified. Instruction/master-plan scope updates remain separate unstaged work.
+Native Windows/macOS/cloud/hosted CI and performance/scalability remain pending.
 
 ### Current flow and SDLC position
 
@@ -58,15 +67,15 @@ The chart is intended flow, not implemented orchestration. Current SQL has
 raw.orders → first_orders → completed_orders; base_commerce_orders also reads
 raw.orders independently. W10 orchestration/downstream gating remains pending.
 
-SDLC: contract/design → learner implementation → **durable tests (current)** →
-thin CLI/caller integration → rebuilt-package/pipeline validation → Git/PR/CI →
+SDLC: contract/design → learner implementation → durable tests →
+thin CLI/caller integration → **rebuilt-package validation (current)** → Git/PR/CI →
 deployment. Ad hoc checks already passed within documented bounds; durable tests
 are repeatable repository artifacts, suitable for later CI.
 
 Next test pseudocode: create temporary accepted snapshot → submit invalid candidate
 → assert expected exception → reconnect → assert complete old snapshot unchanged.
 CLI target: parse arguments → call loader → print returned summary/exit 0;
-expected failure → stderr diagnostic/nonzero exit. CLI implementation pending.
+expected failure → stderr diagnostic/nonzero exit. CLI source/caller execution verified at checkpoint 16; installed-package acceptance pending.
 
 On owner request, migrated to pip package dbt==2.0.8. Owner had already replaced
 the active venv but requirements still named Core v1. Direct pins now include
@@ -137,7 +146,7 @@ validator/runbooks, rebuilt package and Git delivery remain pending.
 | W05 — Freshness and source inspection | In Progress | Add table-level freshness config in `sources.yml` → run stale/reload/check and raw preview → explain thresholds, timestamps, selectors, exit status and `sources.json` | Config inspected: warn >5 min, error >10 min. Core stale failure supplied; recovery PASS learner-reported; latest artifact warn verified. Learner aggregate output confirms 3 rows / 3 distinct IDs and latest_load 2026-10-15T21:26:19.750278-07:00. Learner raw preview matches all fixture rows and shows identical loaded_at values. Checkpoint 11 learner correctly explains timestamp freshness versus exact count (2<>3). Minimum-count consequences explained by tutor, not independently demonstrated; exit code not supplied. |
 | W06 — Input readiness and batch completeness | In Progress | Define expected batch/input contract and reconciliation → implement checks → demonstrate missing/partial loads block downstream work | Fixture-only exact count=3 test now named assert_orders_fixture_count.sql; PASS/zero failures artifact verified at checkpoint 9 (dbt 2.0.8). Failure predicate count<>4 and restored count<>expected_rows=3 recovery verified from log/artifact at checkpoint 10. Core 1.12.0 successful selected build verified at prior checkpoint 22; negative-case evidence pending. Batch identity, independent expected counts, missing/partial failure and downstream gating remain pending. Do not generalize fixture count to production. |
 | W07 — Source-backed build/test and failure recovery | In Progress | Maintain `models/orders.yml` with SQL → build/test, inject bounded invalid input, inspect failure and restore → verify current full source-backed build and recovery | Prior checkpoint verifies four first_orders tests and deliberate duplicate failure before the current source-backed acceptance. Checkpoint 11: learner output and artifact verify selected source-backed build: 3 models success / 5 tests pass, dbt 2.0.8. Checkpoint 22 additionally verifies Core 1.12.0 selected build: 3 models / 5 tests pass using recreated environment/template. Checkpoint 8 in failure/recovery thread verifies target/failure/run_results.json is a successful baseline, Core 1.12.0, 3 models and 5 tests; SQL still expects 3. Source-count failure (1 test fail, 7 skips) and recovery (3 models, 5 tests pass) verified at checkpoint 10; learner interpretation and Git acceptance next. |
-| W08 — Maintainable Python loader and repository foundation | In Progress | Refactor prototype into reusable logic/configuration; establish Git and reproducible dependencies → validate inputs, errors/logging, safe writes and meaningful tests → demonstrate repeatability and recovery | Historical Git baseline and Core v1 reproduction retained. Failure/recovery thread checkpoint 16 migrates to dbt 2.0.8, verifies seven-package clean reproduction and fresh-database success/failure/recovery. Migration integration complete through PR #5, documentation through PR #6; loader refactor remains pending. Snapshot contract understood; learner package scaffold inspected and uv 0.13.1 verified. Lock generation/check verified; isolated dependency environment/import smoke check passed; installed empty-package/import/dependency acceptance passed; module imports passed at 9; candidate staging at 16; count/ID/status validation passed eight disposable cases at 20 with accepted sentinel preservation. Atomic publication passed 12 bounded source checks at publication checkpoint 10. Parameter/path guards and silent tuple verified in focused checks; next durable rejection/preservation test, then thin CLI; callers/package acceptance remain pending; loader refactor and build hash-enforcement provenance remain pending. |
+| W08 — Maintainable Python loader and repository foundation | In Progress | Refactor prototype into reusable logic/configuration; establish Git and reproducible dependencies → validate inputs, errors/logging, safe writes and meaningful tests → demonstrate repeatability and recovery | Checkpoint 16: eight tests and disposable WSL CLI/caller/dbt failure-recovery pipeline passed; evidence /tmp/staff_de_dbt_v2_xqprpvzd/summary.json. Current wheel/install and other platform acceptance pending; next rebuild/install validation and learner check-in. Historical Git baseline and Core v1 reproduction retained. Failure/recovery thread checkpoint 16 migrates to dbt 2.0.8, verifies seven-package clean reproduction and fresh-database success/failure/recovery. Migration integration complete through PR #5, documentation through PR #6; loader refactor remains pending. Snapshot contract understood; learner package scaffold inspected and uv 0.13.1 verified. Lock generation/check verified; isolated dependency environment/import smoke check passed; installed empty-package/import/dependency acceptance passed; module imports passed at 9; candidate staging at 16; count/ID/status validation passed eight disposable cases at 20 with accepted sentinel preservation. Atomic publication passed 12 bounded source checks at publication checkpoint 10. Parameter/path guards and silent tuple verified in focused checks; three durable tests passed at prior checkpoint 16 and committed in b80610d; CLI thread checkpoint 1 confirms parser-only source; next learner-authored main, CLI tests and caller migration; callers/package acceptance remain pending; loader refactor and build hash-enforcement provenance remain pending. |
 | W09 — dbt professional delivery and CI/CD | TBD | Author isolated targets and CI configuration → exercise reviewed SQL/YAML change, failing checks, correction and promotion → verify artifact retention and cleanup | Local CI simulation, hosted CI, and deployed execution need distinct evidence. Teach manifest/state/deferral after basic build isolation. |
 | W10 — Local Airflow pipeline | TBD | Author DAG/config using reusable ingestion → ingest, readiness/freshness/completeness, dbt build/test, publication gating → prove success and blocked downstream tasks/recovery | Cover data intervals, retries, idempotency, backfills, concurrency, secrets and logs. No scheduler or DAG deployment verified. |
 | W11 — Cloud design and billing readiness | TBD | Choose compatible Azure/Databricks target and cloud Airflow hosting; estimate costs → verify billing, identity and budget alerts → approve bounded lab design and teardown | $200/month ceiling, target below $150. Billing upgrade and budget configuration unverified. Alerts are not a hard cap. Verify current official guidance before provisioning. |
@@ -823,3 +832,105 @@ Build acceptance complete for this selection; B11 steps 03-08 remain next.
 - git diff --check passes tracked changes; separate untracked-source scan finds seven trailing-whitespace lines. Agent removes trailing whitespace and ensures final newline in loader/test only; no semantic edits or repeat test run needed for formatting-only cleanup.
 - Local checkpoint recommended: pyproject/build constraints/uv.lock, package initializer/loader, test file and current tracker/handoff/dashboard/session/decision notes. Exclude CLI scaffold, legacy caller and broader planning/runbook edits from this staging step. Learner staging/staged review/commit pending; no agent Git writes.
 - Suggested message: feat: add validated atomic orders loader with regression tests. Incremental checkpoint only: other guard/empty/repeat/fresh-target durable tests, CLI/callers, wheel/pipeline and hosted CI/cloud acceptance remain pending. Next inspect staged scope/diff then guide commit; review 20.
+
+### Durable-tests/CLI thread checkpoint 17 — 2026-10-18
+- Owner n: index empty because owner already committed b80610d (feat: add validated atomic orders loader with regression tests), 11 intended files. git show --check passes. No differences between HEAD and previously passing loader/tests; no test rerun needed. cli.py still parser-only/untracked.
+- Local remote-tracking feature branch resolves to identical full commit; no network/remote verification, PR/CI or integration claim. Remaining unstaged changes: root/starter AGENTS, master plan, Bash/PowerShell runbooks, legacy loader; continuity notes updated after commit for next substantive delivery.
+- Next thin CLI design/main: parse arguments, call reusable loader, print summary on success/exit 0, expected input/database failures to stderr/nonzero status; unexpected exceptions retain useful traceback. Do not duplicate validations or move business logic into CLI. Guide focused learner implementation, CLI tests and caller/runtime-validator migration; package entry point/build acceptance still pending.
+- Early qualitative handoff review at 17: natural optional fresh-thread boundary after committed loader/tests, before substantial CLI/caller phase. Handoff refreshed with exact state; continue here if preferred, next scheduled review 20. No agent Git writes.
+
+### CLI/caller thread checkpoint 1 — 2026-10-18
+- Live HEAD b80610d on feature/orders-loader-validation; parser-only cli.py inspected. Prior three-test pass retained as prior evidence; no rerun. Existing edits/.venv preserved.
+- Thin-main flow/pseudocode and return-versus-process-exit probe assigned before learner implementation. CLI tests, caller migration and package acceptance pending. Review at 5.
+
+### CLI/caller thread checkpoint 2 — 2026-10-19
+- Inspected learner cli.py: main forwards argv to parse_args, prints csv_path and has a module guard calling main. No loader call or explicit exit status yet.
+- Suggested focused success-path wiring: import reusable loader, pass parsed arguments, unpack/print tuple, return 0 and raise SystemExit(main()) at entry boundary. Expected-error handling and CLI tests follow; no source edits or execution. Next inspect learner implementation. Review remains 5.
+
+### CLI/caller thread checkpoint 3 — 2026-10-19
+- Saved CLI imports/calls load_orders with correct keyword arguments, unpacks tuple and uses SystemExit(main()). Success prints summary but returns None; broad Exception handler prints to stdout and re-raises.
+- Review assigned explicit return 0, narrow ValueError handling to stderr/return 1 and success presentation outside try. Unexpected exceptions retain traceback; database operational exception selection remains pending. Source inspected only, no execution or source edits. Next inspect correction and complete database error boundary before CLI tests. Review 5.
+
+### CLI/caller thread checkpoint 4 — 2026-10-19
+- Saved CLI now catches ValueError, returns 1 on validation failure and 0 on success; success print outside try. sys imported, but error print still lacks file=sys.stderr and therefore uses stdout.
+- Assigned one-line stderr correction; database operational errors/tests deferred until saved correction. Source inspection only; no execution/source edits. Next review 5.
+
+### CLI/caller thread checkpoint 5 — 2026-10-19
+- Saved stderr correction verified. Installed DuckDB exposes IOException, ConversionException and InvalidInputException; official Python API reference checked. No loader or CLI execution this turn.
+- Assigned duckdb import and exception tuple extending ValueError with those three types for selected input/I/O failures; broad duckdb.Error intentionally excluded to preserve unexpected error diagnostics. CLI tests must verify selected handling and unexpected propagation; input exception categories can also originate in defects.
+- Scheduled qualitative review 5: continue focused thread; next review 10. Next inspect saved exception handling, then durable CLI tests. Source/.venv unchanged by agent.
+
+### CLI/caller thread checkpoint 6 — 2026-10-19
+- Inspected saved CLI: selected ValueError/IOException/ConversionException/InvalidInputException tuple, stderr diagnostic and returns 0/1 present. Only tests/test_loader.py currently exists; no CLI tests executed.
+- Assigned learner-authored tests/test_cli.py success case: patch orders_pipeline.cli.load_orders, capture stdout/stderr, call main with explicit argv, verify typed keyword forwarding once, return 0, summary and empty stderr. Explain patch where used, StringIO and redirect contexts. Existing real-DuckDB tests cover loader behavior separately.
+- Next inspect saved first CLI test before executing focused suite; handled failure, unexpected propagation, parser/module exit and caller/package integration remain pending. Counter 6; review 10.
+
+### CLI/caller thread checkpoint 7 — 2026-10-19
+- Owner explicitly requested implementation of first CLI test. Agent added tests/test_cli.py only: real parser/main, scoped cli.load_orders patch returning fixed aware timestamp/count, typed keyword delegation once, exact stdout summary, empty stderr and return 0 assertions.
+- Agent ran PYTHONPATH=src .venv/bin/python -B -m unittest discover -s tests -v: all four tests passed, exit 0 (one CLI success plus three existing loader tests). No project DB, learner CLI or .venv changes. Mocked success verifies presentation/delegation, not module process status or installed package.
+- Explained Arrange/Act/Assert, patch and captured streams. Next teach/add handled-failure tests, then unexpected propagation and parser/module-exit coverage; caller/package integration pending. No Git writes; meaningful CLI/caller check-in remains after acceptance. Review 10.
+
+### CLI/caller thread checkpoint 8 — 2026-10-19
+- Supplied WSL commands from workspace root using existing .venv interpreter: unittest discovery restricted to test_cli.py, then full tests discovery. Explained PYTHONPATH=src, -B, -s/-p/-v and OK/FAILED interpretation.
+- Commands supplied only; learner execution pending. Prior agent four-test pass remains evidence. Next learner runs/reports results, then handled-failure test. Review 10.
+
+### CLI/caller thread checkpoint 9 — 2026-10-19
+- Saved CLI and success test inspected unchanged. Owner n supplied no execution output; owner test run remains unconfirmed, prior agent four-test pass retained.
+- Supplied learner addition test_validation_failure_returns_one_and_prints_error: mock loader side_effect=ValueError, explicit argv, captured streams, assert one call, return 1, empty stdout and diagnostic on stderr. Explained side_effect versus return_value and supplied focused run command.
+- Code/command supplied only; next inspect saved failure test and execution. Database-specific handling, unexpected propagation, parser/module exit and caller/package acceptance pending. Review due 10.
+
+### CLI/caller thread checkpoint 10 — 2026-10-19
+- Saved learner validation-failure test inspected. Agent ran focused CLI unittest discovery under existing WSL .venv: two tests passed, exit 0. No source edits; prior three loader tests not rerun because loader unchanged.
+- Supplied unexpected RuntimeError propagation test: scoped loader patch, assertRaises capturing same exception object, empty stdout/stderr and one loader call. Explains test catches exception so runner survives; module traceback is separate process coverage.
+- Scheduled qualitative review 10: continue focused CLI-test phase, reassess before caller/package integration. Next review 15. Next inspect saved propagation test and run focused suite; DuckDB cases/parser/module-exit and caller/package gates pending.
+
+### CLI/caller thread checkpoint 11 — 2026-10-19
+- Saved unexpected RuntimeError test inspected; focused CLI suite passed three tests (agent run, exit 0). Original exception identity and no CLI output asserted. No source edits.
+- Assigned replacement of ValueError-only test with handled-error subtests for ValueError and three selected DuckDB exception types; separate buffers/mocks per case. Explain subTest labels/continuation and test runner method count remains three.
+- Mock cases verify CLI policy only, not real DuckDB failure triggers. Next inspect saved expansion and run focused suite; parser/module exit and caller/package acceptance remain pending. Review 15.
+
+### CLI/caller thread checkpoint 12 — 2026-10-19
+- Learner added handled-error subtests and retained older ValueError-only test. Focused CLI suite passed four methods, including four exception subcases (agent run, exit 0). Recommend removing superseded ValueError-only method; no source edits by agent.
+- Assigned missing-required-arguments test: main([]) raises SystemExit(2), prints parser diagnostic to stderr, stdout empty, mocked loader never called. This tests wiring/no-write boundary, not argparse internals. Next inspect saved test/removal and execute focused suite; malformed integer/module process/caller/package checks remain pending. Review 15.
+
+### CLI/caller thread checkpoint 13 — 2026-10-19
+- Saved missing-arguments test verified; focused CLI suite passed five methods (agent run, exit 0). Old ValueError-only method still present; redundant, not failing. No source edits.
+- Assigned replacing missing-only parser test with two subcases: no arguments and noninteger expected-rows. Each asserts SystemExit(2), loader never called, empty stdout and relevant flag in stderr. Suggested removing superseded ValueError-only method and trailing whitespace.
+- Next inspect saved parser expansion and run focused suite; then module-process exit integration. Caller migration/package acceptance remain pending. Counter 13; review 15.
+
+### CLI/caller thread checkpoint 14 — 2026-10-19
+- Saved parser subcases inspected; six CLI methods passed under focused discovery (agent run, exit 0). Older ValueError-only and missing-args-only methods both retained, redundant but passing. Source unchanged by agent.
+- Supplied first subprocess test: real module/loader with missing CSV in temporary cwd, explicit absolute source PYTHONPATH and sys.executable, capture_output/text/check=False/timeout. Assert process returncode 1, no stdout, expected stderr/no traceback and no database created. This verifies SystemExit(main()) boundary without project DB writes.
+- Next inspect saved process test and execute focused suite; process success, caller/package acceptance pending. Review due 15; assess handoff before caller phase. No agent Git writes.
+
+### CLI/caller thread checkpoint 15 — 2026-10-19
+- Owner questions whether CLI unit-test detail is proportionate to DE work. Acknowledge over-granular coaching and diminishing value from exhaustive thin-wrapper cases; distinguish reusable-library requirements from this small pipeline.
+- Revised scope: retain three meaningful real-DuckDB loader tests; consolidate CLI success/handled-error/unexpected-propagation coverage, retain existing parser checks without expansion and remove superseded duplicates during review. One real process failure-status check remains useful for downstream gating; supplied at 14, save/run state unverified this turn. Fold successful end-to-end command into caller/package acceptance instead of more isolated CLI microtests.
+- Next review current saved process-test state, finish bounded CLI acceptance in one chunk and move to caller integration. No source edits or execution. Scheduled qualitative review 15: continue with scope correction; reassess before larger caller/package phase. Next review 20.
+
+### CLI/caller thread checkpoint 16 — 2026-10-19
+- Owner sets fast robust/reliable/efficient/scalable delivery priority. Persisted larger-increment agent-assisted workflow in instructions/master plan; preserve learner design/review/Git ownership and measured-performance boundaries.
+- Removed two redundant test methods; preserved learner implementation/process test. Legacy script now delegates to reusable CLI; validator uses explicit CSV/database/count arguments and tests count rejection before dbt baseline. Updated Bash/native-Windows runbooks, marking Windows unverified.
+- Eight tests passed under WSL .venv (exit 0), plus compatibility wrapper missing-file smoke check. Source runtime validator initial sandbox lease-write failure; approved rerun passed at /tmp/staff_de_dbt_v2_xqprpvzd: load 0, reject 1, debug/freshness, baseline success=3/pass=5, injected dbt fail=1/skipped=7, recovery success=3/pass=5, preview. No project DB/.venv changes. git diff --check passed before final notes.
+- Meaningful source CLI/caller check-in now recommended after learner staged review; no agent Git writes. Rebuilt current-wheel/installed CLI still pending; no production/cloud/platform/performance claim. Next package acceptance, then review/check-in. Review 20.
+
+### CLI/caller thread checkpoint 17 — 2026-10-19
+- Owner asks why the script exists, whether orders-specific and one-time; interpreted as scripts/validate_dbt_runtime.py. Explained reusable acceptance harness versus production entry point: disposable workspace each run, fixed fixture/count/model status expectations and intentional dbt-test failure injection.
+- Script is deliberately orders-specific and repeatable after relevant changes; not production orchestration, scheduler or generic framework. Current CI wiring absent. Keep one canonical acceptance command, generalize only when a second concrete pipeline needs it; do not rerun full harness for every trivial edit.
+- Conceptual checkpoint only; no execution/source edits. Next remains isolated installed-package acceptance then learner check-in. Review 20.
+
+### CLI/caller thread checkpoint 18 — 2026-10-19
+- Owner asks whether developers write such scripts. Explained integration/smoke/acceptance checks as normal engineering practice, with implementation varying between test suites, scripts and CI jobs; no claim all teams use this form or handwrite everything.
+- Fixture-specific assertions are appropriate; custom runners should stay small and justified by real cross-tool behavior. Current script is a pragmatic cross-process acceptance harness, not a required universal architecture. Reuse existing test tooling and avoid framework expansion; coding syntax memorization is not the competency target.
+- Conceptual only; no code/tests. Next installed-package acceptance unchanged. Counter 18; review 20.
+
+### CLI/caller thread checkpoint 19 — 2026-10-19
+- Owner requests independent contextual guidance, not agreement. Re-read validator/handoff. Distinguish necessary cross-tool acceptance capability from this optional standalone implementation; fixture-specific known input/count is sound, exact global status totals and SQL-text replacement create avoidable coupling.
+- Recommendation: retain current harness as bounded regression evidence for now; stop extending it. At next testing/CI consolidation, replace brittle checks with behavior-focused pipeline integration checks and stable failure fixtures/config, then retire superseded harness. Do not build a generic framework without a concrete second use case. Installed-package acceptance remains next, not another harness-refactor detour.
+- Clarify source rejection check verifies exit 1 and subsequent accepted-data usability; dbt injected failure verifies its downstream skips, not deployed orchestration gating. No source edits/execution. Counter 19; review 20.
+
+### CLI/caller thread checkpoint 20 — 2026-10-19
+- Owner requests faster delivery. Added orders-load console entry point. uv offline build failed at read-only home cache lock; escalation declined. Current wheel nevertheless present, later owner supplied listing. Inspected all three package modules byte-for-byte against source and entry-point/metadata; do not attribute wheel build to rejected tool call.
+- Installed wheel offline with temporary cache into /tmp/staff_de_uv_acceptance.p3WuP2/venv. Isolated import resolves site-packages. Real console execution outside checkout without PYTHONPATH verified exact rows, success 0, bad-count failure 1 and full snapshot preservation. Three durable loader tests passed against installed package. Seven installed packages compatible; lock consistency and tracked diff whitespace checks passed.
+- Evidence /tmp/staff_de_orders_release/acceptance.json; source/dbt evidence remains checkpoint 16. Parent stream-fd warnings observed, not assertion/process failures. .venv/project DB unchanged. No agent Git writes. Staged-review/check-in commands supplied next; no learner execution assumed.
+- Scheduled qualitative review 20: coherent delivery boundary reached; optional fresh thread useful after check-in, handoff saved. Next review 25 if continuing. Windows/macOS/cloud/CI/performance acceptance pending.
